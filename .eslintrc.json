@@ -5,6 +5,11 @@
     "prettier/prettier": "error"
   },
   "env": {
-    "browser": true
+    "browser": true,
+    "es6": true,
+    "jest": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 9
   }
 }
