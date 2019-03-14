@@ -1,0 +1,6 @@
+export const EXCHANGES = 'EXCHANGES'
+export const MARKETPLACES = 'MARKETPLACES'
+export const GAMES = 'GAMES'
+export const SOCIAL_NETWORKS = 'SOCIAL_NETWORKS'
+export const MEDIA = 'MEDIA'
+export const SOCIAL_UTILITIES = 'SOCIAL_UTILITIES'
