@@ -8,12 +8,15 @@ const DappListItem = props => {
   return (
     <div className={styles.listItem}>
       <div>
-        <img src={icon} alt="App icon" />
+        <img className={styles.image} src={icon} alt="App icon" />
       </div>
       <div>
-        <h2>{name}</h2>
-        <p>{description}</p>
-        <a href={url}>{url}</a>
+        <h2 className={styles.header}>{name}</h2>
+        <p className={styles.description}>{description}</p>
+        <a className={styles.url} href={url}>
+          {url}
+          &nbsp;&rarr;
+        </a>
       </div>
     </div>
   )
