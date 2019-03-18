@@ -288,7 +288,7 @@ const Dapps = [
     url: 'https://3box.io/',
     description: 'Create and manage your Ethereum Profile.',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -297,7 +297,7 @@ const Dapps = [
     url: 'https://mainnet.aragon.org/',
     description: 'Build unstoppable organizations on Ethereum.',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -306,7 +306,7 @@ const Dapps = [
     url: 'https://communities.colu.com/',
     description: 'Blockchain-powered local communities',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -315,7 +315,7 @@ const Dapps = [
     url: 'https://app.ethlend.io',
     description: 'Decentralized lending on Ethereum',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -324,7 +324,7 @@ const Dapps = [
     url: 'https://www.onhexel.com/',
     description: 'Create your own cryptocurrency',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -333,7 +333,7 @@ const Dapps = [
     url: 'https://explorer.livepeer.org/',
     description: 'Decentralized video broadcasting',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -342,7 +342,7 @@ const Dapps = [
     url: 'https://smartz.io',
     description: 'Easy smart contract management',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -352,7 +352,7 @@ const Dapps = [
     description:
       'Let your SNT be heard! Vote on decisions exclusive to SNT holders, or create a poll of your own.',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 
@@ -361,7 +361,7 @@ const Dapps = [
     url: 'simpledapp.eth',
     description: 'Request test assets and test basic web3 functionality.',
     image: null,
-    category: Categories.SOCIAL_UTILITIES,
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
 ]
