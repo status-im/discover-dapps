@@ -9,7 +9,6 @@ const Dapps = props => {
 
   return (
     <>
-      <h1>All Dapps</h1>
       {categories.map(category => (
         <div key={category.category}>
           <h2>{humanise(category.category)}</h2>

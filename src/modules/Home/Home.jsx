@@ -4,7 +4,6 @@ import Categories from '../Categories'
 
 export default () => (
   <>
-    <h1>Home</h1>
     <Categories />
     <RecentlyAdded />
   </>
