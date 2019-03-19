@@ -41,7 +41,7 @@ class Dapps extends React.Component {
     const { headerPositions, currentCategoryIndex } = this.state
     const currentHeaderOriginalPosition = headerPositions[currentHeader.id]
     const isAboveOriginalPosition =
-      currentHeaderOriginalPosition - window.scrollY > 60
+      currentHeaderOriginalPosition - window.scrollY > 10
 
     if (isAboveOriginalPosition) {
       return this.setState({
