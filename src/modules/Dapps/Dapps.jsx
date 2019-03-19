@@ -4,20 +4,7 @@ import { DappListModel } from '../../common/utils/models'
 import DappList from '../../common/components/DappList'
 import CategoryHeader from '../CategoryHeader'
 import styles from './Dapps.module.scss'
-
-// const getPosition = element => {
-//   let el = element
-//   let xPosition = 0
-//   let yPosition = 0
-
-//   while (el) {
-//     xPosition += el.offsetLeft - el.scrollLeft + el.clientLeft
-//     yPosition += el.offsetTop - el.scrollTop + el.clientTop
-//     el = el.offsetParent
-//   }
-
-//   return { x: xPosition, y: yPosition }
-// }
+import { headerElements, getYPosition } from './Dapps.utils'
 
 class Dapps extends React.Component {
   constructor(props) {
@@ -29,6 +16,7 @@ class Dapps extends React.Component {
   }
 
   componentDidMount() {
+    this.scanHeaderPositions()
     window.addEventListener('scroll', this.handleScroll.bind(this))
   }
 
@@ -36,12 +24,35 @@ class Dapps extends React.Component {
     window.removeEventListener('scroll', this.handleScroll)
   }
 
+  scanHeaderPositions() {
+    const headerPositions = headerElements().reduce(
+      (accumulator, element) => ({
+        ...accumulator,
+        [element.id]: getYPosition(element),
+      }),
+      {},
+    )
+
+    this.setState({ headerPositions })
+  }
+
   handleScroll() {
     const currentHeader = document.getElementById(this.currentCategory())
+    const { headerPositions, currentCategoryIndex } = this.state
+    const currentHeaderOriginalPosition = headerPositions[currentHeader.id]
+    const isAboveOriginalPosition =
+      currentHeaderOriginalPosition - window.scrollY > 60
 
-    const nonActiveHeaders = Array.from(
-      document.querySelectorAll('.category-header'),
-    ).filter(element => element.id !== currentHeader.id)
+    if (isAboveOriginalPosition) {
+      return this.setState({
+        currentCategoryIndex:
+          currentCategoryIndex > 0 ? currentCategoryIndex - 1 : 0,
+      })
+    }
+
+    const nonActiveHeaders = headerElements().filter(
+      element => element.id !== currentHeader.id,
+    )
 
     const bumpingHeaders = nonActiveHeaders.filter(header => {
       const yPosition = header.getBoundingClientRect().y
@@ -49,14 +60,14 @@ class Dapps extends React.Component {
     })
 
     if (!bumpingHeaders.length) {
-      return
+      return false
     }
 
     const [newHeader] = bumpingHeaders
     const { categories } = this.state
     const newIndex = categories.indexOf(newHeader.id)
 
-    this.setState({ currentCategoryIndex: newIndex })
+    return this.setState({ currentCategoryIndex: newIndex })
   }
 
   currentCategory() {
