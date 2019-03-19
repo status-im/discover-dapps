@@ -17,11 +17,12 @@ class Dapps extends React.Component {
 
   componentDidMount() {
     this.scanHeaderPositions()
-    window.addEventListener('scroll', this.handleScroll.bind(this))
+    this.boundScroll = this.handleScroll.bind(this)
+    window.addEventListener('scroll', this.boundScroll)
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('scroll', this.boundScroll)
   }
 
   scanHeaderPositions() {
