@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { debounce } from 'debounce'
 import { DappListModel } from '../../common/utils/models'
 import DappList from '../../common/components/DappList'
 import CategoryHeader from '../CategoryHeader'
@@ -17,7 +18,7 @@ class Dapps extends React.Component {
 
   componentDidMount() {
     this.scanHeaderPositions()
-    this.boundScroll = this.handleScroll.bind(this)
+    this.boundScroll = debounce(this.handleScroll.bind(this), 200)
     window.addEventListener('scroll', this.boundScroll)
   }
 
@@ -26,46 +27,30 @@ class Dapps extends React.Component {
   }
 
   scanHeaderPositions() {
-    const headerPositions = headerElements().reduce(
-      (accumulator, element) => ({
-        ...accumulator,
-        [element.id]: getYPosition(element),
-      }),
-      {},
-    )
+    const headerPositions = headerElements().map(element => ({
+      id: element.id,
+      position: getYPosition(element),
+    }))
 
     this.setState({ headerPositions })
   }
 
   handleScroll() {
     const currentHeader = document.getElementById(this.currentCategory())
-    const { headerPositions, currentCategoryIndex } = this.state
-    const currentHeaderOriginalPosition = headerPositions[currentHeader.id]
-    const isAboveOriginalPosition =
-      currentHeaderOriginalPosition - window.scrollY > 10
+    const { headerPositions, categories } = this.state
 
-    if (isAboveOriginalPosition) {
-      return this.setState({
-        currentCategoryIndex:
-          currentCategoryIndex > 0 ? currentCategoryIndex - 1 : 0,
-      })
+    const newHeader = [...headerPositions]
+      .reverse()
+      .find(header => header.position < window.scrollY)
+
+    if (!newHeader) {
+      return this.setState({ currentCategoryIndex: 0 })
     }
 
-    const nonActiveHeaders = headerElements().filter(
-      element => element.id !== currentHeader.id,
-    )
-
-    const bumpingHeaders = nonActiveHeaders.filter(header => {
-      const yPosition = header.getBoundingClientRect().y
-      return yPosition >= 0 && yPosition < 50
-    })
-
-    if (!bumpingHeaders.length) {
+    if (newHeader.id === currentHeader.id) {
       return false
     }
 
-    const [newHeader] = bumpingHeaders
-    const { categories } = this.state
     const newIndex = categories.indexOf(newHeader.id)
 
     return this.setState({ currentCategoryIndex: newIndex })
