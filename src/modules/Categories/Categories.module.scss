@@ -19,3 +19,60 @@
   color: $link-color;
   text-decoration: none;
 }
+
+.categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  margin: 0 calculateRem(10) calculateRem(30) calculateRem(10);
+}
+
+.category {
+  background: $background;
+  font-family: $font;
+  font-size: calculateRem(13);
+  line-height: calculateRem(16);
+  color: $headline-color;
+  border: none;
+  border-radius: calculateRem(12);
+  padding: calculateRem(12);
+  margin: calculateRem(4);
+  cursor: pointer;
+  text-align: left;
+
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.EXCHANGES {
+  background: rgba($color: $purple, $alpha: 0.15);
+}
+
+.MARKETPLACES {
+  background: rgba($color: $orange, $alpha: 0.15);
+}
+
+.OTHER {
+  background: rgba($color: $yellow, $alpha: 0.15);
+}
+
+.MEDIA {
+  background: rgba($color: $yellow, $alpha: 0.15);
+}
+
+.GAMES {
+  background: rgba($color: $pink, $alpha: 0.15);
+}
+
+.COLLECTIBLES {
+  background: rgba($color: $blue, $alpha: 0.15);
+}
+
+.SOCIAL_NETWORKS {
+  background: rgba($color: $green, $alpha: 0.15);
+}
+
+.UTILITIES {
+  background: rgba($color: $red, $alpha: 0.15);
+}

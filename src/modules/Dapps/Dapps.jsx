@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { debounce } from 'debounce'
+import { debounce } from 'debounce'
 import { DappListModel } from '../../common/utils/models'
 import DappList from '../../common/components/DappList'
 import CategoryHeader from '../CategoryHeader'
@@ -18,7 +18,7 @@ class Dapps extends React.Component {
 
   componentDidMount() {
     this.scanHeaderPositions()
-    // this.boundScroll = debounce(this.handleScroll.bind(this), 200)
+    this.boundScroll = debounce(this.handleScroll.bind(this), 200)
     window.addEventListener('scroll', this.boundScroll)
   }
 
