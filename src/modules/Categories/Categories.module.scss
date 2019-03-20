@@ -1,0 +1,21 @@
+@import '../../common/styles/variables';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  margin: calculateRem(15);
+  align-items: center;
+}
+
+.headline {
+  font-family: $font;
+  font-size: calculateRem(17);
+  margin: 0;
+}
+
+.url {
+  font-family: $font;
+  font-size: calculateRem(15);
+  color: $link-color;
+  text-decoration: none;
+}
