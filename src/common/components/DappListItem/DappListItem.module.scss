@@ -4,7 +4,7 @@
   font-family: $font;
   background: $background;
   display: flex;
-  margin: calculateRem(11) calculateRem(16);
+  margin: calculateRem(11) 0 0 calculateRem(16);
 }
 
 .header {
@@ -32,4 +32,6 @@
   line-height: calculateRem(18);
   margin-bottom: calculateRem(5);
   margin-top: 0;
+  max-height: 30px;
+  overflow-y: hidden;
 }
