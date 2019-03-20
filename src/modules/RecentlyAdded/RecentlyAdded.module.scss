@@ -3,6 +3,8 @@
 .headline {
   font-family: $font;
   font-size: calculateRem(17);
+  margin-left: calculateRem(15);
+  margin-bottom: 0;
 }
 
 .grid {
