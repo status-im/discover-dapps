@@ -25,6 +25,11 @@
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   margin: 0 calculateRem(10) calculateRem(30) calculateRem(10);
+
+  @media (min-width: $desktop) {
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: unset;
+  }
 }
 
 .category {

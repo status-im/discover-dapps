@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import categories from '../../common/utils/categories'
 import styles from './Categories.module.scss'
-import { categoryImage } from './Categories.utils'
+import categoryImage from './Categories.utils'
 
 const Categories = props => {
   const { select } = props

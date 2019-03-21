@@ -17,4 +17,4 @@ const imageMap = {
   UTILITIES: utilities,
 }
 
-export const categoryImage = category => imageMap[category]
+export default category => imageMap[category]

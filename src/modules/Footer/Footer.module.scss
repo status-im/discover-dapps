@@ -1,0 +1,8 @@
+@import '../../common//styles/variables';
+
+.footer {
+  background-color: #eef2f5;
+  font-family: $font;
+  padding: calculateRem(40) calculateRem(16);
+  margin-top: calculateRem(24);
+}
