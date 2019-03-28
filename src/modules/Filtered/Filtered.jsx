@@ -9,7 +9,6 @@ const Filtered = props => {
 
   return (
     <>
-      <h1>Filtered</h1>
       <CategorySelector />
       <Link to="/all">View all</Link>
       <DappList dapps={dapps} />

@@ -1,16 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { DappListModel } from '../../common/utils/models'
 import DappList from '../../common/components/DappList'
+import styles from './RecentlyAdded.module.scss'
 
 const RecentlyAdded = props => {
   const { dapps } = props
 
   return (
     <>
-      <h1>Recently Added</h1>
-      <Link to="/all">View all</Link>
-      <DappList dapps={dapps} />
+      <h1 className={styles.headline}>Recently Added</h1>
+      <div className={styles.grid}>
+        <DappList dapps={dapps} />
+      </div>
     </>
   )
 }

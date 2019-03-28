@@ -1,0 +1,21 @@
+@import '../../common/styles/variables';
+
+.headline {
+  font-family: $font;
+  font-size: calculateRem(17);
+  margin-left: calculateRem(15);
+  margin-bottom: 0;
+}
+
+.grid {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(90%);
+  grid-template-rows: 1fr 1fr 1fr;
+  overflow-x: scroll;
+  overflow-y: hidden;
+
+  @media (min-width: $desktop) {
+    grid-auto-columns: calc(30%);
+  }
+}

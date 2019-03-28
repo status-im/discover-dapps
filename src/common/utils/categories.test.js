@@ -24,8 +24,16 @@ describe('categories', () => {
         value: 'Media',
       },
       {
-        key: 'SOCIAL_UTILITIES',
-        value: 'Social Utilities',
+        key: 'UTILITIES',
+        value: 'Utilities',
+      },
+      {
+        key: 'OTHER',
+        value: 'Other',
+      },
+      {
+        key: 'COLLECTIBLES',
+        value: 'Collectibles',
       },
     ])
   })
