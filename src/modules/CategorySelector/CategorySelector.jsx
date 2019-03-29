@@ -1,24 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import CategoryIcon from '../../common/components/CategoryIcon'
+import ViewAll from '../../common/components/ViewAll'
 import categories from '../../common/utils/categories'
 import humanise from '../../common/utils/humanise'
 import dropdownArrows from '../../common/assets/images/dropdown-arrows.svg'
-
-// const CategorySelector = props => {
-//   const { category, select } = props
-//   const handleChange = event => select(event.target.value)
-
-//   return (
-//     <select value={category || ''} onChange={handleChange}>
-//       <option style={{ display: 'none' }} />
-//       {categories.map(c => (
-//         <option key={c.key} value={c.key}>
-//           {c.value}
-//         </option>
-//       ))}
-//     </select>
-//   )
-// }
+import styles from './CategorySelector.module.scss'
 
 class CategorySelector extends React.Component {
   constructor(props) {
@@ -46,14 +33,20 @@ class CategorySelector extends React.Component {
     return (
       <>
         {open && (
-          <div>
+          <div className={styles.open}>
+            <div className={styles.openHeader}>
+              <h2>Categories</h2>
+              <ViewAll size="small" />
+            </div>
             {categories.map(c => (
               <button
+                className={styles.openButton}
                 key={c.key}
                 type="button"
                 value={c.key}
                 onClick={this.updateCategory}
               >
+                <CategoryIcon category={c.key} />
                 {c.value}
               </button>
             ))}
@@ -62,7 +55,7 @@ class CategorySelector extends React.Component {
 
         {!open && (
           <button type="button" onClick={this.toggle}>
-            {/* TODO: category icon here */}
+            {category && <CategoryIcon category={category} />}
             <p>{humanise(category)}</p>
             <img src={dropdownArrows} alt="Toggle category selector" />
           </button>

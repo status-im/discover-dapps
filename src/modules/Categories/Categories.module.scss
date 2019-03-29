@@ -13,13 +13,6 @@
   margin: 0;
 }
 
-.url {
-  font-family: $font;
-  font-size: calculateRem(15);
-  color: $link-color;
-  text-decoration: none;
-}
-
 .categories {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

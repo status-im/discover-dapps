@@ -1,0 +1,42 @@
+@import '../../common/styles/variables';
+
+.open {
+  border-radius: 8px;
+  box-shadow: 0px 4px 12px rgba(0, 34, 51, 0.08),
+    0px 2px 4px rgba(0, 34, 51, 0.16);
+  padding: calculateRem(12) 0;
+  margin: calculateRem(12) calculateRem(16);
+  position: absolute;
+  background: $background;
+  width: calc(100% - 32px);
+
+  h2 {
+    color: $text-color;
+    font-family: $font;
+    font-size: calculateRem(13);
+  }
+}
+
+.openHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calculateRem(16);
+}
+
+.openButton {
+  display: block;
+  background: $background;
+  border: none;
+  font-family: $font;
+  font-size: calculateRem(15);
+  color: $headline-color;
+  display: flex;
+  align-content: center;
+  line-height: calculateRem(22);
+  padding: calculateRem(10) calculateRem(16);
+
+  svg {
+    margin-right: calculateRem(19);
+  }
+}
