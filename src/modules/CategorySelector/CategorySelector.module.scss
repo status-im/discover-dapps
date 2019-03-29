@@ -4,7 +4,7 @@
   border-radius: 8px;
   box-shadow: 0px 4px 12px rgba(0, 34, 51, 0.08),
     0px 2px 4px rgba(0, 34, 51, 0.16);
-  padding: calculateRem(12) 0;
+  padding-top: calculateRem(12);
   margin: calculateRem(12) calculateRem(16);
   position: absolute;
   background: $background;
@@ -14,6 +14,8 @@
     color: $text-color;
     font-family: $font;
     font-size: calculateRem(13);
+    margin: 0;
+    font-weight: normal;
   }
 }
 
@@ -22,6 +24,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 0 calculateRem(16);
+  margin-bottom: calculateRem(12);
 }
 
 .openButton {
@@ -32,11 +35,27 @@
   font-size: calculateRem(15);
   color: $headline-color;
   display: flex;
+  width: 100%;
   align-content: center;
   line-height: calculateRem(22);
   padding: calculateRem(10) calculateRem(16);
 
+  &:last-of-type {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+  }
+
   svg {
     margin-right: calculateRem(19);
+    fill: $headline-color;
+  }
+}
+
+.selected {
+  background: $purple-bg;
+  color: $purple;
+
+  svg {
+    fill: $purple;
   }
 }

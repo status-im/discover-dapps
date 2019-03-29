@@ -17,6 +17,10 @@
 
 .icon {
   margin-right: calculateRem(15);
+
+  svg {
+    fill: $headline-color;
+  }
 }
 
 .text {

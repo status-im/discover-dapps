@@ -13,6 +13,24 @@ class CategorySelector extends React.Component {
     this.state = { open: false }
     this.toggle = this.toggle.bind(this)
     this.updateCategory = this.updateCategory.bind(this)
+    this.container = React.createRef()
+  }
+
+  componentDidMount() {
+    this.closeOnBackgroundClick = this.closeOnBackgroundClick.bind(this)
+    document.addEventListener('click', this.closeOnBackgroundClick)
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.closeOnBackgroundClick)
+  }
+
+  closeOnBackgroundClick(event) {
+    if (this.container.current.contains(event.target)) {
+      return
+    }
+
+    this.setState({ open: false })
   }
 
   updateCategory(event) {
@@ -31,36 +49,43 @@ class CategorySelector extends React.Component {
     const { category } = this.props
 
     return (
-      <>
-        {open && (
-          <div className={styles.open}>
-            <div className={styles.openHeader}>
-              <h2>Categories</h2>
-              <ViewAll size="small" />
-            </div>
-            {categories.map(c => (
-              <button
-                className={styles.openButton}
-                key={c.key}
-                type="button"
-                value={c.key}
-                onClick={this.updateCategory}
-              >
-                <CategoryIcon category={c.key} />
-                {c.value}
-              </button>
-            ))}
+      <div ref={this.container}>
+        <div
+          style={open ? { display: 'block' } : { display: 'none' }}
+          className={styles.open}
+        >
+          <div className={styles.openHeader}>
+            <h2>Categories</h2>
+            <ViewAll size="small" />
           </div>
-        )}
+          {categories.map(c => (
+            <button
+              className={
+                c.key === category
+                  ? [styles.openButton, styles.selected].join(' ')
+                  : styles.openButton
+              }
+              key={c.key}
+              type="button"
+              value={c.key}
+              onClick={this.updateCategory}
+            >
+              <CategoryIcon category={c.key} />
+              {c.value}
+            </button>
+          ))}
+        </div>
 
-        {!open && (
-          <button type="button" onClick={this.toggle}>
-            {category && <CategoryIcon category={category} />}
-            <p>{humanise(category)}</p>
-            <img src={dropdownArrows} alt="Toggle category selector" />
-          </button>
-        )}
-      </>
+        <button
+          style={open ? { display: 'none' } : { display: 'block' }}
+          type="button"
+          onClick={this.toggle}
+        >
+          {category && <CategoryIcon category={category} />}
+          <p>{humanise(category)}</p>
+          <img src={dropdownArrows} alt="Toggle category selector" />
+        </button>
+      </div>
     )
   }
 }
