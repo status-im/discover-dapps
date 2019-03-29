@@ -77,12 +77,15 @@ class CategorySelector extends React.Component {
         </div>
 
         <button
-          style={open ? { display: 'none' } : { display: 'block' }}
+          style={open ? { display: 'none' } : { display: 'flex' }}
+          className={styles.closed}
           type="button"
           onClick={this.toggle}
         >
-          {category && <CategoryIcon category={category} />}
-          <p>{humanise(category)}</p>
+          <div className={styles.closedText}>
+            {category && <CategoryIcon category={category} />}
+            {category ? humanise(category) : 'None selected'}
+          </div>
           <img src={dropdownArrows} alt="Toggle category selector" />
         </button>
       </div>

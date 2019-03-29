@@ -9,6 +9,7 @@
   position: absolute;
   background: $background;
   width: calc(100% - 32px);
+  top: 0;
 
   h2 {
     color: $text-color;
@@ -36,6 +37,7 @@
   color: $headline-color;
   display: flex;
   width: 100%;
+  cursor: pointer;
   align-content: center;
   line-height: calculateRem(22);
   padding: calculateRem(10) calculateRem(16);
@@ -57,5 +59,31 @@
 
   svg {
     fill: $purple;
+  }
+}
+
+.closed {
+  background: $purple;
+  width: 100%;
+  margin: calculateRem(12) calculateRem(16);
+  padding: calculateRem(10) calculateRem(15);
+  width: calc(100% - 32px);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1),
+    0px 2px 6px rgba(136, 122, 249, 0.2);
+  border-radius: 8px;
+  color: $background;
+  font-family: $font;
+  justify-content: space-between;
+  cursor: pointer;
+  align-items: center;
+}
+
+.closedText {
+  display: flex;
+  align-items: center;
+
+  svg {
+    fill: $background;
+    margin-right: calculateRem(19);
   }
 }
