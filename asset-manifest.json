@@ -1,0 +1,21 @@
+{
+  "main.css": "/discover/static/css/main.bf4492c1.chunk.css",
+  "main.js": "/discover/static/js/main.7ebe0f90.chunk.js",
+  "main.js.map": "/discover/static/js/main.7ebe0f90.chunk.js.map",
+  "runtime~main.js": "/discover/static/js/runtime~main.57338630.js",
+  "runtime~main.js.map": "/discover/static/js/runtime~main.57338630.js.map",
+  "static/js/2.d5151aa4.chunk.js": "/discover/static/js/2.d5151aa4.chunk.js",
+  "static/js/2.d5151aa4.chunk.js.map": "/discover/static/js/2.d5151aa4.chunk.js.map",
+  "index.html": "/discover/index.html",
+  "precache-manifest.fb9157867a5b5d874be58c3dc2cbe058.js": "/discover/precache-manifest.fb9157867a5b5d874be58c3dc2cbe058.js",
+  "service-worker.js": "/discover/service-worker.js",
+  "static/css/main.bf4492c1.chunk.css.map": "/discover/static/css/main.bf4492c1.chunk.css.map",
+  "static/media/collectibles.svg": "/discover/static/media/collectibles.48f1d6ea.svg",
+  "static/media/exchanges.svg": "/discover/static/media/exchanges.59b13742.svg",
+  "static/media/games.svg": "/discover/static/media/games.5f2fc3ba.svg",
+  "static/media/icon.svg": "/discover/static/media/icon.6d55f68a.svg",
+  "static/media/marketplaces.svg": "/discover/static/media/marketplaces.964ef8e9.svg",
+  "static/media/other.svg": "/discover/static/media/other.9170c622.svg",
+  "static/media/social-networks.svg": "/discover/static/media/social-networks.f0cf5795.svg",
+  "static/media/utilities.svg": "/discover/static/media/utilities.624c69f9.svg"
+}
