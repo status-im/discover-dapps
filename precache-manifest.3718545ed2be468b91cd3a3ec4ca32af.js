@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/exchanges.59b13742.svg"
   },
   {
-    "revision": "41f170f4bbee5e7f937a",
-    "url": "/discover-dapps/static/css/main.bf4492c1.chunk.css"
+    "revision": "b40050e5608446a60bdf",
+    "url": "/discover-dapps/static/css/main.e41a4724.chunk.css"
   },
   {
     "revision": "20829ce14ec4e3ff8b63",
@@ -24,7 +24,7 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/icon.6d55f68a.svg"
   },
   {
-    "revision": "41f170f4bbee5e7f937a",
+    "revision": "b40050e5608446a60bdf",
     "url": "/discover-dapps/static/js/main.cc6cbaf3.chunk.js"
   },
   {
@@ -48,7 +48,7 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/utilities.624c69f9.svg"
   },
   {
-    "revision": "f398a5e230537805cb1a2f564ea2f9d2",
+    "revision": "2dec59cb3289289f207e9e5633f9f3cb",
     "url": "/discover-dapps/index.html"
   }
 ];
