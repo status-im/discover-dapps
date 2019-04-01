@@ -22,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "staging-deploy": "npm run build && aws s3 sync --acl public-read build s3://status-discover-dapps-staging/ --delete && rm -rf build"
   },
   "husky": {
     "hooks": {
