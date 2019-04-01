@@ -1,3 +1,3 @@
-import CategorySelector from './CategorySelecter.container'
+import CategorySelector from './CategorySelector.container'
 
 export default CategorySelector

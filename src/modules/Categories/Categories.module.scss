@@ -13,13 +13,6 @@
   margin: 0;
 }
 
-.url {
-  font-family: $font;
-  font-size: calculateRem(15);
-  color: $link-color;
-  text-decoration: none;
-}
-
 .categories {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
@@ -51,33 +44,33 @@
 }
 
 .EXCHANGES {
-  background: rgba($color: $purple, $alpha: 0.15);
+  background: $purple-bg;
 }
 
 .MARKETPLACES {
-  background: rgba($color: $orange, $alpha: 0.15);
+  background: $orange-bg;
 }
 
 .OTHER {
-  background: rgba($color: $yellow, $alpha: 0.15);
+  background: $yellow-bg;
 }
 
 .MEDIA {
-  background: rgba($color: $yellow, $alpha: 0.15);
+  background: $yellow-bg;
 }
 
 .GAMES {
-  background: rgba($color: $pink, $alpha: 0.15);
+  background: $pink-bg;
 }
 
 .COLLECTIBLES {
-  background: rgba($color: $blue, $alpha: 0.15);
+  background: $blue-bg;
 }
 
 .SOCIAL_NETWORKS {
-  background: rgba($color: $green, $alpha: 0.15);
+  background: $green-bg;
 }
 
 .UTILITIES {
-  background: rgba($color: $red, $alpha: 0.15);
+  background: $red-bg;
 }
