@@ -1,14 +1,20 @@
 import React from 'react'
+import ReactImageFallback from 'react-image-fallback'
 import { DappModel } from '../../utils/models'
 import styles from './DappListItem.module.scss'
 import icon from '../../assets/images/icon.svg'
 
 const DappListItem = props => {
-  const { name, description, url } = props
+  const { name, description, url, image } = props
   return (
     <div className={styles.listItem}>
       <div>
-        <img className={styles.image} src={icon} alt="App icon" />
+        <ReactImageFallback
+          className={styles.image}
+          src={image}
+          fallbackImage={icon}
+          alt="App icon"
+        />
       </div>
       <div>
         <h2 className={styles.header}>{name}</h2>
