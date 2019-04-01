@@ -4,7 +4,7 @@
   font-family: $font;
   font-size: calculateRem(17);
   margin-left: calculateRem(15);
-  margin-bottom: 0;
+  margin-bottom: calculateRem(10);
 }
 
 .grid {
