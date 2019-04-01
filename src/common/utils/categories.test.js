@@ -12,6 +12,10 @@ describe('categories', () => {
         value: 'Marketplaces',
       },
       {
+        key: 'COLLECTIBLES',
+        value: 'Collectibles',
+      },
+      {
         key: 'GAMES',
         value: 'Games',
       },
@@ -20,20 +24,12 @@ describe('categories', () => {
         value: 'Social Networks',
       },
       {
-        key: 'MEDIA',
-        value: 'Media',
-      },
-      {
         key: 'UTILITIES',
         value: 'Utilities',
       },
       {
         key: 'OTHER',
         value: 'Other',
-      },
-      {
-        key: 'COLLECTIBLES',
-        value: 'Collectibles',
       },
     ])
   })

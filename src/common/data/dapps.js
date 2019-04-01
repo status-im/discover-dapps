@@ -280,7 +280,7 @@ const Dapps = [
     url: 'http://livepeer.tv/',
     description: 'Decentralized video broadcasting',
     image: null,
-    category: Categories.MEDIA,
+    category: Categories.SOCIAL_NETWORKS,
     dateAdded: null,
   },
   {
