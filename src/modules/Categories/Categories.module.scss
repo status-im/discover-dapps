@@ -37,9 +37,14 @@
   margin: calculateRem(4);
   cursor: pointer;
   text-align: left;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
   p {
     margin-bottom: 0;
+    font-weight: 500;
   }
 }
 

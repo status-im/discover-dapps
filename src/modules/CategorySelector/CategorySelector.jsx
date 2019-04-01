@@ -78,7 +78,7 @@ class CategorySelector extends React.Component {
 
         <button
           style={open ? { display: 'none' } : { display: 'flex' }}
-          className={styles.closed}
+          className={[styles.closed, styles[category]].join(' ')}
           type="button"
           onClick={this.toggle}
         >
