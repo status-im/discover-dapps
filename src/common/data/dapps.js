@@ -165,7 +165,7 @@ const Dapps = [
     url: 'https://www.cryptokitties.co',
     description: 'Collect and breed adorable digital cats.',
     image: null,
-    category: Categories.GAMES,
+    category: Categories.COLLECTIBLES,
     dateAdded: null,
   },
   {
@@ -182,7 +182,7 @@ const Dapps = [
     description:
       'Cryptographics is a digital art hub where artists, creators and collectors can submit asset packs, create unique cryptographics and trade them.',
     image: null,
-    category: Categories.GAMES,
+    category: Categories.COLLECTIBLES,
     dateAdded: null,
   },
   {
@@ -190,7 +190,7 @@ const Dapps = [
     url: 'https://www.larvalabs.com/cryptopunks',
     description: '10,000 unique collectible punks',
     image: null,
-    category: Categories.GAMES,
+    category: Categories.COLLECTIBLES,
     dateAdded: null,
   },
   {
@@ -280,7 +280,7 @@ const Dapps = [
     url: 'http://livepeer.tv/',
     description: 'Decentralized video broadcasting',
     image: null,
-    category: Categories.SOCIAL_NETWORKS,
+    category: Categories.OTHER,
     dateAdded: null,
   },
   {
