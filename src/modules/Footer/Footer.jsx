@@ -1,36 +1,44 @@
 import React from 'react'
 import styles from './Footer.module.scss'
-import icon from '../../common/assets/images/icon.svg'
+import communityIcon from '../../common/assets/images/community.svg'
+import addDappIcon from '../../common/assets/images/add-dapp.svg'
+import supportIcon from '../../common/assets/images/support.svg'
 
 const Footer = () => (
   <div className={styles.footer}>
-    <div className={styles.footerItem}>
-      <img src={icon} alt="Join the DApp community chat" />
+    <a
+      href="https://get.status.im/chat/public/status-core-dapps"
+      className={styles.footerItem}
+    >
+      <div className={styles.iconWrap}>
+        <img src={communityIcon} alt="Join the DApp community chat" />
+      </div>
       <div>
         <h2>Join the DApp community chat</h2>
         <p>
-          Status is a community of people all over the world connected by a set
-          of values and principles.
+          Status is a worldwide community committed to web3. Come discuss your
+          new favourite DApp with us.
         </p>
       </div>
-    </div>
+    </a>
     <div className={styles.footerItem}>
-      <img src={icon} alt="Submit a DApp" />
+      <div className={styles.iconWrap}>
+        <img src={addDappIcon} alt="Submit a DApp" />
+      </div>
       <div>
         <h2>Submit a DApp</h2>
-        <p>
-          Status is a community of people all over the world connected by a set
-          of values and principles.
-        </p>
+        <p>Submit your favourite DApp now! No permission required.</p>
       </div>
     </div>
     <div className={styles.footerItem}>
-      <img src={icon} alt="Support" />
+      <div className={styles.iconWrap}>
+        <img src={supportIcon} alt="Support" />
+      </div>
       <div>
         <h2>Support</h2>
         <p>
-          Status is a community of people all over the world connected by a set
-          of values and principles.
+          Can&apos;t find what you&apos;re looking for? Reach out and we&apos;ll
+          see if we can help.
         </p>
       </div>
     </div>
