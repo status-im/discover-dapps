@@ -51,7 +51,7 @@ class CategorySelector extends React.Component {
     return (
       <div ref={this.container}>
         <div
-          style={open ? { display: 'block' } : { display: 'none' }}
+          style={open ? { visible: 'block' } : { display: 'none' }}
           className={styles.open}
         >
           <div className={styles.openHeader}>
@@ -77,7 +77,7 @@ class CategorySelector extends React.Component {
         </div>
 
         <button
-          style={open ? { display: 'none' } : { display: 'flex' }}
+          style={open ? { visibility: 'hidden' } : { visibility: 'visible' }}
           className={[styles.closed, styles[category]].join(' ')}
           type="button"
           onClick={this.toggle}
