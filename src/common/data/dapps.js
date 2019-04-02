@@ -230,7 +230,7 @@ const Dapps = [
     name: 'Etheremon',
     url: 'https://www.etheremon.com/',
     description: 'Decentralized World of Ether Monsters',
-    image: '/images/dapps/ethermon.png',
+    image: '/images/dapps/etheremon.png',
     category: Categories.GAMES,
     dateAdded: null,
   },
