@@ -17,6 +17,8 @@
 }
 
 .image {
+  max-width: calculateRem(40);
+  max-height: calculateRem(40);
   margin-top: calculateRem(15);
   margin-right: calculateRem(16);
 }
