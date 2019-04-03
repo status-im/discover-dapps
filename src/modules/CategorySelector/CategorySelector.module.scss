@@ -63,6 +63,7 @@
 }
 
 .closed {
+  display: flex;
   width: 100%;
   margin: calculateRem(12) calculateRem(16);
   padding: calculateRem(10) calculateRem(15);
