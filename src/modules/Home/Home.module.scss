@@ -1,8 +1,0 @@
-.fade {
-  filter: contrast(0.8) opacity(0) blur(5px);
-}
-
-.loaded {
-  filter: contrast(1) opacity(1) blur(0);
-  transition: filter 0.5s ease-in;
-}
