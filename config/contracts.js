@@ -54,7 +54,7 @@ module.exports = {
     contracts: {
       
       DAppStore: {
-       args: [ 0x744d70fdbe2ba4cf95131626614a1763df805b9e ]
+       args: { _SNT: "0x744d70fdbe2ba4cf95131626614a1763df805b9e" }
       }
     }
   },
