@@ -175,29 +175,34 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         uint balance_down_by = (d.effective_balance / 100);
         uint votes_required = (balance_down_by * d.votes_minted * d.rate) / d.available;
-        uint cost = (d.available / (d.votes_minted - (d.votes_cast + votes_required))) * (votes_required / 1 / 10000);
+        uint votes_available = d.votes_minted - d.votes_cast - votes_required;
+        uint temp = (d.available / votes_available) * (votes_required);
+        uint cost = temp / decimals;
         return (balance_down_by, votes_required, cost);
     }
     
     /**
      * @dev Sends SNT directly to the developer and lower the DApp's effective balance by 1%
      * @param _id bytes32 unique identifier.
+     * @param _amount uint, set back to actual cost, just included for approveAndCallFallBack
      */
-    function downvote(bytes32 _id) public { 
-        _downvote(msg.sender, _id);
+    function downvote(bytes32 _id, uint _amount) public {
+        (,,uint c) = downvoteCost(_id);
+        _amount == c;
+        _downvote(msg.sender, _id, c);
     }
     
-    function _downvote(address _from, bytes32 _id) internal { 
+    function _downvote(address _from, bytes32 _id, uint _amount) internal { 
         uint dappIdx = id2index[_id];
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        (uint b, uint v_r, uint c) = downvoteCost(_id);
+        (uint b, uint v_r,) = downvoteCost(_id);
 
-        require(SNT.allowance(_from, d.developer) >= c, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, d.developer, c), "Transfer failed");
+        require(SNT.allowance(_from, d.developer) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, d.developer, _amount), "Transfer failed");
         
-        d.available = d.available - c;
+        d.available = d.available - _amount;
         d.votes_cast = d.votes_cast + v_r;
         d.effective_balance = d.effective_balance - b;
         
@@ -267,8 +272,8 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
 
         if(sig == bytes4(0x1a214f43)) {
             _createDApp(_from, id, amount);
-        } else if(sig == bytes4(0x466055f3)) {
-            _downvote(_from, id);
+        } else if(sig == bytes4(0xac769090)) {
+            _downvote(_from, id, amount);
         } else if(sig == bytes4(0x2b3df690)) {
             _upvote(_from, id, amount);
         } else {
