@@ -1,5 +1,5 @@
 {
-  "main.css": "/discover-dapps/static/css/main.b68505b9.chunk.css",
+  "main.css": "/discover-dapps/static/css/main.5694cc39.chunk.css",
   "main.js": "/discover-dapps/static/js/main.c13e02d6.chunk.js",
   "main.js.map": "/discover-dapps/static/js/main.c13e02d6.chunk.js.map",
   "runtime~main.js": "/discover-dapps/static/js/runtime~main.2ceb2bd3.js",
@@ -7,9 +7,9 @@
   "static/js/2.e0083783.chunk.js": "/discover-dapps/static/js/2.e0083783.chunk.js",
   "static/js/2.e0083783.chunk.js.map": "/discover-dapps/static/js/2.e0083783.chunk.js.map",
   "index.html": "/discover-dapps/index.html",
-  "precache-manifest.f48e4e204ae54d3082bbcad5cfcb1a47.js": "/discover-dapps/precache-manifest.f48e4e204ae54d3082bbcad5cfcb1a47.js",
+  "precache-manifest.3e18dbb954aa80b68eaf9aed395e4e20.js": "/discover-dapps/precache-manifest.3e18dbb954aa80b68eaf9aed395e4e20.js",
   "service-worker.js": "/discover-dapps/service-worker.js",
-  "static/css/main.b68505b9.chunk.css.map": "/discover-dapps/static/css/main.b68505b9.chunk.css.map",
+  "static/css/main.5694cc39.chunk.css.map": "/discover-dapps/static/css/main.5694cc39.chunk.css.map",
   "static/media/add-dapp.svg": "/discover-dapps/static/media/add-dapp.77c8e818.svg",
   "static/media/collectibles.svg": "/discover-dapps/static/media/collectibles.48f1d6ea.svg",
   "static/media/community.svg": "/discover-dapps/static/media/community.f0a6587b.svg",
