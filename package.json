@@ -1,6 +1,7 @@
 {
   "name": "discover-dapps",
-  "version": "0.1.0",
+  "homepage": "https://status-im.github.io/discover-dapps",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "connected-react-router": "^6.3.2",
@@ -25,7 +26,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "staging-deploy": "npm run build && aws s3 sync --acl public-read build s3://status-discover-dapps-staging/ --delete && rm -rf build"
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "husky": {
     "hooks": {
@@ -48,9 +50,11 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "embarkjs-connector-web3": "^4.0.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "gh-pages": "^2.0.1",
     "husky": "^1.3.1",
     "lint-staged": "^8.1.5",
     "prettier": "^1.16.4"
