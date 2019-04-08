@@ -188,7 +188,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      */
     function downvote(bytes32 _id, uint _amount) public {
         (,,uint c) = downvoteCost(_id);
-        _amount == c;
+        require(_amount == c, "Amount incorrect");
         _downvote(msg.sender, _id, c);
     }
     

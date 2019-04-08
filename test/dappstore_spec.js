@@ -127,8 +127,7 @@ contract("DAppStore", function () {
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
     const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
-    console.log(initial.developer, amount);
-    await SNT.methods.approveAndCall(initial.developer, amount, encodedCall).send({from: accounts[1]});
+    //await SNT.methods.approveAndCall(initial.developer, amount, encodedCall).send({from: accounts[1]});
     
     // let receipt = await DAppStore.methods.dapps(0).call();
 
