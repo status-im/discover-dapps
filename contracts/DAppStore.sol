@@ -12,19 +12,19 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     MiniMeTokenInterface SNT;
 
     // Total SNT in circulation
-    uint total;
+    uint public total;
     
     // Parameter to calculate Max SNT any one DApp can stake
-    uint ceiling;
+    uint public ceiling;
 
     // The max amount of tokens it is possible to stake, as a percentage of the total in circulation
-    uint max;
+    uint public max;
 
     // Decimal precision for this contract
-    uint decimals;
+    uint public decimals;
 
     // Prevents overflows in votes_minted
-    uint safeMax;
+    uint public safeMax;
     
     // Whether we need more than an id param to identify arbitrary data must still be discussed.
     struct Data {
@@ -80,7 +80,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         dapps.length++;
 
         Data storage d = dapps[dappIdx];
-        d.developer = msg.sender;
+        d.developer = _from;
         d.id = _id;
         
         uint precision;
@@ -265,12 +265,11 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         require(_amount == amount, "Wrong amount");
 
-        // TODO: check these function sigs!
-        if(sig == bytes4(0xe4bb1695)) {
+        if(sig == bytes4(0x1a214f43)) {
             _createDApp(_from, id, amount);
-        } else if(sig == bytes4(0xfaa5fd03)) {
+        } else if(sig == bytes4(0x466055f3)) {
             _downvote(_from, id);
-        } else if(sig == bytes4(0x0643e21b)) {
+        } else if(sig == bytes4(0x2b3df690)) {
             _upvote(_from, id, amount);
         } else {
             revert("Wrong method selector");
