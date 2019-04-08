@@ -1,8 +1,8 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { DappListModel } from '../../common/utils/models'
 import CategorySelector from '../CategorySelector'
 import DappList from '../../common/components/DappList'
+import styles from './Filtered.module.scss'
 
 const Filtered = props => {
   const { dapps } = props
@@ -10,8 +10,9 @@ const Filtered = props => {
   return (
     <>
       <CategorySelector />
-      <Link to="/all">View all</Link>
-      <DappList dapps={dapps} />
+      <div className={styles.list}>
+        <DappList dapps={dapps} />
+      </div>
     </>
   )
 }

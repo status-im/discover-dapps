@@ -4,18 +4,21 @@
   font-family: $font;
   background: $background;
   display: flex;
-  margin: calculateRem(11) calculateRem(16) 0 calculateRem(16);
+  margin: 0 calculateRem(16) calculateRem(11) calculateRem(16);
 }
 
 .header {
   color: $headline-color;
   font-size: calculateRem(15);
   line-height: calculateRem(22);
-  margin-bottom: calculateRem(5);
+  margin-bottom: calculateRem(2);
   margin-top: calculateRem(12);
+  font-weight: 500;
 }
 
 .image {
+  max-width: calculateRem(40);
+  max-height: calculateRem(40);
   margin-top: calculateRem(15);
   margin-right: calculateRem(16);
 }
@@ -30,7 +33,7 @@
   color: $text-color;
   font-size: calculateRem(13);
   line-height: calculateRem(18);
-  margin-bottom: calculateRem(5);
+  margin-bottom: calculateRem(2);
   margin-top: 0;
   max-height: calculateRem(40);
   overflow-y: hidden;

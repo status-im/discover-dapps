@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Link } from 'react-router-dom'
 import categories from '../../common/utils/categories'
 import styles from './Categories.module.scss'
 import categoryImage from './Categories.utils'
+import ViewAll from '../../common/components/ViewAll'
 
 const Categories = props => {
   const { select } = props
@@ -13,9 +13,7 @@ const Categories = props => {
     <>
       <div className={styles.header}>
         <h2 className={styles.headline}>Discover DApps</h2>
-        <Link className={styles.url} to="/all">
-          View all&nbsp;&rarr;
-        </Link>
+        <ViewAll size="large" />
       </div>
       <div className={styles.categories}>
         {categories.map(category => (
