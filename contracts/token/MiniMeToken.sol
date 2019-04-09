@@ -351,8 +351,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         //  requires that the `parentToken.balanceOfAt` be queried at the
         //  genesis block for that token as this contains initial balance of
         //  this token
-        if ((balances[_owner].length == 0)
-            || (balances[_owner][0].fromBlock > _blockNumber)) {
+        if ((balances[_owner].length == 0) || (balances[_owner][0].fromBlock > _blockNumber)) {
             if (address(parentToken) != address(0)) {
                 return parentToken.balanceOfAt(_owner, min(_blockNumber, parentSnapShotBlock));
             } else {
@@ -378,8 +377,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         //  requires that the `parentToken.totalSupplyAt` be queried at the
         //  genesis block for this token as that contains totalSupply of this
         //  token at this block number.
-        if ((totalSupplyHistory.length == 0)
-            || (totalSupplyHistory[0].fromBlock > _blockNumber)) {
+        if ((totalSupplyHistory.length == 0) || (totalSupplyHistory[0].fromBlock > _blockNumber)) {
             if (address(parentToken) != address(0)) {
                 return parentToken.totalSupplyAt(min(_blockNumber, parentSnapShotBlock));
             } else {
@@ -422,7 +420,8 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         if (snapshotBlock == 0) {
             snapshotBlock = block.number;
         }
-        MiniMeToken cloneToken = MiniMeToken(tokenFactory.createCloneToken(
+        MiniMeToken cloneToken = MiniMeToken(
+            tokenFactory.createCloneToken(
             address(this),
             snapshotBlock,
             _cloneTokenName,
@@ -553,8 +552,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _value The new number of tokens
      */
     function updateValueAtNow(Checkpoint[] storage checkpoints, uint _value) internal {
-        if ((checkpoints.length == 0)
-        || (checkpoints[checkpoints.length -1].fromBlock < block.number)) {
+        if ((checkpoints.length == 0) || (checkpoints[checkpoints.length - 1].fromBlock < block.number)) {
             Checkpoint storage newCheckPoint = checkpoints[checkpoints.length++];
             newCheckPoint.fromBlock = uint128(block.number);
             newCheckPoint.value = uint128(_value);
@@ -571,7 +569,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      */
     function isContract(address _addr) internal view returns(bool) {
         uint size;
-        if (_addr == address(0)){
+        if (_addr == address(0)) {
             return false;
         }    
         assembly {

@@ -8,6 +8,7 @@
     "ipfs-api": "17.2.4"
   },
   "plugins": {
+    "embark-solium": {},
     "embarkjs-connector-web3": {}
   },
   "options": {

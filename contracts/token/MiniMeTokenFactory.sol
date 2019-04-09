@@ -3,9 +3,6 @@ pragma solidity ^0.5.1;
 import "./TokenFactory.sol";
 import "./MiniMeToken.sol";
 
-////////////////
-// MiniMeTokenFactory
-////////////////
 
 /**
  * @dev This contract is used to generate clone contracts from a contract.
@@ -33,7 +30,8 @@ contract MiniMeTokenFactory is TokenFactory {
         uint8 _decimalUnits,
         string memory _tokenSymbol,
         bool _transfersEnabled
-    ) public returns (address payable) {
+    ) public returns (address payable) 
+    {
         MiniMeToken newToken = new MiniMeToken(
             address(this),
             _parentToken,

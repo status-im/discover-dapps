@@ -5,6 +5,7 @@ import "./token/ApproveAndCallFallBack.sol";
 import "./utils/SafeMath.sol";
 import "./utils/BancorFormula.sol";
 
+
 contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     using SafeMath for uint;
 
@@ -23,7 +24,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     // Decimal precision for this contract
     uint public decimals;
 
-    // Prevents overflows in votes_minted
+    // Prevents overflows in votesMinted
     uint public safeMax;
     
     // Whether we need more than an id param to identify arbitrary data must still be discussed.
@@ -33,15 +34,15 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         uint balance;
         uint rate;
         uint available;
-        uint votes_minted;
-        uint votes_cast;
-        uint effective_balance;
+        uint votesMinted;
+        uint votesCast;
+        uint effectiveBalance;
     }
     
     Data[] public dapps;
     mapping(bytes32 => uint) public id2index;
     
-    event DAppCreated(bytes32 indexed id, uint votes_mint, uint amount);
+    event DAppCreated(bytes32 indexed id, uint votesMint, uint amount);
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
     event Downvote(bytes32 indexed id, uint newEffectiveBalance);
     event Withdraw(bytes32 indexed id, uint newEffectiveBalance);
@@ -90,22 +91,26 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         d.rate = decimals - (d.balance * decimals/max);
         d.available = d.balance * d.rate;
         
-        (result, precision) = BancorFormula.power(d.available, decimals, uint32(decimals), uint32(d.rate));
+        (result, precision) = BancorFormula.power(
+            d.available, 
+            decimals, 
+            uint32(decimals), 
+            uint32(d.rate));
         
-        d.votes_minted = result >> precision;
-        d.votes_cast = 0;
-        d.effective_balance = _amount;
+        d.votesMinted = result >> precision;
+        d.votesCast = 0;
+        d.effectiveBalance = _amount;
 
         id2index[_id] = dappIdx;
 
-        emit DAppCreated(_id, d.votes_minted, d.effective_balance);
+        emit DAppCreated(_id, d.votesMinted, d.effectiveBalance);
     }
     
     /**
      * @dev Used in UI to display effect on ranking of user's donation
      * @param _id bytes32 unique identifier.
      * @param _amount of tokens to stake/"donate" to this DApp's ranking.
-     * @return effect of donation on DApp's effective_balance 
+     * @return effect of donation on DApp's effectiveBalance 
      */
     function upvoteEffect(bytes32 _id, uint _amount) public view returns(uint effect) { 
         uint dappIdx = id2index[_id];
@@ -114,7 +119,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
 
         // Special case - no downvotes yet cast
-        if (d.votes_cast == 0) {
+        if (d.votesCast == 0) {
             return _amount;
         }
 
@@ -125,17 +130,21 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         uint mRate = decimals - (mBalance * decimals/max);
         uint mAvailable = mBalance * mRate;
         
-        (result, precision) = BancorFormula.power(mAvailable, decimals, uint32(decimals), uint32(mRate));
+        (result, precision) = BancorFormula.power(
+            mAvailable, 
+            decimals, 
+            uint32(decimals), 
+            uint32(mRate));
         
         uint mVMinted = result >> precision;
 
-        uint temp1 = d.votes_cast * mRate * mAvailable;
+        uint temp1 = d.votesCast * mRate * mAvailable;
         uint temp2 = mVMinted * decimals * decimals;
         uint mEffect = temp1 / temp2;
         
         uint mEBalance = mBalance - mEffect;
         
-        return (mEBalance - d.effective_balance);
+        return (mEBalance - d.effectiveBalance);
     }
     
     /**
@@ -165,17 +174,21 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         d.rate = decimals - (d.balance * decimals/max);
         d.available = d.balance * d.rate;
         
-        (result, precision) = BancorFormula.power(d.available, decimals, uint32(decimals), uint32(d.rate));
+        (result, precision) = BancorFormula.power(
+            d.available, 
+            decimals, 
+            uint32(decimals), 
+            uint32(d.rate));
         
-        d.votes_minted = result >> precision;
+        d.votesMinted = result >> precision;
 
-        uint temp1 = d.votes_cast * d.rate * d.available;
-        uint temp2 = d.votes_minted * decimals * decimals;
+        uint temp1 = d.votesCast * d.rate * d.available;
+        uint temp2 = d.votesMinted * decimals * decimals;
         uint effect = temp1 / temp2;
 
-        d.effective_balance = d.balance - effect;
+        d.effectiveBalance = d.balance - effect;
         
-        emit Upvote(_id, d.effective_balance);
+        emit Upvote(_id, d.effectiveBalance);
     }
 
     /**
@@ -188,12 +201,12 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         Data memory d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        uint balance_down_by = (d.effective_balance / 100);
-        uint votes_required = (balance_down_by * d.votes_minted * d.rate) / d.available;
-        uint votes_available = d.votes_minted - d.votes_cast - votes_required;
-        uint temp = (d.available / votes_available) * (votes_required);
+        uint balanceDownBy = (d.effectiveBalance / 100);
+        uint votesRequired = (balanceDownBy * d.votesMinted * d.rate) / d.available;
+        uint votesAvailable = d.votesMinted - d.votesCast - votesRequired;
+        uint temp = (d.available / votesAvailable) * (votesRequired);
         uint cost = temp / decimals;
-        return (balance_down_by, votes_required, cost);
+        return (balanceDownBy, votesRequired, cost);
     }
     
     /**
@@ -221,10 +234,10 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
         d.available = d.available - _amount;
-        d.votes_cast = d.votes_cast + v_r;
-        d.effective_balance = d.effective_balance - b;
+        d.votesCast = d.votesCast + v_r;
+        d.effectiveBalance = d.effectiveBalance - b;
         
-        emit Downvote(_id, d.effective_balance);
+        emit Downvote(_id, d.effectiveBalance);
     }
     
     /**
@@ -248,22 +261,26 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         d.rate = decimals - (d.balance * decimals/max);
         d.available = d.balance * d.rate;
         
-        (result, precision) = BancorFormula.power(d.available, decimals, uint32(decimals), uint32(d.rate));
+        (result, precision) = BancorFormula.power(
+            d.available, 
+            decimals, 
+            uint32(decimals), 
+            uint32(d.rate));
         
-        d.votes_minted = result >> precision;
-        if (d.votes_cast > d.votes_minted) {
-            d.votes_cast = d.votes_minted;
+        d.votesMinted = result >> precision;
+        if (d.votesCast > d.votesMinted) {
+            d.votesCast = d.votesMinted;
         }
         
-        uint temp1 = d.votes_cast * d.rate * d.available;
-        uint temp2 = d.votes_minted * decimals * decimals;
+        uint temp1 = d.votesCast * d.rate * d.available;
+        uint temp2 = d.votesMinted * decimals * decimals;
         uint effect = temp1 / temp2;
 
-        d.effective_balance = d.balance - effect;
+        d.effectiveBalance = d.balance - effect;
         
         require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
-        emit Withdraw(_id, d.effective_balance);
+        emit Withdraw(_id, d.effectiveBalance);
     }
     
     /**
@@ -293,19 +310,17 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         require(_amount == amount, "Wrong amount");
 
-        if(sig == bytes4(0x1a214f43)) {
+        if (sig == bytes4(0x1a214f43)) {
             _createDApp(_from, id, amount);
-        } else if(sig == bytes4(0xac769090)) {
+        } else if (sig == bytes4(0xac769090)) {
             _downvote(_from, id, amount);
-        } else if(sig == bytes4(0x2b3df690)) {
+        } else if (sig == bytes4(0x2b3df690)) {
             _upvote(_from, id, amount);
         } else {
             revert("Wrong method selector");
         }
     }
-    
-    
-    
+      
     /**
      * @dev Decodes abi encoded data with selector for "functionName(bytes32,uint256)".
      * @param _data Abi encoded data.
