@@ -216,7 +216,49 @@ contract("DAppStore", function () {
     let available = parseInt(initial.available, 10) - parseInt(cost.c, 10);
     assert.strictEqual(parseInt(receipt.available, 10), available);
 
+    // This is only true for the first downvote
     assert.strictEqual(parseInt(receipt.votes_cast, 10), parseInt(cost.v_r, 10));
+
+    let e_balance = parseInt(initial.effective_balance, 10) - parseInt(cost.b, 10);
+    assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
+  })
+
+  it("should handle second downvote correctly", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let cost = await DAppStore.methods.downvoteCost(id).call()
+    let amount = parseInt(cost.c, 10);
+
+    let developer = accounts[0];
+    let initial = await DAppStore.methods.dapps(0).call();
+    let bal_before = await SNT.methods.balanceOf(developer).call();
+
+    await SNT.methods.generateTokens(accounts[1], amount).send();
+    const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
+    
+    let receipt = await DAppStore.methods.dapps(0).call();
+
+    assert.strictEqual(receipt.developer, developer);
+
+    assert.strictEqual(receipt.id, id);
+
+    // Check the developer actually receives the SNT!
+    let bal_after = await SNT.methods.balanceOf(developer).call();
+    let bal_effect = parseInt(bal_after, 10) - parseInt(bal_before, 10)
+    assert.strictEqual(bal_effect, amount);
+
+    // Balance, rate, and votes_minted remain unchanged for downvotes
+    assert.strictEqual(receipt.balance, initial.balance);
+
+    assert.strictEqual(receipt.rate, initial.rate);
+
+    assert.strictEqual(receipt.votes_minted, initial.votes_minted);
+
+    let available = parseInt(initial.available, 10) - parseInt(cost.c, 10);
+    assert.strictEqual(parseInt(receipt.available, 10), available);
+
+    let eff_v_cast = parseInt(receipt.votes_cast, 10) - parseInt(initial.votes_cast, 10);
+    assert.strictEqual(eff_v_cast, parseInt(cost.v_r, 10));
 
     let e_balance = parseInt(initial.effective_balance, 10) - parseInt(cost.b, 10);
     assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
@@ -282,7 +324,7 @@ contract("DAppStore", function () {
 
   it("should return correct upvoteEffect for use in UI", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let amount = 400;
+    let amount = 100;
 
     let receipt = await DAppStore.methods.dapps(0).call();
 
@@ -323,7 +365,7 @@ contract("DAppStore", function () {
 
   it("should handle withdrawals correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let amount = 1000;
+    let amount = 100;
 
     let initial = await DAppStore.methods.dapps(0).call();
 
@@ -347,7 +389,7 @@ contract("DAppStore", function () {
     assert.strictEqual(receipt.id, id);
     let goal = parseInt(receipt.newEffectiveBalance, 10);
 
-    // Send the SNT
+    // Recalculate e_balance manually and check it matched what is returned
     let balance = parseInt(initial.balance, 10) - amount
 
     let max = await DAppStore.methods.max().call();
