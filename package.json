@@ -7,7 +7,7 @@
     "connected-react-router": "^6.3.2",
     "debounce": "^1.2.0",
     "decimal.js": "^10.0.2",
-    "ethereumjs-util": "^6.0.0",
+    "ethereumjs-util": "^5.2.0",
     "history": "^4.7.2",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
