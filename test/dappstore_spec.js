@@ -1,4 +1,3 @@
-/*global contract, config, it, embark, web3, before, describe, beforeEach*/
 const TestUtils = require("../utils/testUtils");
 
 const DAppStore = require('Embark/contracts/DAppStore');
@@ -67,8 +66,7 @@ contract("DAppStore", function () {
 
     // Check the DApp Store actually receives the SNT!
     let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
-    let expected_bal = amount;
-    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+    assert.strictEqual(parseInt(bal_receipt, 10), amount);
 
     // Having received the SNT, check that it updates the particular DApp balanc
     assert.strictEqual(parseInt(receipt.balance, 10), amount);
