@@ -13,7 +13,7 @@
   font-family: $font;
   background: $background;
   display: flex;
-  margin: 0 0 calculateRem(11) 0;
+  margin: 0 0 calculateRem(11) 0.5rem;
   height: calculateRem(145);
   position: relative;
 }
