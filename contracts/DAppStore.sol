@@ -51,11 +51,11 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         total = 3470483788;
 
-        ceiling = 588;   // 2 dec fixed pos,  ie: 5 == 0.05,  588 == 5.88,
+        ceiling = 588;   // See here for more: https://observablehq.com/@andytudhope/dapp-store-snt-curation-mechanism
 
-        decimals = 1000000;
+        decimals = 1000000; // 4 decimal points for %, 2 because we only use 1/100th of total in circulation
         
-        max = (total * ceiling) / decimals; // 4 decimal points for %, 2 because we only use 1/100th of total in circulation
+        max = (total * ceiling) / decimals; 
 
         safeMax = 98 * max / 100;
     }
@@ -199,8 +199,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         (uint b, uint v_r,) = downvoteCost(_id);
 
-        require(SNT.allowance(_from, d.developer) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, d.developer, _amount), "Transfer failed");
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
+        require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
         d.available = d.available - _amount;
         d.votes_cast = d.votes_cast + v_r;

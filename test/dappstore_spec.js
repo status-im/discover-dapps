@@ -127,28 +127,28 @@ contract("DAppStore", function () {
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
     const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
-    //await SNT.methods.approveAndCall(initial.developer, amount, encodedCall).send({from: accounts[1]});
+    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
     
-    // let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await DAppStore.methods.dapps(0).call();
 
-    // let developer = accounts[0];
-    // assert.strictEqual(receipt.developer, developer);
+    let developer = accounts[0];
+    assert.strictEqual(receipt.developer, developer);
 
-    // assert.strictEqual(receipt.id, id);
+    assert.strictEqual(receipt.id, id);
 
-    // // Balance, rate, and votes_minted remain unchanged for downvotes
-    // assert.strictEqual(receipt.balance, initial.balance);
+    // Balance, rate, and votes_minted remain unchanged for downvotes
+    assert.strictEqual(receipt.balance, initial.balance);
 
-    // assert.strictEqual(receipt.rate, initial.rate);
+    assert.strictEqual(receipt.rate, initial.rate);
 
-    // assert.strictEqual(receipt.votes_minted, initial.votes_minted);
+    assert.strictEqual(receipt.votes_minted, initial.votes_minted);
 
-    // let available = parseInt(initial.available, 10) - parseInt(cost.c, 10);
-    // assert.strictEqual(parseInt(receipt.available, 10), available);
+    let available = parseInt(initial.available, 10) - parseInt(cost.c, 10);
+    assert.strictEqual(parseInt(receipt.available, 10), available);
 
-    // assert.strictEqual(parseInt(receipt.votes_cast, 10), parseInt(cost.v_r, 10));
+    assert.strictEqual(parseInt(receipt.votes_cast, 10), parseInt(cost.v_r, 10));
 
-    // let e_balance = parseInt(initial.effective_balance, 10) - parseInt(cost.b, 10);
-    // assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
+    let e_balance = parseInt(initial.effective_balance, 10) - parseInt(cost.b, 10);
+    assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
   })
 });
