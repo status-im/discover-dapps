@@ -221,7 +221,7 @@ contract("DAppStore", function () {
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
     // This is only true for the first downvote
-    assert.strictEqual(parseInt(receipt.votesCast, 10), parseInt(cost.v_r, 10));
+    assert.strictEqual(parseInt(receipt.votesCast, 10), parseInt(cost.vR, 10));
 
     let e_balance = parseInt(initial.effectiveBalance, 10) - parseInt(cost.b, 10);
     assert.strictEqual(e_balance, parseInt(receipt.effectiveBalance, 10));
@@ -259,7 +259,7 @@ contract("DAppStore", function () {
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
     let eff_v_cast = parseInt(receipt.votesCast, 10) - parseInt(initial.votesCast, 10);
-    assert.strictEqual(eff_v_cast, parseInt(cost.v_r, 10));
+    assert.strictEqual(eff_v_cast, parseInt(cost.vR, 10));
 
     let e_balance = parseInt(initial.effectiveBalance, 10) - parseInt(cost.b, 10);
     assert.strictEqual(e_balance, parseInt(receipt.effectiveBalance, 10));
@@ -491,7 +491,7 @@ contract("DAppStore", function () {
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
     let eff_v_cast = parseInt(receipt.votesCast, 10) - parseInt(initial.votesCast, 10);
-    assert.strictEqual(eff_v_cast, parseInt(cost.v_r, 10));
+    assert.strictEqual(eff_v_cast, parseInt(cost.vR, 10));
 
     let e_balance = parseInt(initial.effectiveBalance, 10) - parseInt(cost.b, 10);
     assert.strictEqual(e_balance, parseInt(receipt.effectiveBalance, 10));

@@ -70,43 +70,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         _createDApp(msg.sender, _id, _amount);
     }
     
-    function _createDApp(address _from, bytes32 _id, uint _amount) internal {
-        require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
-        require (_amount < safeMax, "You cannot stake more SNT than the ceiling dictates");
-        
-        uint dappIdx = dapps.length;
-        
-        dapps.length++;
-
-        Data storage d = dapps[dappIdx];
-        d.developer = _from;
-        d.id = _id;
-        
-        uint precision;
-        uint result;
-        
-        d.balance = _amount;
-        d.rate = decimals - (d.balance * decimals/max);
-        d.available = d.balance * d.rate;
-        
-        (result, precision) = BancorFormula.power(
-            d.available, 
-            decimals, 
-            uint32(decimals), 
-            uint32(d.rate));
-        
-        d.votesMinted = result >> precision;
-        d.votesCast = 0;
-        d.effectiveBalance = _amount;
-
-        id2index[_id] = dappIdx;
-
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
-
-        emit DAppCreated(_id, d.votesMinted, d.effectiveBalance);
-    }
-    
     /**
      * @dev Used in UI to display effect on ranking of user's donation
      * @param _id bytes32 unique identifier.
@@ -157,60 +120,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         _upvote(msg.sender, _id, _amount);
     }
     
-    function _upvote(address _from, bytes32 _id, uint _amount) internal { 
-        require(_amount > 0, "You must send some SNT in order to upvote");
-        
-        uint dappIdx = id2index[_id];
-        Data storage d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        
-        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
-        
-        uint precision;
-        uint result;
-
-        d.balance = d.balance + _amount;
-        d.rate = decimals - (d.balance * decimals/max);
-        d.available = d.balance * d.rate;
-        
-        (result, precision) = BancorFormula.power(
-            d.available, 
-            decimals, 
-            uint32(decimals), 
-            uint32(d.rate));
-        
-        d.votesMinted = result >> precision;
-
-        uint temp1 = d.votesCast * d.rate * d.available;
-        uint temp2 = d.votesMinted * decimals * decimals;
-        uint effect = temp1 / temp2;
-
-        d.effectiveBalance = d.balance - effect;
-
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
-        
-        emit Upvote(_id, d.effectiveBalance);
-    }
-
-    /**
-     * @dev Downvotes always remove 1% of the current ranking.
-     * @param _id bytes32 unique identifier. 
-     * @return balance_down_by, votes_required, cost
-     */
-    function downvoteCost(bytes32 _id) public view returns(uint b, uint v_r, uint c) { 
-        uint dappIdx = id2index[_id];
-        Data memory d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        
-        uint balanceDownBy = (d.effectiveBalance / 100);
-        uint votesRequired = (balanceDownBy * d.votesMinted * d.rate) / d.available;
-        uint votesAvailable = d.votesMinted - d.votesCast - votesRequired;
-        uint temp = (d.available / votesAvailable) * (votesRequired);
-        uint cost = temp / decimals;
-        return (balanceDownBy, votesRequired, cost);
-    }
-    
     /**
      * @dev Sends SNT to the developer and lowers the DApp's effective balance by 1%
      * @param _id bytes32 unique identifier.
@@ -220,26 +129,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         (,,uint c) = downvoteCost(_id);
         require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         _downvote(msg.sender, _id, c);
-    }
-    
-    function _downvote(address _from, bytes32 _id, uint _amount) internal { 
-        uint dappIdx = id2index[_id];
-        Data storage d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        
-        (uint b, uint v_r, uint c) = downvoteCost(_id);
-
-        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
-        
-        d.available = d.available - _amount;
-        d.votesCast = d.votesCast + v_r;
-        d.effectiveBalance = d.effectiveBalance - b;
-
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
-        require(SNT.transfer(d.developer, _amount), "Transfer failed");
-        
-        emit Downvote(_id, d.effectiveBalance);
     }
     
     /**
@@ -321,6 +210,117 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         } else {
             revert("Wrong method selector");
         }
+    }
+
+     /**
+     * @dev Downvotes always remove 1% of the current ranking.
+     * @param _id bytes32 unique identifier. 
+     * @return balance_down_by, votes_required, cost
+     */
+    function downvoteCost(bytes32 _id) public view returns(uint b, uint vR, uint c) { 
+        uint dappIdx = id2index[_id];
+        Data memory d = dapps[dappIdx];
+        require(d.id == _id, "Error fetching correct data");
+        
+        uint balanceDownBy = (d.effectiveBalance / 100);
+        uint votesRequired = (balanceDownBy * d.votesMinted * d.rate) / d.available;
+        uint votesAvailable = d.votesMinted - d.votesCast - votesRequired;
+        uint temp = (d.available / votesAvailable) * (votesRequired);
+        uint cost = temp / decimals;
+        return (balanceDownBy, votesRequired, cost);
+    }
+
+    function _createDApp(address _from, bytes32 _id, uint _amount) internal {
+        require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
+        require (_amount < safeMax, "You cannot stake more SNT than the ceiling dictates");
+        
+        uint dappIdx = dapps.length;
+        
+        dapps.length++;
+
+        Data storage d = dapps[dappIdx];
+        d.developer = _from;
+        d.id = _id;
+        
+        uint precision;
+        uint result;
+        
+        d.balance = _amount;
+        d.rate = decimals - (d.balance * decimals/max);
+        d.available = d.balance * d.rate;
+        
+        (result, precision) = BancorFormula.power(
+            d.available, 
+            decimals, 
+            uint32(decimals), 
+            uint32(d.rate));
+        
+        d.votesMinted = result >> precision;
+        d.votesCast = 0;
+        d.effectiveBalance = _amount;
+
+        id2index[_id] = dappIdx;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
+
+        emit DAppCreated(_id, d.votesMinted, d.effectiveBalance);
+    }
+
+    function _upvote(address _from, bytes32 _id, uint _amount) internal { 
+        require(_amount > 0, "You must send some SNT in order to upvote");
+        
+        uint dappIdx = id2index[_id];
+        Data storage d = dapps[dappIdx];
+        require(d.id == _id, "Error fetching correct data");
+        
+        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
+        
+        uint precision;
+        uint result;
+
+        d.balance = d.balance + _amount;
+        d.rate = decimals - (d.balance * decimals/max);
+        d.available = d.balance * d.rate;
+        
+        (result, precision) = BancorFormula.power(
+            d.available, 
+            decimals, 
+            uint32(decimals), 
+            uint32(d.rate));
+        
+        d.votesMinted = result >> precision;
+
+        uint temp1 = d.votesCast * d.rate * d.available;
+        uint temp2 = d.votesMinted * decimals * decimals;
+        uint effect = temp1 / temp2;
+
+        d.effectiveBalance = d.balance - effect;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
+        
+        emit Upvote(_id, d.effectiveBalance);
+    }
+
+    function _downvote(address _from, bytes32 _id, uint _amount) internal { 
+        uint dappIdx = id2index[_id];
+        Data storage d = dapps[dappIdx];
+        require(d.id == _id, "Error fetching correct data");
+        
+        (uint b, uint vR, uint c) = downvoteCost(_id);
+
+        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
+        
+        d.available = d.available - _amount;
+        d.votesCast = d.votesCast + vR;
+        d.effectiveBalance = d.effectiveBalance - b;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
+        require(SNT.transfer(d.developer, _amount), "Transfer failed");
+        
+        emit Downvote(_id, d.effectiveBalance);
     }
       
     /**
