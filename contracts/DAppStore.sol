@@ -176,7 +176,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     /**
      * @dev Downvotes always remove 1% of the current ranking.
      * @param _id bytes32 unique identifier. 
-     * @return cost
+     * @return balance_down_by, votes_required, cost
      */
     function downvoteCost(bytes32 _id) public view returns(uint b, uint v_r, uint c) { 
         uint dappIdx = id2index[_id];
@@ -192,9 +192,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     }
     
     /**
-     * @dev Sends SNT directly to the developer and lower the DApp's effective balance by 1%
+     * @dev Sends SNT to the developer and lowers the DApp's effective balance by 1%
      * @param _id bytes32 unique identifier.
-     * @param _amount uint, set back to actual cost, just included for approveAndCallFallBack
+     * @param _amount uint, included for approveAndCallFallBack
      */
     function downvote(bytes32 _id, uint _amount) public {
         (,,uint c) = downvoteCost(_id);
