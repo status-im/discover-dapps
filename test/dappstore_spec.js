@@ -117,6 +117,7 @@ contract("DAppStore", function () {
     let amount = 100;
 
     let initial = await DAppStore.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
     const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
@@ -130,10 +131,9 @@ contract("DAppStore", function () {
     assert.strictEqual(receipt.id, id);
 
     // Check the DApp Store actually receives the SNT!
-    // At this stage, we have 100 000 SNT in the store from the first creation event.
-    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
-    let expected_bal = 100000 + amount;
-    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let bal_effect = parseInt(after, 10) - parseInt(before, 10);
+    assert.strictEqual(bal_effect, amount);
 
     // Having received the SNT, check that it updates the particular DApp balance
     let upvotedBalance = parseInt(initial.balance, 10) + amount
@@ -282,6 +282,7 @@ contract("DAppStore", function () {
     let amount = 500;
 
     let initial = await DAppStore.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
     const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
@@ -295,10 +296,9 @@ contract("DAppStore", function () {
     assert.strictEqual(receipt.id, id);
 
     // Check the DApp Store actually receives the SNT!
-    // At this stage, we have 100 100 SNT in the store from the first create and upvote events.
-    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
-    let expected_bal = 100100 + amount;
-    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let bal_effect = parseInt(after, 10) - parseInt(before, 10);
+    assert.strictEqual(bal_effect, amount);
 
     // Having received the SNT, check that it updates the particular DApp balance
     let upvotedBalance = parseInt(initial.balance, 10) + amount
