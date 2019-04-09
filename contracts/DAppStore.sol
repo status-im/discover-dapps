@@ -113,6 +113,11 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(d.id == _id, "Error fetching correct data");
         require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
 
+        // Special case - no downvotes yet cast
+        if (d.votes_cast == 0) {
+            return _amount;
+        }
+
         uint precision;
         uint result;
         
