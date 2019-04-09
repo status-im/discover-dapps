@@ -91,8 +91,10 @@ contract("DAppStore", function () {
 
   it("should not create a new DApp when exceeding the ceiling or staking nothing", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let amount = 2000000;
+    let initial = await DAppStore.methods.max().call();
+    let amount = parseInt(initial, 10);
     let amount0 = 0;
+
     await SNT.methods.generateTokens(accounts[0], amount).send();
 
     const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
@@ -168,7 +170,8 @@ contract("DAppStore", function () {
 
   it("should not let you upvote by an amount that exceeds the ceiling", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let amount = 2000000;
+    let initial = await DAppStore.methods.max().call();
+    let amount = parseInt(initial, 10);
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
     const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
@@ -184,7 +187,9 @@ contract("DAppStore", function () {
     let cost = await DAppStore.methods.downvoteCost(id).call()
     let amount = parseInt(cost.c, 10);
 
+    let developer = accounts[0];
     let initial = await DAppStore.methods.dapps(0).call();
+    let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
     const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
@@ -192,16 +197,14 @@ contract("DAppStore", function () {
     
     let receipt = await DAppStore.methods.dapps(0).call();
 
-    let developer = accounts[0];
     assert.strictEqual(receipt.developer, developer);
 
     assert.strictEqual(receipt.id, id);
 
     // Check the developer actually receives the SNT!
-    // By this stage, we have minted 4 010 000 SNT in accounts[0], so let's take that into account.
-    let bal_receipt = await SNT.methods.balanceOf(developer).call();
-    let expected_bal = 4010000 + amount;
-    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+    let bal_after = await SNT.methods.balanceOf(developer).call();
+    let bal_effect = parseInt(bal_after, 10) - parseInt(bal_before, 10)
+    assert.strictEqual(bal_effect, amount);
 
     // Balance, rate, and votes_minted remain unchanged for downvotes
     assert.strictEqual(receipt.balance, initial.balance);
@@ -308,7 +311,8 @@ contract("DAppStore", function () {
 
   it("should throw already in upvoteEffect if you exceed the ceiling", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let amount = 2000000;
+    let initial = await DAppStore.methods.max().call();
+    let amount = parseInt(initial, 10);
 
     try {
       await DAppStore.methods.upvoteEffect(id,amount).call();
@@ -368,5 +372,27 @@ contract("DAppStore", function () {
     assert.strictEqual(parseInt(check.rate, 10), rate);
     assert.strictEqual(parseInt(check.available, 10), available);
     assert.strictEqual(parseInt(check.votes_minted, 10), v_minted);
+  })
+
+  it("should not allow withdrawing more than was staked", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 150000;
+
+    try {
+      await DAppStore.methods.withdraw(id,amount).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+  })
+
+  it("should not allow anyone other than the developer to withdraw", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 1000;
+
+    try {
+      await DAppStore.methods.withdraw(id,amount).send({from: accounts[1]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
   })
 });
