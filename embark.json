@@ -1,5 +1,7 @@
 {
-  "contracts": ["contracts/**"],
+  "contracts": [
+    "contracts/**"
+  ],
   "buildDir": "dist/",
   "config": "config/",
   "versions": {
@@ -9,7 +11,10 @@
   },
   "plugins": {
     "embark-solium": {},
-    "embarkjs-connector-web3": {}
+    "embarkjs-connector-web3": {},
+    "@trailofbits/embark-contract-info": {
+      "flags": ""
+    }
   },
   "options": {
     "solc": {
