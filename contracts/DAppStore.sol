@@ -198,7 +198,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      */
     function downvote(bytes32 _id, uint _amount) public {
         (,,uint c) = downvoteCost(_id);
-        require(_amount == c, "Amount incorrect");
+        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         _downvote(msg.sender, _id, c);
     }
     
@@ -207,7 +207,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        (uint b, uint v_r,) = downvoteCost(_id);
+        (uint b, uint v_r, uint c) = downvoteCost(_id);
+
+        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
 
         require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
         require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
