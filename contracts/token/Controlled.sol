@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 
 contract Controlled {
@@ -17,7 +17,7 @@ contract Controlled {
 
     /// @notice Changes the controller of the contract
     /// @param _newController The new controller of the contract
-    function changeController(address payable _newController) public onlyController {
+    function changeController(address payable _newController) external onlyController {
         controller = _newController;
     }
 }

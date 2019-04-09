@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 import "./SafeMath.sol";
 
 
@@ -6,7 +6,6 @@ contract BancorFormula {
     using SafeMath for uint256;
 
     uint256 private constant ONE = 1;
-    uint32 private constant MAX_WEIGHT = 1000000;
     uint8 private constant MIN_PRECISION = 32;
     uint8 private constant MAX_PRECISION = 127;
 

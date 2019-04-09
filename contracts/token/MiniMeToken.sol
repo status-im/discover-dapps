@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 /*
     Copyright 2016, Jordi Baylina
@@ -34,12 +34,14 @@ import "./TokenFactory.sol";
  *  that deploys the contract, so usually this token will be deployed by a
  *  token controller contract, which Giveth will call a "Campaign"
  */
+
+
 contract MiniMeToken is MiniMeTokenInterface, Controlled {
 
     string public name;                //The Token's name: e.g. DigixDAO Tokens
     uint8 public decimals;             //Number of decimals of the smallest unit
     string public symbol;              //An identifier: e.g. REP
-    string public version = "MMT_0.1"; //An arbitrary versioning scheme
+    string public constant VERSION = "MMT_0.1"; //An arbitrary versioning scheme
 
     /**
      * @dev `Checkpoint` is the structure that attaches a block number to a
@@ -134,7 +136,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _amount The amount of tokens to be transferred
      * @return Whether the transfer was successful or not
      */
-    function transfer(address _to, uint256 _amount) public returns (bool success) {
+    function transfer(address _to, uint256 _amount) external returns (bool success) {
         require(transfersEnabled);
         return doTransfer(msg.sender, _to, _amount);
     }
@@ -152,7 +154,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _to,
         uint256 _amount
     ) 
-        public 
+        external 
         returns (bool success)
     {
 
@@ -301,9 +303,9 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
     function approveAndCall(
         address _spender,
         uint256 _amount,
-        bytes memory _extraData
+        bytes calldata _extraData
     ) 
-        public
+        external
         returns (bool success)
     {
         require(doApprove(msg.sender, _spender, _amount));
@@ -407,13 +409,13 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @return The address of the new MiniMeToken Contract
      */
     function createCloneToken(
-        string memory _cloneTokenName,
+        string calldata _cloneTokenName,
         uint8 _cloneDecimalUnits,
-        string memory _cloneTokenSymbol,
+        string calldata _cloneTokenSymbol,
         uint _snapshotBlock,
         bool _transfersEnabled
         ) 
-            public
+            external
             returns(address)
         {
         uint snapshotBlock = _snapshotBlock;
@@ -451,7 +453,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _owner,
         uint _amount
     )
-        public
+        external
         onlyController
         returns (bool)
     {
@@ -475,7 +477,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _owner,
         uint _amount
     ) 
-        public
+        external
         onlyController
         returns (bool)
     {
@@ -497,7 +499,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @notice Enables token holders to transfer their tokens freely if true
      * @param _transfersEnabled True if transfers are allowed in the clone
      */
-    function enableTransfers(bool _transfersEnabled) public onlyController {
+    function enableTransfers(bool _transfersEnabled) external onlyController {
         transfersEnabled = _transfersEnabled;
     }
 
@@ -605,7 +607,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _token The address of the token contract that you want to recover
      *  set to 0 in case you want to extract ether.
      */
-    function claimTokens(address _token) public onlyController {
+    function claimTokens(address _token) external onlyController {
         if (_token == address(0)) {
             controller.transfer(address(this).balance);
             return;

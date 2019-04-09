@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 import "./token/MiniMeTokenInterface.sol";
 import "./token/ApproveAndCallFallBack.sol";
@@ -66,7 +66,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @param _id bytes32 unique identifier.
      * @param _amount of tokens to stake on initial ranking.
      */
-    function createDApp(bytes32 _id, uint _amount) public { 
+    function createDApp(bytes32 _id, uint _amount) external { 
         _createDApp(msg.sender, _id, _amount);
     }
     
@@ -112,7 +112,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @param _amount of tokens to stake/"donate" to this DApp's ranking.
      * @return effect of donation on DApp's effectiveBalance 
      */
-    function upvoteEffect(bytes32 _id, uint _amount) public view returns(uint effect) { 
+    function upvoteEffect(bytes32 _id, uint _amount) external view returns(uint effect) { 
         uint dappIdx = id2index[_id];
         Data memory d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
@@ -152,7 +152,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @param _id bytes32 unique identifier.
      * @param _amount of tokens to stake on DApp's ranking. Used for upvoting + staking more.
      */
-    function upvote(bytes32 _id, uint _amount) public { 
+    function upvote(bytes32 _id, uint _amount) external { 
         _upvote(msg.sender, _id, _amount);
     }
     
@@ -214,7 +214,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @param _id bytes32 unique identifier.
      * @param _amount uint, included for approveAndCallFallBack
      */
-    function downvote(bytes32 _id, uint _amount) public {
+    function downvote(bytes32 _id, uint _amount) external {
         (,,uint c) = downvoteCost(_id);
         require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         _downvote(msg.sender, _id, c);
@@ -246,7 +246,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @param _id bytes32 unique identifier.
      * @param _amount of tokens to withdraw from DApp's overall balance.
      */
-    function withdraw(bytes32 _id, uint _amount) public { 
+    function withdraw(bytes32 _id, uint _amount) external { 
         uint dappIdx = id2index[_id];
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
@@ -294,9 +294,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         address _from,
         uint256 _amount,
         address _token,
-        bytes memory _data
+        bytes calldata _data
     ) 
-        public
+        external
     {
         require(_token == address(SNT), "Wrong token");
         require(_token == address(msg.sender), "Wrong account");
