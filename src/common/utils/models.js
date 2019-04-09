@@ -7,6 +7,9 @@ export const DappModel = {
   description: PropTypes.string,
   category: PropTypes.string,
   dateAdded: PropTypes.string,
+  isRanked: PropTypes.bool,
+  position: PropTypes.number,
+  showActionButtons: PropTypes.bool,
 }
 
 export const DappListModel = PropTypes.arrayOf(PropTypes.shape(DappModel))

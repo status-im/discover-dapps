@@ -7,6 +7,13 @@
   margin: 0 calculateRem(16) calculateRem(11) calculateRem(16);
 }
 
+.rankedListItem {
+  font-family: $font;
+  background: $background;
+  display: flex;
+  margin: 0 calculateRem(16) calculateRem(11) calculateRem(10);
+}
+
 .header {
   color: $headline-color;
   font-size: calculateRem(15);
@@ -37,4 +44,37 @@
   margin-top: 0;
   max-height: calculateRem(40);
   overflow-y: hidden;
+}
+
+.position {
+  margin-top: calculateRem(20);
+  margin-right: calculateRem(16);
+  font-size: calculateRem(13);
+}
+
+.sntAmount {
+  font-size: calculateRem(12);
+  font-weight: 500;
+  width: 92px;
+  display: inline-block;
+}
+
+.sntAmount img {
+  vertical-align: middle;
+  margin-right: calculateRem(6);
+}
+
+.vote {
+  font-size: calculateRem(11);
+  text-transform: uppercase;
+  color: $link-color;
+  font-weight: 600;
+  text-decoration: none;
+  width: calculateRem(80);
+  display: inline-block;
+}
+
+.vote img {
+  vertical-align: middle;
+  margin-right: calculateRem(2);
 }
