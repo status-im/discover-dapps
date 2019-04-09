@@ -123,7 +123,12 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         (result, precision) = BancorFormula.power(mAvailable, decimals, uint32(decimals), uint32(mRate));
         
         uint mVMinted = result >> precision;
-        uint mEBalance = mBalance - ((mVMinted*mRate)*(mAvailable/mVMinted));
+
+        uint temp1 = d.votes_cast * mRate * mAvailable;
+        uint temp2 = mVMinted * decimals * decimals;
+        uint mEffect = temp1 / temp2;
+        
+        uint mEBalance = mBalance - mEffect;
         
         return (mEBalance - d.effective_balance);
     }
@@ -162,7 +167,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         uint temp1 = d.votes_cast * d.rate * d.available;
         uint temp2 = d.votes_minted * decimals * decimals;
         uint effect = temp1 / temp2;
-        
+
         d.effective_balance = d.balance - effect;
         
         emit Upvote(_id, d.effective_balance);
@@ -242,9 +247,14 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         if (d.votes_cast > d.votes_minted) {
             d.votes_cast = d.votes_minted;
         }
-        d.effective_balance = d.balance - ((d.votes_cast*d.rate)*(d.available/d.votes_minted));
         
-        SNT.transferFrom(address(this), d.developer, _amount);
+        uint temp1 = d.votes_cast * d.rate * d.available;
+        uint temp2 = d.votes_minted * decimals * decimals;
+        uint effect = temp1 / temp2;
+
+        d.effective_balance = d.balance - effect;
+        
+        require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
         emit Withdraw(_id, d.effective_balance);
     }

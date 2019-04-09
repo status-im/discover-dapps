@@ -276,4 +276,97 @@ contract("DAppStore", function () {
 
     assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
   })
+
+  it("should return correct upvoteEffect for use in UI", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 400;
+
+    let receipt = await DAppStore.methods.dapps(0).call();
+
+    let effect = await DAppStore.methods.upvoteEffect(id,amount).call();
+
+    // Mock receiving the SNT
+    let mBalance = parseInt(receipt.balance, 10) + amount
+
+    let max = await DAppStore.methods.max().call();
+    let decimals = await DAppStore.methods.decimals().call();
+    let mRate = Math.round(decimals - (mBalance * decimals/max));
+
+    let mAvailable = mBalance * mRate;
+
+    let mVMinted = Math.round((mAvailable/decimals) ** (decimals/mRate));
+
+    // Votes have been cast by this stage, so we need to check how many there are
+    // and confirm that `upvoteEffect` mocks the effect correctly
+    let votes_cast = parseInt(receipt.votes_cast, 10);
+    let mEBalance = Math.round(mBalance - ((votes_cast*mRate/decimals)*(mAvailable/decimals/mVMinted)));
+    let effect_calc = mEBalance - receipt.effective_balance;
+
+    // Confirm that what is returned is (mEBalance - d.effective_balance)
+    assert.strictEqual(effect_calc, parseInt(effect, 10));
+  })
+
+  it("should throw already in upvoteEffect if you exceed the ceiling", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 2000000;
+
+    try {
+      await DAppStore.methods.upvoteEffect(id,amount).call();
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+  })
+
+  it("should handle withdrawals correctly", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 1000;
+
+    let initial = await DAppStore.methods.dapps(0).call();
+
+    // Check the DApp Store actually sends SNT to the developer
+    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let before_dev = await SNT.methods.balanceOf(accounts[0]).call();
+
+    let receipt_obj = await DAppStore.methods.withdraw(id,amount).send({from: accounts[0]});
+
+    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let after_dev = await SNT.methods.balanceOf(accounts[0]).call();
+
+    let difference = parseInt(before, 10) - parseInt(after, 10);
+    let difference_dev =  parseInt(after_dev, 10) - parseInt(before_dev, 10);
+
+    assert.strictEqual(difference, amount)
+    assert.strictEqual(difference_dev, amount)
+
+    let receipt = receipt_obj.events.Withdraw.returnValues;
+
+    assert.strictEqual(receipt.id, id);
+    let goal = parseInt(receipt.newEffectiveBalance, 10);
+
+    // Send the SNT
+    let balance = parseInt(initial.balance, 10) - amount
+
+    let max = await DAppStore.methods.max().call();
+    let decimals = await DAppStore.methods.decimals().call();
+    let rate = Math.round(decimals - (balance * decimals/max));
+
+    let available = balance * rate;
+
+    let v_minted = Math.round((available/decimals) ** (decimals/rate));
+
+    let v_cast = parseInt(initial.votes_cast, 10);
+    let e_balance = Math.round(balance - ((v_cast*rate/decimals)*(available/decimals/v_minted)));
+    
+    assert.strictEqual(e_balance, goal);
+
+    // Having withdrawn the SNT, check that it updates the particular DApp's storage values properly
+    let check = await DAppStore.methods.dapps(0).call();
+
+    let withdrawnBalance = parseInt(initial.balance, 10) - amount
+    assert.strictEqual(parseInt(check.balance, 10), withdrawnBalance);
+
+    assert.strictEqual(parseInt(check.rate, 10), rate);
+    assert.strictEqual(parseInt(check.available, 10), available);
+    assert.strictEqual(parseInt(check.votes_minted, 10), v_minted);
+  })
 });
