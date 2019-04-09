@@ -1,0 +1,8 @@
+{
+  "name": "discover-dapps",
+  "jest": {
+    "verbose": true
+  },
+  "collectCoverage": true,
+  "coverageDirectory": "coverage"
+}
