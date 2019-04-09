@@ -158,7 +158,12 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         (result, precision) = BancorFormula.power(d.available, decimals, uint32(decimals), uint32(d.rate));
         
         d.votes_minted = result >> precision;
-        d.effective_balance = d.balance - ((d.votes_cast*d.rate)*(d.available/d.votes_minted));
+
+        uint temp1 = d.votes_cast * d.rate * d.available;
+        uint temp2 = d.votes_minted * decimals * decimals;
+        uint effect = temp1 / temp2;
+        
+        d.effective_balance = d.balance - effect;
         
         emit Upvote(_id, d.effective_balance);
     }

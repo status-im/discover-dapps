@@ -65,6 +65,13 @@ contract("DAppStore", function () {
     assert.strictEqual(receipt.developer, developer);
 
     assert.strictEqual(receipt.id, id);
+
+    // Check the DApp Store actually receives the SNT!
+    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let expected_bal = amount;
+    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+
+    // Having received the SNT, check that it updates the particular DApp balanc
     assert.strictEqual(parseInt(receipt.balance, 10), amount);
 
     let max = await DAppStore.methods.max().call();
@@ -80,6 +87,27 @@ contract("DAppStore", function () {
 
     assert.strictEqual(parseInt(receipt.votes_cast, 10), 0);
     assert.strictEqual(parseInt(receipt.effective_balance, 10), amount);
+  })
+
+  it("should not create a new DApp when exceeding the ceiling or staking nothing", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 2000000;
+    let amount0 = 0;
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+
+    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+
+    const encodedCall0 = DAppStore.methods.createDApp(id,amount0).encodeABI();
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount0, encodedCall0).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
   })
 
   it("should handle first upvote correctly", async function () {
@@ -99,6 +127,13 @@ contract("DAppStore", function () {
 
     assert.strictEqual(receipt.id, id);
 
+    // Check the DApp Store actually receives the SNT!
+    // At this stage, we have 100 000 SNT in the store from the first creation event.
+    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let expected_bal = 100000 + amount;
+    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+
+    // Having received the SNT, check that it updates the particular DApp balance
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(parseInt(receipt.balance, 10), upvotedBalance);
 
@@ -116,6 +151,32 @@ contract("DAppStore", function () {
     assert.strictEqual(parseInt(receipt.votes_cast, 10), 0);
 
     assert.strictEqual(parseInt(receipt.effective_balance, 10), upvotedBalance);
+  })
+
+  it("should not let you upvote without spending SNT", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 0;
+
+    await SNT.methods.generateTokens(accounts[0], 10000).send();
+    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+  })
+
+  it("should not let you upvote by an amount that exceeds the ceiling", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 2000000;
+
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
   })
 
   it("should handle first downvote correctly", async function () {
@@ -136,6 +197,12 @@ contract("DAppStore", function () {
 
     assert.strictEqual(receipt.id, id);
 
+    // Check the developer actually receives the SNT!
+    // By this stage, we have minted 4 010 000 SNT in accounts[0], so let's take that into account.
+    let bal_receipt = await SNT.methods.balanceOf(developer).call();
+    let expected_bal = 4010000 + amount;
+    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+
     // Balance, rate, and votes_minted remain unchanged for downvotes
     assert.strictEqual(receipt.balance, initial.balance);
 
@@ -149,6 +216,64 @@ contract("DAppStore", function () {
     assert.strictEqual(parseInt(receipt.votes_cast, 10), parseInt(cost.v_r, 10));
 
     let e_balance = parseInt(initial.effective_balance, 10) - parseInt(cost.b, 10);
+    assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
+  })
+
+  it("should not let you downvote by the wrong amount", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 10000;
+
+    await SNT.methods.generateTokens(accounts[1], amount).send();
+    const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+  })
+
+  it("should handle upvotes correctly when votes have been cast", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 500;
+
+    let initial = await DAppStore.methods.dapps(0).call();
+
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+
+    let receipt = await DAppStore.methods.dapps(0).call();
+    
+    let developer = accounts[0];
+    assert.strictEqual(receipt.developer, developer);
+
+    assert.strictEqual(receipt.id, id);
+
+    // Check the DApp Store actually receives the SNT!
+    // At this stage, we have 100 100 SNT in the store from the first create and upvote events.
+    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let expected_bal = 100100 + amount;
+    assert.strictEqual(parseInt(bal_receipt, 10), expected_bal);
+
+    // Having received the SNT, check that it updates the particular DApp balance
+    let upvotedBalance = parseInt(initial.balance, 10) + amount
+    assert.strictEqual(parseInt(receipt.balance, 10), upvotedBalance);
+
+    let max = await DAppStore.methods.max().call();
+    let decimals = await DAppStore.methods.decimals().call();
+    let rate = Math.round(decimals - (upvotedBalance * decimals/max));
+    assert.strictEqual(parseInt(receipt.rate, 10), rate);
+
+    let available = upvotedBalance * rate;
+    assert.strictEqual(parseInt(receipt.available, 10), available);
+
+    let votes_minted = parseInt(receipt.votes_minted, 10);
+
+    // Votes have been cast by this stage, so we need to check how many there are
+    // and confirm that `upvote` still calculates the effective_balance correctly
+    let votes_cast = parseInt(receipt.votes_cast, 10);
+    let e_balance = Math.round(upvotedBalance - ((votes_cast*rate/decimals)*(available/decimals/votes_minted)));
+
     assert.strictEqual(parseInt(receipt.effective_balance, 10), e_balance);
   })
 });
