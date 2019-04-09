@@ -68,7 +68,7 @@ contract("DAppStore", function () {
     let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
     assert.strictEqual(parseInt(bal_receipt, 10), amount);
 
-    // Having received the SNT, check that it updates the particular DApp balanc
+    // Having received the SNT, check that it updates the particular DApp's storage values
     assert.strictEqual(parseInt(receipt.balance, 10), amount);
 
     let max = await DAppStore.methods.max().call();
@@ -131,7 +131,7 @@ contract("DAppStore", function () {
     let bal_effect = parseInt(after, 10) - parseInt(before, 10);
     assert.strictEqual(bal_effect, amount);
 
-    // Having received the SNT, check that it updates the particular DApp balance
+    // Having received the SNT, check that it updates the particular DApp's storage values
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(parseInt(receipt.balance, 10), upvotedBalance);
 
@@ -288,7 +288,7 @@ contract("DAppStore", function () {
     let bal_effect = parseInt(after, 10) - parseInt(before, 10);
     assert.strictEqual(bal_effect, amount);
 
-    // Having received the SNT, check that it updates the particular DApp balance
+    // Having received the SNT, check that it updates the particular DApp's storage values
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(parseInt(receipt.balance, 10), upvotedBalance);
 
