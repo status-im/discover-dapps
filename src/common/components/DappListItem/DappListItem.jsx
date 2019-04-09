@@ -37,7 +37,7 @@ const DappListItem = props => {
           &nbsp;&rarr;
         </a>
         {showActionButtons && (
-          <p>
+          <p className={styles.actionArea}>
             <span className={styles.sntAmount}>
               <img src={sntIcon} alt="SNT" width="16" height="16" />
               12,345

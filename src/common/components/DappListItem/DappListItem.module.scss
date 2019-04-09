@@ -5,13 +5,17 @@
   background: $background;
   display: flex;
   margin: 0 calculateRem(16) calculateRem(11) calculateRem(16);
+  height: calculateRem(145);
+  position: relative;
 }
 
 .rankedListItem {
   font-family: $font;
   background: $background;
   display: flex;
-  margin: 0 calculateRem(16) calculateRem(11) calculateRem(10);
+  margin: 0 0 calculateRem(11) 0;
+  height: calculateRem(145);
+  position: relative;
 }
 
 .header {
@@ -55,7 +59,7 @@
 .sntAmount {
   font-size: calculateRem(12);
   font-weight: 500;
-  width: 92px;
+  width: 80px;
   display: inline-block;
 }
 
@@ -77,4 +81,9 @@
 .vote img {
   vertical-align: middle;
   margin-right: calculateRem(2);
+}
+
+.actionArea {
+  bottom: 0;
+  position: absolute;
 }
