@@ -569,7 +569,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _addr The address being queried
      * @return True if `_addr` is a contract
      */
-    function isContract(address _addr) internal view returns(bool) {
+    function isContract(address _addr) internal returns(bool) {
         uint size;
         if (_addr == address(0)) {
             return false;

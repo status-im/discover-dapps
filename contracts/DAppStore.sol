@@ -73,8 +73,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     function _createDApp(address _from, bytes32 _id, uint _amount) internal {
         require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
         require (_amount < safeMax, "You cannot stake more SNT than the ceiling dictates");
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
         
         uint dappIdx = dapps.length;
         
@@ -102,6 +100,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         d.effectiveBalance = _amount;
 
         id2index[_id] = dappIdx;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
 
         emit DAppCreated(_id, d.votesMinted, d.effectiveBalance);
     }
@@ -164,8 +165,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(d.id == _id, "Error fetching correct data");
         
         require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
         
         uint precision;
         uint result;
@@ -187,6 +186,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         uint effect = temp1 / temp2;
 
         d.effectiveBalance = d.balance - effect;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
         
         emit Upvote(_id, d.effectiveBalance);
     }
@@ -228,14 +230,14 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         (uint b, uint v_r, uint c) = downvoteCost(_id);
 
         require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
-
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
-        require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
         d.available = d.available - _amount;
         d.votesCast = d.votesCast + v_r;
         d.effectiveBalance = d.effectiveBalance - b;
+
+        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
+        require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
         emit Downvote(_id, d.effectiveBalance);
     }
@@ -329,8 +331,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     function abiDecodeRegister(
         bytes memory _data
     ) 
-        private 
-        pure 
+        private  
         returns(
             bytes4 sig,
             bytes32 id,

@@ -33,7 +33,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "slither": "slither . --exclude naming-convention"
+    "slither": "slither . --exclude naming-convention --filter-paths token"
   },
   "husky": {
     "hooks": {
