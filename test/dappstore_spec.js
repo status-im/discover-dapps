@@ -394,15 +394,13 @@ contract("DAppStore", function () {
     let available = Math.round(balance * rate);
     let v_minted = Math.round((available/decimals) ** (decimals/rate));
     let v_cast = parseInt(initial.votes_cast, 10);
-    let e_balance = Math.round(balance - ((v_cast*rate/decimals)*(available/decimals/v_minted)));
+    let e_balance = Math.ceil(balance - ((v_cast*rate/decimals)*(available/decimals/v_minted)));
     
     let effective_balance = parseInt(receipt.newEffectiveBalance, 10);
 
-    // We begin to run into rounding & estimation issues in the BancorFormula here
-    // The higher the amount, the less accurate it becomes. In this setup, it is off by 1.
-    console.log("Calculated in JS test: " + e_balance);
-    console.log("Returned by contract: " + effective_balance)
-    //assert.strictEqual(e_balance, effective_balance);
+    // We begin to run into precision limitations in the BancorFormula here.
+    // The higher the amount, the less accurate it becomes. Hence Math.ceil() for now.
+    assert.strictEqual(e_balance, effective_balance);
 
     // Having withdrawn the SNT, check that it updates the particular DApp's storage values properly
     let check = await DAppStore.methods.dapps(0).call();
