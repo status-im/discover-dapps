@@ -18,27 +18,11 @@ const Dapps = [
     dateAdded: null,
   },
   {
-    name: 'ERC dEX',
-    url: 'https://app.ercdex.com/',
-    description: 'Trustless trading has arrived on Ethereum',
-    image: '/discover-dapps/images/dapps/erc-dex.png',
-    category: Categories.EXCHANGES,
-    dateAdded: null,
-  },
-  {
     name: 'Kyber',
     url: 'https://web3.kyber.network',
     description:
       'On-chain, instant and liquid platform for exchange and payment service',
     image: '/discover-dapps/images/dapps/kyber.png',
-    category: Categories.EXCHANGES,
-    dateAdded: null,
-  },
-  {
-    name: 'Oasis Direct',
-    url: 'https://oasis.direct/',
-    description: 'The first decentralized instant exchange',
-    image: '/discover-dapps/images/dapps/oasis-direct.png',
     category: Categories.EXCHANGES,
     dateAdded: null,
   },
@@ -72,6 +56,15 @@ const Dapps = [
     description:
       'Instant, real-time order matching with secure on-chain settlement',
     image: '/discover-dapps/images/dapps/ddex.png',
+    category: Categories.EXCHANGES,
+    dateAdded: null,
+  },
+  {
+    name: 'Nuo',
+    url: 'https://nuo.network/',
+    description:
+      'The non-custodial way to lend, borrow or margin trade cryptocurrency.',
+    image: '/discover-dapps/images/dapps/nuo.png',
     category: Categories.EXCHANGES,
     dateAdded: null,
   },
@@ -268,14 +261,6 @@ const Dapps = [
     dateAdded: null,
   },
   {
-    name: 'Purrbook',
-    url: 'https://cryptopurr.co/',
-    description: 'A social network for CryptoKitties',
-    image: '/discover-dapps/images/dapps/purrbook.png',
-    category: Categories.SOCIAL_NETWORKS,
-    dateAdded: null,
-  },
-  {
     name: 'livepeer.tv',
     url: 'http://livepeer.tv/',
     description: 'Decentralized video broadcasting',
@@ -352,15 +337,6 @@ const Dapps = [
     description:
       'Let your SNT be heard! Vote on decisions exclusive to SNT holders, or create a poll of your own.',
     image: '/discover-dapps/images/dapps/snt-voting.png',
-    category: Categories.UTILITIES,
-    dateAdded: null,
-  },
-
-  {
-    name: 'Status Test DApp',
-    url: 'simpledapp.eth',
-    description: 'Request test assets and test basic web3 functionality.',
-    image: '/discover-dapps/images/dapps/status-test-dapp.png',
     category: Categories.UTILITIES,
     dateAdded: null,
   },
