@@ -268,10 +268,11 @@ contract BancorFormula {
 
         while (lo + 1 < hi) {
             uint8 mid = (lo + hi) / 2;
-            if (maxExpArray[mid] >= _x)
+            if (maxExpArray[mid] >= _x) {
                 lo = mid;
-            else
+            } else {
                 hi = mid;
+            }
         }
 
         if (maxExpArray[hi] >= _x)
