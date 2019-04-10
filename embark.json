@@ -1,14 +1,20 @@
 {
-  "contracts": ["contracts/**"],
+  "contracts": [
+    "contracts/**"
+  ],
   "buildDir": "dist/",
   "config": "config/",
   "versions": {
     "web3": "1.0.0-beta",
-    "solc": "0.5.1",
+    "solc": "0.5.2",
     "ipfs-api": "17.2.4"
   },
   "plugins": {
-    "embarkjs-connector-web3": {}
+    "embark-solium": {},
+    "embarkjs-connector-web3": {},
+    "@trailofbits/embark-contract-info": {
+      "flags": ""
+    }
   },
   "options": {
     "solc": {

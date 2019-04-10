@@ -55,8 +55,8 @@ module.exports = {
       DAppStore: {
        args: { _SNT: "0x744d70fdbe2ba4cf95131626614a1763df805b9e" }
       },
-      MiniMeToken: { "deploy": false }
-
+      MiniMeToken: { "deploy": false },
+      TestBancorFormula: { "deploy": false }
     }
   },
 

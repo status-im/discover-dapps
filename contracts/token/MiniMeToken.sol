@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 /*
     Copyright 2016, Jordi Baylina
@@ -23,7 +23,7 @@ pragma solidity ^0.5.1;
  * @dev It is ERC20 compliant, but still needs to under go further testing.
  */
 
-import "./Controlled.sol";
+import "../common/Controlled.sol";
 import "./TokenController.sol";
 import "./ApproveAndCallFallBack.sol";
 import "./MiniMeTokenInterface.sol";
@@ -34,12 +34,14 @@ import "./TokenFactory.sol";
  *  that deploys the contract, so usually this token will be deployed by a
  *  token controller contract, which Giveth will call a "Campaign"
  */
+
+
 contract MiniMeToken is MiniMeTokenInterface, Controlled {
 
     string public name;                //The Token's name: e.g. DigixDAO Tokens
     uint8 public decimals;             //Number of decimals of the smallest unit
     string public symbol;              //An identifier: e.g. REP
-    string public version = "MMT_0.1"; //An arbitrary versioning scheme
+    string public constant VERSION = "MMT_0.1"; //An arbitrary versioning scheme
 
     /**
      * @dev `Checkpoint` is the structure that attaches a block number to a
@@ -134,7 +136,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _amount The amount of tokens to be transferred
      * @return Whether the transfer was successful or not
      */
-    function transfer(address _to, uint256 _amount) public returns (bool success) {
+    function transfer(address _to, uint256 _amount) external returns (bool success) {
         require(transfersEnabled);
         return doTransfer(msg.sender, _to, _amount);
     }
@@ -152,7 +154,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _to,
         uint256 _amount
     ) 
-        public 
+        external 
         returns (bool success)
     {
 
@@ -301,9 +303,9 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
     function approveAndCall(
         address _spender,
         uint256 _amount,
-        bytes memory _extraData
+        bytes calldata _extraData
     ) 
-        public
+        external
         returns (bool success)
     {
         require(doApprove(msg.sender, _spender, _amount));
@@ -351,8 +353,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         //  requires that the `parentToken.balanceOfAt` be queried at the
         //  genesis block for that token as this contains initial balance of
         //  this token
-        if ((balances[_owner].length == 0)
-            || (balances[_owner][0].fromBlock > _blockNumber)) {
+        if ((balances[_owner].length == 0) || (balances[_owner][0].fromBlock > _blockNumber)) {
             if (address(parentToken) != address(0)) {
                 return parentToken.balanceOfAt(_owner, min(_blockNumber, parentSnapShotBlock));
             } else {
@@ -378,8 +379,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         //  requires that the `parentToken.totalSupplyAt` be queried at the
         //  genesis block for this token as that contains totalSupply of this
         //  token at this block number.
-        if ((totalSupplyHistory.length == 0)
-            || (totalSupplyHistory[0].fromBlock > _blockNumber)) {
+        if ((totalSupplyHistory.length == 0) || (totalSupplyHistory[0].fromBlock > _blockNumber)) {
             if (address(parentToken) != address(0)) {
                 return parentToken.totalSupplyAt(min(_blockNumber, parentSnapShotBlock));
             } else {
@@ -409,20 +409,21 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @return The address of the new MiniMeToken Contract
      */
     function createCloneToken(
-        string memory _cloneTokenName,
+        string calldata _cloneTokenName,
         uint8 _cloneDecimalUnits,
-        string memory _cloneTokenSymbol,
+        string calldata _cloneTokenSymbol,
         uint _snapshotBlock,
         bool _transfersEnabled
         ) 
-            public
+            external
             returns(address)
         {
         uint snapshotBlock = _snapshotBlock;
         if (snapshotBlock == 0) {
             snapshotBlock = block.number;
         }
-        MiniMeToken cloneToken = MiniMeToken(tokenFactory.createCloneToken(
+        MiniMeToken cloneToken = MiniMeToken(
+            tokenFactory.createCloneToken(
             address(this),
             snapshotBlock,
             _cloneTokenName,
@@ -452,7 +453,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _owner,
         uint _amount
     )
-        public
+        external
         onlyController
         returns (bool)
     {
@@ -476,7 +477,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
         address _owner,
         uint _amount
     ) 
-        public
+        external
         onlyController
         returns (bool)
     {
@@ -498,7 +499,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @notice Enables token holders to transfer their tokens freely if true
      * @param _transfersEnabled True if transfers are allowed in the clone
      */
-    function enableTransfers(bool _transfersEnabled) public onlyController {
+    function enableTransfers(bool _transfersEnabled) external onlyController {
         transfersEnabled = _transfersEnabled;
     }
 
@@ -553,8 +554,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _value The new number of tokens
      */
     function updateValueAtNow(Checkpoint[] storage checkpoints, uint _value) internal {
-        if ((checkpoints.length == 0)
-        || (checkpoints[checkpoints.length -1].fromBlock < block.number)) {
+        if ((checkpoints.length == 0) || (checkpoints[checkpoints.length - 1].fromBlock < block.number)) {
             Checkpoint storage newCheckPoint = checkpoints[checkpoints.length++];
             newCheckPoint.fromBlock = uint128(block.number);
             newCheckPoint.value = uint128(_value);
@@ -569,9 +569,9 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _addr The address being queried
      * @return True if `_addr` is a contract
      */
-    function isContract(address _addr) internal view returns(bool) {
+    function isContract(address _addr) internal returns(bool) {
         uint size;
-        if (_addr == address(0)){
+        if (_addr == address(0)) {
             return false;
         }    
         assembly {
@@ -607,7 +607,7 @@ contract MiniMeToken is MiniMeTokenInterface, Controlled {
      * @param _token The address of the token contract that you want to recover
      *  set to 0 in case you want to extract ether.
      */
-    function claimTokens(address _token) public onlyController {
+    function claimTokens(address _token) external onlyController {
         if (_token == address(0)) {
             controller.transfer(address(this).balance);
             return;

@@ -1,4 +1,4 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 import "./ERC20Token.sol";
 
@@ -35,13 +35,13 @@ contract MiniMeTokenInterface is ERC20Token {
      * @return The address of the new MiniMeToken Contract
      */
     function createCloneToken(
-        string memory _cloneTokenName,
+        string calldata _cloneTokenName,
         uint8 _cloneDecimalUnits,
-        string memory _cloneTokenSymbol,
+        string calldata _cloneTokenSymbol,
         uint _snapshotBlock,
         bool _transfersEnabled
     ) 
-        public
+        external
         returns(address);
 
     /**    
@@ -54,7 +54,7 @@ contract MiniMeTokenInterface is ERC20Token {
         address _owner,
         uint _amount
     )
-        public
+        external
         returns (bool);
 
     /**
@@ -67,14 +67,14 @@ contract MiniMeTokenInterface is ERC20Token {
         address _owner,
         uint _amount
     ) 
-        public
+        external
         returns (bool);
 
     /**        
      * @notice Enables token holders to transfer their tokens freely if true
      * @param _transfersEnabled True if transfers are allowed in the clone
      */
-    function enableTransfers(bool _transfersEnabled) public;
+    function enableTransfers(bool _transfersEnabled) external;
 
     /**    
      * @notice This method can be used by the controller to extract mistakenly
@@ -82,7 +82,7 @@ contract MiniMeTokenInterface is ERC20Token {
      * @param _token The address of the token contract that you want to recover
      *  set to 0 in case you want to extract ether.
      */
-    function claimTokens(address _token) public;
+    function claimTokens(address _token) external;
 
     /**
      * @dev Queries the balance of `_owner` at a specific `_blockNumber`

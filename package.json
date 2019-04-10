@@ -4,8 +4,12 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "@trailofbits/embark-contract-info": "^1.0.0",
     "connected-react-router": "^6.3.2",
     "debounce": "^1.2.0",
+    "decimal.js": "^10.0.2",
+    "embark-solium": "0.0.1",
+    "ethereumjs-util": "^5.2.0",
     "history": "^4.7.2",
     "moment": "^2.24.0",
     "node-sass": "^4.11.0",
@@ -19,7 +23,8 @@
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.8",
     "redux": "^4.0.1",
-    "reselect": "^4.0.0"
+    "reselect": "^4.0.0",
+    "web3-utils": "^1.0.0-beta.39"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -27,7 +32,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "slither": "slither . --exclude naming-convention --filter-paths token"
   },
   "husky": {
     "hooks": {

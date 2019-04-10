@@ -1,11 +1,8 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
 import "./TokenFactory.sol";
 import "./MiniMeToken.sol";
 
-////////////////
-// MiniMeTokenFactory
-////////////////
 
 /**
  * @dev This contract is used to generate clone contracts from a contract.
@@ -29,11 +26,12 @@ contract MiniMeTokenFactory is TokenFactory {
     function createCloneToken(
         address _parentToken,
         uint _snapshotBlock,
-        string memory _tokenName,
+        string calldata _tokenName,
         uint8 _decimalUnits,
-        string memory _tokenSymbol,
+        string calldata _tokenSymbol,
         bool _transfersEnabled
-    ) public returns (address payable) {
+    ) external returns (address payable) 
+    {
         MiniMeToken newToken = new MiniMeToken(
             address(this),
             _parentToken,

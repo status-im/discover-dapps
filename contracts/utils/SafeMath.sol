@@ -1,8 +1,6 @@
-pragma solidity ^0.5.1;
+pragma solidity ^0.5.2;
 
-/*
-    Library for basic math operations with overflow/underflow protection
-*/
+
 library SafeMath {
     /**
         @dev returns the sum of _x and _y, reverts if the calculation overflows
@@ -12,7 +10,7 @@ library SafeMath {
     */
     function add(uint256 _x, uint256 _y) internal pure returns (uint256) {
         uint256 z = _x + _y;
-        require(z >= _x);
+        require(z >= _x, "SafeMath failed");
         return z;
     }
 
@@ -23,7 +21,7 @@ library SafeMath {
         @return difference
     */
     function sub(uint256 _x, uint256 _y) internal pure returns (uint256) {
-        require(_x >= _y);
+        require(_x >= _y, "SafeMath failed");
         return _x - _y;
     }
 
@@ -39,7 +37,7 @@ library SafeMath {
             return 0;
 
         uint256 z = _x * _y;
-        require(z / _x == _y);
+        require(z / _x == _y, "SafeMath failed");
         return z;
     }
 
@@ -50,7 +48,7 @@ library SafeMath {
         @return quotient
     */
     function div(uint256 _x, uint256 _y) internal pure returns (uint256) {
-        require(_y > 0);
+        require(_y > 0, "SafeMath failed");
         uint256 c = _x / _y;
 
         return c;
