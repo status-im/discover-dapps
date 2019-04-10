@@ -41,6 +41,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     
     Data[] public dapps;
     mapping(bytes32 => uint) public id2index;
+    mapping(bytes32 => bool) existingIDs;
     
     event DAppCreated(bytes32 indexed id, uint votesMint, uint amount);
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
@@ -231,6 +232,8 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     }
 
     function _createDApp(address _from, bytes32 _id, uint _amount) internal {
+        require(!existingIDs[_id], "You must submit a unique ID");
+        
         require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
         require (_amount < safeMax, "You cannot stake more SNT than the ceiling dictates");
         
@@ -260,6 +263,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         d.effectiveBalance = _amount;
 
         id2index[_id] = dappIdx;
+        existingIDs[_id] = true;
 
         require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
         require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");

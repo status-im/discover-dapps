@@ -87,6 +87,21 @@ contract("DAppStore", function () {
     assert.strictEqual(amount, parseInt(receipt.effectiveBalance, 10));
   })
 
+  it("should not create a new DApp with the same ID", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let amount = 1000;
+
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      assert.fail('should have reverted before');
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+  })
+
   it("should not create a new DApp when exceeding the ceiling or staking nothing", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let initial = await DAppStore.methods.max().call();
