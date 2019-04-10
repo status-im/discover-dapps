@@ -6,7 +6,7 @@ coverage
 embarkArtifacts
 node_modules
 package-lock.json
-dist/
+dist
 
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
