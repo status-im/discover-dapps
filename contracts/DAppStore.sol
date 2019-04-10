@@ -31,6 +31,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     struct Data {
         address developer;
         bytes32 id;
+        bytes metadata;
         uint balance;
         uint rate;
         uint available;
@@ -47,6 +48,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
     event Downvote(bytes32 indexed id, uint newEffectiveBalance);
     event Withdraw(bytes32 indexed id, uint newEffectiveBalance);
+    event MetadataUpdated(bytes32 indexed id);
     
     constructor(MiniMeTokenInterface _SNT) public {
         SNT = _SNT;
@@ -134,6 +136,19 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         emit Withdraw(_id, d.effectiveBalance);
     }
     
+    /**
+     * dev Set the content for the dapp
+     * @param _id bytes32 unique identifier.
+     * @param _metadata IPFS hash of the metadata
+     */
+    function setMetadata(bytes32 _id, bytes calldata _metadata) external {
+        uint dappIdx = id2index[_id];
+        Data storage d = dapps[dappIdx];
+        require(d.developer == msg.sender, "Only the developer can update the metadata");
+        d.metadata = _metadata;
+        emit MetadataUpdated(_id);
+    }
+
     /**
      * @notice Support for "approveAndCall".  
      * @param _from Who approved.

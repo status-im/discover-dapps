@@ -127,6 +127,36 @@ contract("DAppStore", function () {
     }
   })
 
+  it("should set the metadata correctly", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000001";
+    await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[0] });
+    let receipt = await DAppStore.methods.dapps(0).call();
+    assert.strictEqual(metadata, receipt.metadata);
+  })
+
+  it("should update the metadata correctly", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000002";
+    await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[0] });
+    let receipt = await DAppStore.methods.dapps(0).call();
+    assert.strictEqual(metadata, receipt.metadata);
+  })
+
+  it("should not let anyone other than the developer update the metadata", async function () {
+    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let metadata_actual = "0x0000000000000000000000000000000000000000000000000000000000000002";
+    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000003";
+    try {
+      await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[1] });
+      assert.fail('should have reverted before');
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
+    let receipt = await DAppStore.methods.dapps(0).call();
+    assert.strictEqual(metadata_actual, receipt.metadata);
+  })
+
   it("should handle first upvote correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 100;
