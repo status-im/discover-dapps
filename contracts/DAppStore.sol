@@ -9,7 +9,7 @@ import "./utils/BancorFormula.sol";
 contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     using SafeMath for uint;
 
-    // Could be any EIP20/MiniMe token
+    // Could be any MiniMe token
     MiniMeTokenInterface SNT;
 
     // Total SNT in circulation
@@ -68,47 +68,6 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      */
     function createDApp(bytes32 _id, uint _amount) external { 
         _createDApp(msg.sender, _id, _amount);
-    }
-    
-    /**
-     * @dev Used in UI to display effect on ranking of user's donation
-     * @param _id bytes32 unique identifier.
-     * @param _amount of tokens to stake/"donate" to this DApp's ranking.
-     * @return effect of donation on DApp's effectiveBalance 
-     */
-    function upvoteEffect(bytes32 _id, uint _amount) external view returns(uint effect) { 
-        uint dappIdx = id2index[_id];
-        Data memory d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
-
-        // Special case - no downvotes yet cast
-        if (d.votesCast == 0) {
-            return _amount;
-        }
-
-        uint precision;
-        uint result;
-        
-        uint mBalance = d.balance + _amount;
-        uint mRate = decimals - (mBalance * decimals/max);
-        uint mAvailable = mBalance * mRate;
-        
-        (result, precision) = BancorFormula.power(
-            mAvailable, 
-            decimals, 
-            uint32(decimals), 
-            uint32(mRate));
-        
-        uint mVMinted = result >> precision;
-
-        uint temp1 = d.votesCast * mRate * mAvailable;
-        uint temp2 = mVMinted * decimals * decimals;
-        uint mEffect = temp1 / temp2;
-        
-        uint mEBalance = mBalance - mEffect;
-        
-        return (mEBalance - d.effectiveBalance);
     }
     
     /**
@@ -210,6 +169,47 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         } else {
             revert("Wrong method selector");
         }
+    }
+
+    /**
+     * @dev Used in UI to display effect on ranking of user's donation
+     * @param _id bytes32 unique identifier.
+     * @param _amount of tokens to stake/"donate" to this DApp's ranking.
+     * @return effect of donation on DApp's effectiveBalance 
+     */
+    function upvoteEffect(bytes32 _id, uint _amount) external view returns(uint effect) { 
+        uint dappIdx = id2index[_id];
+        Data memory d = dapps[dappIdx];
+        require(d.id == _id, "Error fetching correct data");
+        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
+
+        // Special case - no downvotes yet cast
+        if (d.votesCast == 0) {
+            return _amount;
+        }
+
+        uint precision;
+        uint result;
+        
+        uint mBalance = d.balance + _amount;
+        uint mRate = decimals - (mBalance * decimals/max);
+        uint mAvailable = mBalance * mRate;
+        
+        (result, precision) = BancorFormula.power(
+            mAvailable, 
+            decimals, 
+            uint32(decimals), 
+            uint32(mRate));
+        
+        uint mVMinted = result >> precision;
+
+        uint temp1 = d.votesCast * mRate * mAvailable;
+        uint temp2 = mVMinted * decimals * decimals;
+        uint mEffect = temp1 / temp2;
+        
+        uint mEBalance = mBalance - mEffect;
+        
+        return (mEBalance - d.effectiveBalance);
     }
 
      /**
