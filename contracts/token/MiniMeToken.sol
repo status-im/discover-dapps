@@ -23,10 +23,10 @@ pragma solidity ^0.5.2;
  * @dev It is ERC20 compliant, but still needs to under go further testing.
  */
 
-import "./Controlled.sol";
+import "../common/Controlled.sol";
 import "./TokenController.sol";
-import "../utils/ApproveAndCallFallBack.sol";
-import "../utils/MiniMeTokenInterface.sol";
+import "./ApproveAndCallFallBack.sol";
+import "./MiniMeTokenInterface.sol";
 import "./TokenFactory.sol";
 
 /**

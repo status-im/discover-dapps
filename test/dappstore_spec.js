@@ -32,8 +32,7 @@ config({
     "DAppStore": {
       args: [ "$SNT" ]
     },
-    "TestBancorFormula": { },
-    "Controlled": { }
+    "TestBancorFormula": { }
   }
 }, (_err, web3_accounts) => {
   accounts = web3_accounts
