@@ -376,7 +376,7 @@ contract BancorFormula {
     function optimalLog(uint256 x) internal pure returns (uint256) {
         uint256 res = 0;
 
-        uint256 y;
+        uint256 y = 0;
         uint256 z;
         uint256 w;
 
@@ -441,7 +441,7 @@ contract BancorFormula {
     function optimalExp(uint256 x) internal pure returns (uint256) {
         uint256 res = 0;
 
-        uint256 y;
+        uint256 y = 0;
         uint256 z;
 
         z = y = x % 0x10000000000000000000000000000000; // get the input modulo 2^(-3)
