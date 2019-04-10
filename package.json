@@ -4,6 +4,7 @@
   "version": "0.2.0",
   "private": true,
   "dependencies": {
+    "@babel/runtime-corejs2": "^7.4.3",
     "connected-react-router": "^6.3.2",
     "debounce": "^1.2.0",
     "history": "^4.7.2",

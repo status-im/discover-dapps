@@ -29,6 +29,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     // Whether we need more than an id param to identify arbitrary data must still be discussed.
     struct Data {
         address developer;
+        bytes metadata;
         bytes32 id;
         uint balance;
         uint rate;
@@ -45,6 +46,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
     event Downvote(bytes32 indexed id, uint newEffectiveBalance);
     event Withdraw(bytes32 indexed id, uint newEffectiveBalance);
+    event MetadataUpdated(bytes32 indexed id);
     
     constructor(MiniMeTokenInterface _SNT) public {
         SNT = _SNT;
@@ -67,6 +69,19 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      */
     function createDApp(bytes32 _id, uint _amount) public { 
         _createDApp(msg.sender, _id, _amount);
+    }
+
+    /**
+     * dev Set the content for the dapp
+     * @param _id bytes32 unique identifier.
+     * @param _metadata IPFS hash of the metadata
+     */
+    function setMetadata(bytes32 _id, bytes memory _metadata) public {
+        uint dappIdx = id2index[_id];
+        Data storage d = dapps[dappIdx];
+        require(d.developer == msg.sender, "Only the developer can update the metadata");
+        d.metadata = _metadata;
+        emit MetadataUpdated(_id);
     }
     
     function _createDApp(address _from, bytes32 _id, uint _amount) internal {
