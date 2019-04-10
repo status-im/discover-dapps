@@ -1,5 +1,6 @@
 import React from 'react'
 import RecentlyAdded from '../RecentlyAdded'
+import HighestRanked from '../HighestRanked'
 import Categories from '../Categories'
 import Footer from '../Footer'
 import LoadingHome from '../LoadingHome'
@@ -29,6 +30,7 @@ class Home extends React.Component {
         {loaded && (
           <>
             <Categories />
+            <HighestRanked />
             <RecentlyAdded />
             <Footer />
           </>
