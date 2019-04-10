@@ -1,6 +1,6 @@
 pragma solidity ^0.5.2;
 
-import "./ERC20Token.sol";
+import "../token/ERC20Token.sol";
 
 
 contract MiniMeTokenInterface is ERC20Token {

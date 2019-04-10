@@ -1,7 +1,7 @@
 pragma solidity ^0.5.2;
 
-import "./token/MiniMeTokenInterface.sol";
-import "./token/ApproveAndCallFallBack.sol";
+import "./utils/MiniMeTokenInterface.sol";
+import "./utils/ApproveAndCallFallBack.sol";
 import "./utils/SafeMath.sol";
 import "./utils/BancorFormula.sol";
 

@@ -1,5 +1,5 @@
 pragma solidity ^0.5.2;
-import "./BancorFormula.sol";
+import "../utils/BancorFormula.sol";
 
 
 contract TestBancorFormula is BancorFormula {

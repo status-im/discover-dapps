@@ -25,8 +25,8 @@ pragma solidity ^0.5.2;
 
 import "./Controlled.sol";
 import "./TokenController.sol";
-import "./ApproveAndCallFallBack.sol";
-import "./MiniMeTokenInterface.sol";
+import "../utils/ApproveAndCallFallBack.sol";
+import "../utils/MiniMeTokenInterface.sol";
 import "./TokenFactory.sol";
 
 /**
