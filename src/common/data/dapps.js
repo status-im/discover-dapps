@@ -61,7 +61,7 @@ const Dapps = [
   },
   {
     name: 'Nuo',
-    url: 'https://nuo.network/',
+    url: 'https://app.nuo.network/lend/',
     description:
       'The non-custodial way to lend, borrow or margin trade cryptocurrency.',
     image: '/discover-dapps/images/dapps/nuo.png',
