@@ -35,6 +35,15 @@ const Dapps = [
     dateAdded: null,
   },
   {
+    name: 'Augur',
+    url: 'https://augur.net',
+    description:
+      'A prediction market protocol owned and operated by the people that use it.',
+    image: '/discover-dapps/images/dapps/augur.svg',
+    category: Categories.EXCHANGES,
+    dateAdded: null,
+  },
+  {
     name: 'LocalEthereum',
     url: 'https://localethereum.com/',
     description: 'The smartest way to buy and sell Ether',
@@ -86,6 +95,14 @@ const Dapps = [
     dateAdded: null,
   },
   {
+    name: 'Expo Trading',
+    url: 'https://expotrading.com/trade/',
+    description: 'The simplest way to margin trade cryptocurrency.',
+    image: '/discover-dapps/images/dapps/expotrading.png',
+    category: Categories.EXCHANGES,
+    dateAdded: null,
+  },
+  {
     name: 'blockimmo',
     url: 'https://blockimmo.ch',
     description:
@@ -120,6 +137,14 @@ const Dapps = [
     dateAdded: null,
   },
   {
+    name: 'KnownOrigin',
+    url: 'https://dapp.knownorigin.io/gallery',
+    description: 'Discover, buy and collect digital artwork.',
+    image: '/discover-dapps/images/dapps/knownorigin.png',
+    category: Categories.MARKETPLACES,
+    dateAdded: null,
+  },
+  {
     name: 'Name Bazaar',
     url: 'https://namebazaar.io',
     description: 'ENS name marketplace',
@@ -145,6 +170,14 @@ const Dapps = [
     dateAdded: null,
   },
   {
+    name: 'Astro Ledger',
+    url: 'https://www.astroledger.org/#/onSale',
+    description: 'Funding space grants with blockchain star naming.',
+    image: '/discover-dapps/images/dapps/astroledger.svg',
+    category: Categories.MARKETPLACES,
+    dateAdded: null,
+  },
+  {
     name: 'SuperRare',
     url: 'https://superrare.co/market',
     description:
@@ -154,19 +187,20 @@ const Dapps = [
     dateAdded: null,
   },
   {
+    name: 'CryptoCare',
+    url: 'https://cryptocare.tech',
+    description:
+      'Give your Ether some heart! Collectibles that make the world a better place.',
+    image: '/discover-dapps/images/dapps/cryptocare.jpg',
+    category: Categories.COLLECTIBLES,
+    dateAdded: null,
+  },
+  {
     name: 'CryptoKitties',
     url: 'https://www.cryptokitties.co',
     description: 'Collect and breed adorable digital cats.',
     image: '/discover-dapps/images/dapps/cryptokitties.png',
     category: Categories.COLLECTIBLES,
-    dateAdded: null,
-  },
-  {
-    name: 'CryptoFighters',
-    url: 'https://cryptofighters.io',
-    description: 'Collect train and fight digital fighters.',
-    image: '/discover-dapps/images/dapps/cryptofighters.png',
-    category: Categories.GAMES,
     dateAdded: null,
   },
   {
@@ -191,6 +225,14 @@ const Dapps = [
     url: 'https://cryptotakeovers.com/',
     description: 'Predict and conquer the world. Make a crypto fortune.',
     image: '/discover-dapps/images/dapps/cryptotakeovers.png',
+    category: Categories.GAMES,
+    dateAdded: null,
+  },
+  {
+    name: 'CryptoFighters',
+    url: 'https://cryptofighters.io',
+    description: 'Collect train and fight digital fighters.',
+    image: '/discover-dapps/images/dapps/cryptofighters.png',
     category: Categories.GAMES,
     dateAdded: null,
   },
@@ -235,6 +277,14 @@ const Dapps = [
     category: Categories.GAMES,
     dateAdded: null,
   },
+  // {
+  //   name: 'FairHouse',
+  //   url: 'https://fairhouse.io',
+  //   description: 'Fair and transparent entertainment games.',
+  //   image: '/discover-dapps/images/dapps/fairhouse.png',
+  //   category: Categories.GAMES,
+  //   dateAdded: null,
+  // },
   {
     name: 'Cent',
     url: 'https://beta.cent.co/',
@@ -264,8 +314,56 @@ const Dapps = [
     name: 'livepeer.tv',
     url: 'http://livepeer.tv/',
     description: 'Decentralized video broadcasting',
-    image: '/discover-dapps/images/dapps/airswap.png',
+    image: '/discover-dapps/images/dapps/livepeer.png',
     category: Categories.OTHER,
+    dateAdded: null,
+  },
+  {
+    name: 'Aragon',
+    url: 'https://mainnet.aragon.org/',
+    description: 'Build unstoppable organizations on Ethereum.',
+    image: '/discover-dapps/images/dapps/aragon.png',
+    category: Categories.UTILITIES,
+    dateAdded: null,
+  },
+  {
+    name: 'Compound Finance',
+    url: 'https://app.compound.finance/',
+    description: 'Decentralized Bank.',
+    image: '/discover-dapps/images/dapps/compoundfinance.png',
+    category: Categories.UTILITIES,
+    dateAdded: null,
+  },
+  {
+    name: 'InstaDApp',
+    url: 'https://instadapp.io/',
+    description: 'Decentralized Bank.',
+    image: '/discover-dapps/images/dapps/instadapp.jpg',
+    category: Categories.UTILITIES,
+    dateAdded: null,
+  },
+  {
+    name: 'Livepeer',
+    url: 'https://explorer.livepeer.org/',
+    description: 'Decentralized video broadcasting',
+    image: '/discover-dapps/images/dapps/livepeer.png',
+    category: Categories.UTILITIES,
+    dateAdded: null,
+  },
+  {
+    name: 'ETHLend',
+    url: 'https://app.ethlend.io',
+    description: 'Decentralized lending on Ethereum',
+    image: '/discover-dapps/images/dapps/ethlend.png',
+    category: Categories.UTILITIES,
+    dateAdded: null,
+  },
+  {
+    name: 'Civitas',
+    url: 'https://communities.colu.com/',
+    description: 'Blockchain-powered local communities',
+    image: '/discover-dapps/images/dapps/civitas.png',
+    category: Categories.UTILITIES,
     dateAdded: null,
   },
   {
@@ -276,34 +374,6 @@ const Dapps = [
     category: Categories.UTILITIES,
     dateAdded: null,
   },
-
-  {
-    name: 'Aragon',
-    url: 'https://mainnet.aragon.org/',
-    description: 'Build unstoppable organizations on Ethereum.',
-    image: '/discover-dapps/images/dapps/aragon.png',
-    category: Categories.UTILITIES,
-    dateAdded: null,
-  },
-
-  {
-    name: 'Civitas',
-    url: 'https://communities.colu.com/',
-    description: 'Blockchain-powered local communities',
-    image: '/discover-dapps/images/dapps/civitas.png',
-    category: Categories.UTILITIES,
-    dateAdded: null,
-  },
-
-  {
-    name: 'ETHLend',
-    url: 'https://app.ethlend.io',
-    description: 'Decentralized lending on Ethereum',
-    image: '/discover-dapps/images/dapps/ethlend.png',
-    category: Categories.UTILITIES,
-    dateAdded: null,
-  },
-
   {
     name: 'Hexel',
     url: 'https://www.onhexel.com/',
@@ -312,16 +382,6 @@ const Dapps = [
     category: Categories.UTILITIES,
     dateAdded: null,
   },
-
-  {
-    name: 'Livepeer',
-    url: 'https://explorer.livepeer.org/',
-    description: 'Decentralized video broadcasting',
-    image: '/discover-dapps/images/dapps/livepeer.png',
-    category: Categories.UTILITIES,
-    dateAdded: null,
-  },
-
   {
     name: 'Smartz',
     url: 'https://smartz.io',
@@ -330,7 +390,6 @@ const Dapps = [
     category: Categories.UTILITIES,
     dateAdded: null,
   },
-
   {
     name: 'SNT Voting DApp',
     url: 'https://vote.status.im',
