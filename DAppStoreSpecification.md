@@ -39,9 +39,6 @@ An effective economic ranking mechanism, selected with the option `Ranked by SNT
 
 ## Specification
 
-#### Constructor
-Instantiates the MiniMe (or EIP20) interface so that the contract can receive and send tokens as necessary.
-
 #### Constants
 1. `uint total` - total SNT in circulation.
 2. `uint ceiling` - most influential parameter for [_shape_ of curves](https://beta.observablehq.com/@andytudhope/dapp-store-snt-curation-mechanism). 
