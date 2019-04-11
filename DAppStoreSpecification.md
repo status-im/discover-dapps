@@ -154,7 +154,7 @@ Creating many accounts for one DApp is not possible - each DApp is uniquely iden
 
 Remember, you never get back more SNT than you stake, so this is also economically sub-optimal. In addition, there will be a free "complaint" feature as part of the "downvote" screen. There is an important difference between "contractual" and "social" (i.e. the Status UI) reality. Status reserves the right to remove from our UI any DApp that actively violates [our principles](https://status.im/contribute/our_principles.html), though anyone else is free to fork the software and implement different social/UI rules for the same contractual reality. This protects even further against any incentive to submit bad/damaging DApps.
 
-However, at the beginning of the Store, this is an attack vector: ranking highly requires but a small stake, and this could conceivably result in a successful, cheap hype campaign until we change the UI. The price of freedom is eternal vigilance ;)
+However, at the beginning of the Store, this is an attack vector: ranking highly requires but a small stake, and this could conceivably result in a successful, cheap hype campaign until we change the UI. The price of freedom is eternal vigilance.
 
 3. **Stake a damaging DApp, force some downvotes, and then withdraw my stake?**
 
