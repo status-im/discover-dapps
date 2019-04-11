@@ -625,10 +625,8 @@ contract("DAppStore", function () {
     assert.ok(returned <= votes_minted);
   })
 
-  // Change the variable in the contract so you can stake 78% or more, and see BancorFormula fail to
-  // find a suitable position in the exponent array.
-  // This test currently fails because you're trying to stake more than is allowed, so you can alternatively
-  // remove that require in _createDApp to test the BancorFormula
+  // Comment out line 253 in the contract to run this test properly and see 
+  // the BancorFormula fail to find a suitable position in the maxExponentArray
   it("should prove we have the highest safeMax allowed for by Bancor's power approximation", async function () {
     let id = "0x0000000000000000000000000000000000000000000000000000000000000002";
     let max = await DAppStore.methods.max().call();
