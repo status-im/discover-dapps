@@ -630,7 +630,8 @@ contract("DAppStore", function () {
     let max = await DAppStore.methods.max().call();
     // Choose a safeMax 1% higher than is currently set
     let safe = await DAppStore.methods.safeMax().call();
-    let amount = parseInt(max, 10) * (parseInt(safe, 10) + 1);
+    let percent = (safe/max * 100) + 1;
+    let amount = parseInt(max, 10) * percent;
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
     const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
