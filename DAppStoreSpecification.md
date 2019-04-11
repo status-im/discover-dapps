@@ -1,23 +1,14 @@
-# Recollections
+# DApp Store SNT Ranking
 
 The beauty of Ethereum to me, can be summed up simply:
 
 `By deploying immutable contracts to a shared, public computational surface - contracts whose data can be read deterministically by anyone with access to the internet - we can encode idealism into the way we run society.`
 
-What's more, **what's different this time**, is that the idealism exists independently of the people who encoded it, who inevitably become corrupted, because we are all human. And to be human is to be corruptible, in some very real and simple way. 
+What's more, **what's different this time**, is that the idealism exists independently of the people who encoded it, who inevitably become corrupted, because we are all human. 
 
-My idealism arises out of cryptoeconomics, which is not about egalitarianism, but about designing systems with no central point of control. Decentralisation is the goal, egalitarianism is a great success metric. But not the other way around, because egalitarianism is not something for which we can reasonably optimise.
+However, there is hope in cryptoeconomics, which is not about egalitarianism, but about designing systems with no central point of control. Decentralisation is the goal; egalitarianism is a great success metric. But not the other way around, because egalitarianism is not something for which we can reasonably optimise.
 
-1. Watch the [tech talk for a high-level overview here](https://youtu.be/82wMcgHSej0) (now a bit outdated). 
-
-2. Play with a [live ObservableHQ notebook here](https://beta.observablehq.com/@andytudhope/dapp-store-snt-curation-mechanism).
-
-3. Read the [contract in this repo](./DAppStore.sol).
-
-4. Look at the [evolving designs](https://www.figma.com/file/MYWmd1buvc2AMvUmFP9w42t5/Discovery?node-id=35%3A420).
-
-
-# DApp Store SNT Ranking
+Play with a [live ObservableHQ notebook here](https://beta.observablehq.com/@andytudhope/dapp-store-snt-curation-mechanism).
 
 ## Summary
 
