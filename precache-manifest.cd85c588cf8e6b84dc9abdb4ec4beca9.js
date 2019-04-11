@@ -4,7 +4,7 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/games.5f2fc3ba.svg"
   },
   {
-    "revision": "88dd7295674df4164618",
+    "revision": "29c817dccd22dd01e713",
     "url": "/discover-dapps/static/css/main.5694cc39.chunk.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/marketplaces.964ef8e9.svg"
   },
   {
-    "revision": "88dd7295674df4164618",
-    "url": "/discover-dapps/static/js/main.8b3a5220.chunk.js"
+    "revision": "29c817dccd22dd01e713",
+    "url": "/discover-dapps/static/js/main.89820b37.chunk.js"
   },
   {
     "revision": "48f1d6ea749d19b38883a0f56d88783a",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/dropdown-arrows.94569e7a.svg"
   },
   {
-    "revision": "a32e1d19bbea4439ecd3395f58448ef5",
+    "revision": "e32ff2ca3025597ab5574d818554f694",
     "url": "/discover-dapps/index.html"
   }
 ];
