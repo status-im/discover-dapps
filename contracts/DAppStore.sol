@@ -44,7 +44,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     mapping(bytes32 => uint) public id2index;
     mapping(bytes32 => bool) existingIDs;
     
-    event DAppCreated(bytes32 indexed id, uint votesMint, uint amount);
+    event DAppCreated(bytes32 indexed id, uint newEffectiveBalance);
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
     event Downvote(bytes32 indexed id, uint newEffectiveBalance);
     event Withdraw(bytes32 indexed id, uint newEffectiveBalance);
@@ -61,7 +61,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         
         max = (total * ceiling) / decimals; 
 
-        safeMax = 98 * max / 100;
+        safeMax = 77 * max / 100; // Limited by accuracy of BancorFormula
     }
     
     /**
@@ -197,7 +197,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         uint dappIdx = id2index[_id];
         Data memory d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
-        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
+        require(d.balance + _amount <= safeMax, "You cannot upvote by this much, try with a lower amount");
 
         // Special case - no downvotes yet cast
         if (d.votesCast == 0) {
@@ -250,7 +250,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(!existingIDs[_id], "You must submit a unique ID");
         
         require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
-        require (_amount < safeMax, "You cannot stake more SNT than the ceiling dictates");
+        require (_amount <= safeMax, "You cannot stake more SNT than the ceiling dictates");
         
         uint dappIdx = dapps.length;
         
@@ -283,7 +283,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
         require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
 
-        emit DAppCreated(_id, d.votesMinted, d.effectiveBalance);
+        emit DAppCreated(_id, d.effectiveBalance);
     }
 
     function _upvote(address _from, bytes32 _id, uint _amount) internal { 
@@ -293,7 +293,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        require(d.balance + _amount < safeMax, "You cannot upvote by this much, try with a lower amount");
+        require(d.balance + _amount <= safeMax, "You cannot upvote by this much, try with a lower amount");
         
         uint precision;
         uint result;

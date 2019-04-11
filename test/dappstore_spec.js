@@ -45,10 +45,10 @@ contract("DAppStore", function () {
   it("should set max and safeMax values correctly", async function () {
     let resultMax = await DAppStore.methods.max().call();
     let resultSafeMax = await DAppStore.methods.safeMax().call();
-    let expectedMax = Math.round(3470483788 * 588 / 1000000);
-    let expectedSafeMax = Math.round(expectedMax * 0.98);
-    assert.strictEqual(parseInt(resultMax, 10), expectedMax);
-    assert.strictEqual(parseInt(resultSafeMax, 10), expectedSafeMax);
+    let expectedMax = 3470483788 * 588 / 1000000;
+    let expectedSafeMax = expectedMax * 77 / 100 - 1;
+    assert.strictEqual(parseInt(resultMax, 10), Math.round(expectedMax));
+    assert.strictEqual(parseInt(resultSafeMax, 10), Math.round(expectedSafeMax));
   });
 
   it("should create a new DApp and initialise it correctly", async function () {
@@ -589,5 +589,56 @@ contract("DAppStore", function () {
     // The effective_balance should also match upvoteEffect + initial.effectiveBalance
     let e_balance_2 = parseInt(up_effect, 10) + parseInt(initial.effectiveBalance, 10);
     assert.strictEqual(e_balance_2, parseInt(receipt.effectiveBalance, 10));
+  })
+
+  it("should create a DApp without overflowing", async function () {
+    let id = "0x0000000000000000000000000000000000000000000000000000000000000001";
+    let temp = await DAppStore.methods.safeMax().call();
+    let amount = parseInt(temp, 10);
+
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+
+    let receipt = await DAppStore.methods.dapps(1).call();   
+    let developer = accounts[0];
+
+    assert.strictEqual(developer, receipt.developer);
+    assert.strictEqual(id, receipt.id);
+
+    // Having received the SNT, check that it updates the particular DApp's storage values
+    assert.strictEqual(amount, parseInt(receipt.balance, 10));
+
+    let max = await DAppStore.methods.max().call();
+    let decimals = await DAppStore.methods.decimals().call();
+    let rate = Math.ceil(decimals - (amount * decimals/max));
+    assert.strictEqual(rate, parseInt(receipt.rate, 10));
+
+    let available = amount * rate;
+    assert.strictEqual(available, parseInt(receipt.available, 10));
+
+    // It's checking that votesMinted doesn't overflow which we're really interested in here
+    let votes_minted = Math.round((available/decimals) ** (decimals/rate));
+    let returned = parseInt(receipt.votesMinted, 10);
+
+    // Is going to be less than due to rounding inaccuracies at higher exponents
+    assert.ok(returned <= votes_minted);
+  })
+
+  it("should prove we have the highest safeMax allowed for by Bancor's power approximation", async function () {
+    let id = "0x0000000000000000000000000000000000000000000000000000000000000002";
+    let max = await DAppStore.methods.max().call();
+    // Choose a safeMax 1% higher than is currently set
+    let safe = await DAppStore.methods.safeMax().call();
+    let amount = parseInt(max, 10) * (parseInt(safe, 10) + 1);
+
+    await SNT.methods.generateTokens(accounts[0], amount).send();
+    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+
+    try {
+      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    } catch (error) {
+      TestUtils.assertJump(error);
+    }
   })
 });
