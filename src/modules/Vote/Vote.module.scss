@@ -7,6 +7,7 @@
 }
 
 .tabs button {
+  color: #939ba1;
   background: transparent;
   border: none;
   text-transform: uppercase;
@@ -71,4 +72,91 @@
 .footer .disclaimer a {
   text-decoration: none;
   color: $link-color;
+}
+
+.item,
+.dapp {
+  line-height: 22px;
+  font-family: $font;
+  font-size: calculateRem(15);
+  display: block;
+  height: calculateRem(32);
+  padding: 0 calculateRem(12);
+}
+
+.item img,
+.dapp img {
+  margin-right: calculateRem(12);
+  vertical-align: middle;
+}
+
+.dapp {
+  margin-bottom: calculateRem(12);
+  font-size: calculateRem(17);
+  font-weight: 500;
+}
+
+.dapp img {
+  vertical-align: bottom;
+}
+
+.badge {
+  float: right;
+  border-radius: 24px;
+  color: #ffffff;
+  font-family: $font;
+  font-size: calculateRem(15);
+  margin-right: calculateRem(16);
+  padding: calculateRem(3) calculateRem(10);
+}
+
+.greenBadge {
+  @extend .badge;
+  background: #44d058;
+}
+
+.redBadge {
+  @extend .badge;
+  background: #f00;
+}
+
+.inputArea {
+  text-align: center;
+  width: 300px;
+  position: fixed;
+  top: 40%;
+}
+
+.inputArea input {
+  margin: auto;
+  width: 50%;
+  border: none;
+  border-bottom: 1px solid #eef2f5;
+  text-align: center;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+}
+
+.inputArea input:focus {
+  outline: none;
+}
+
+.inputArea::after {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  transition: all 0.05s ease-in-out;
+  content: 'SNT';
+  color: #939ba1;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+}
+
+.image {
+  max-width: calculateRem(40);
+  max-height: calculateRem(40);
+  margin-top: calculateRem(15);
+  margin-right: calculateRem(16);
 }
