@@ -115,19 +115,21 @@ Specifying that each downvote must move the DApp down by 1% allows us to calcula
 Returns `balanceDownBy`, `votesRequired` and `cost`.
 
 4. **_createDApp** internal
+    1. params: `(address _from, bytes32 _id, uint _amount)`
 
 Accepts some nominal amount of tokens (> 0) and creates a new Data struct with the `_id` passed to it, setting the new struct's `balance` and using that to calculate `balance`, `rate`, `available`, `votesMinted` and `effectiveBalance` (which is == `balance` at first).
 
 Emit event containing new `effectiveBalance`.
 
 4. **_upvote** internal
+    1. params: `(address _from, bytes32 _id, uint _amount)`
 
 Transfer SNT directly to the contract, which means donating directly to the DApp's `balance`, no money to the developer. Though the votes don't use a curve, we still need to recalculate `rate`, `available`, `votesMinted` and `effectiveBalance`. 
 
 Emit event containing new `effectiveBalance`.
 
 4. **_downvote** internal
-    1. params: `(bytes32 _id, uint _percent_down)` 
+    1. params: `(address _from, bytes32 _id, uint _amount)` 
 
 Send SNT from user directly to developer in order to downvote. Call `downvoteCost` to get `balance_down_by`, `votes_required` and `cost`.
 
