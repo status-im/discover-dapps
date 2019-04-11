@@ -1,15 +1,5 @@
 # DApp Store SNT Ranking
 
-The beauty of Ethereum to me, can be summed up simply:
-
-`By deploying immutable contracts to a shared, public computational surface - contracts whose data can be read deterministically by anyone with access to the internet - we can encode idealism into the way we run society.`
-
-What's more, **what's different this time**, is that the idealism exists independently of the people who encoded it, who inevitably become corrupted, because we are all human. 
-
-However, there is hope in cryptoeconomics, which is not about egalitarianism, but about designing systems with no central point of control. Decentralisation is the goal; egalitarianism is a great success metric. But not the other way around, because egalitarianism is not something for which we can reasonably optimise.
-
-Play with a [live ObservableHQ notebook here](https://beta.observablehq.com/@andytudhope/dapp-store-snt-curation-mechanism).
-
 ## Summary
 
 In order to fulfill one of our whitepaper promises, we need a mechanism in the Status DApp Store that uses SNT to curate DApps. While this is not the only mechanism we will make available to users to find interesting and relevant DApps, it is one of the most important, both for SNT utility and because economic mechanisms are at the heart of how we buidl sustainable peer-to-peer networks.
@@ -61,9 +51,9 @@ An effective economic ranking mechanism, selected with the option `Ranked by SNT
 
 1. Sets the address for the SNT contract based on arg passed in.
 1. `uint total == 3470483788`
-2. `uint ceiling` - 5.88%, as this means the max is close to 2M SNT, and is a local minima for votesMinted.
-3. `uint max = (total * ceiling)/10000`
+2. `uint ceiling = 588`, as this means the max is close to 2M SNT, and is a local minima for votesMinted.
 4. `uint decimals = 1000000` - We're use 1/100th of the total SNT in circulation as our bound, based mostly on Twitter polls...
+3. `uint max = (total * ceiling)/decimals`
 5. `uint safeMax = 98 * max / 100` - 98% of the absolute max.
 
 #### Methods
@@ -174,6 +164,16 @@ This is a simple economic mechanism that
 Moreover, having SNT is not required to see (and benefit from) a well-curated list of DApps; only if you want to effect the rankings on that list do you require tokens, which also makes the UX considerably easier for non-technical users.
 
 From the perspective of DApp Developers - they must still spend some capital to rank well, just as they currently do with SEO and AdWords etc.,  but _they stand to earn most of that back_ if the community votes on their product/service, and they can withdraw their stake at any time. The algorithm is entirely transparent and they know where they stand and why at all times.
+
+## Notes
+
+The beauty of Ethereum to me, can be summed up simply:
+
+`By deploying immutable contracts to a shared, public computational surface - contracts whose data can be read deterministically by anyone with access to the internet - we can encode idealism into the way we run society.`
+
+What's more, **what's different this time**, is that the idealism exists independently of the people who encoded it, who inevitably become corrupted, because we are all human. 
+
+However, there is hope in cryptoeconomics, which is not about egalitarianism, but about designing systems with no central point of control. Decentralisation is the goal; egalitarianism is a great success metric. But not the other way around, because egalitarianism is not something for which we can reasonably optimise.
 
 ## Copyright
 Copyright and related rights for this specification waived via [CC0](https://creativecommons.org/publicdomain/zero/1.0/).
