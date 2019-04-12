@@ -193,65 +193,66 @@ contract('TestBancorFormula', function () {
     let EXP_MAX = new BigNumber(Decimal.pow(2,4).toFixed());
     let FIXED_1 = new BigNumber(2).exponentiatedBy(constants.MAX_PRECISION);
 
-    // for (let percent = 0; percent < 100; percent++) {
-    //     let x = new BigNumber(percent).dividedBy(100).times(LOG_MAX.minus(LOG_MIN)).plus(LOG_MIN);
+    for (let percent = 0; percent < 100; percent++) {
+        let x = new BigNumber(percent).dividedBy(100).times(LOG_MAX.minus(LOG_MIN)).plus(LOG_MIN);
 
-    //     it(`Function optimalLog(${x.toFixed()})`, async () => {
-    //         try {
-    //             let tmp = web3.utils.toHex(FIXED_1.times(x).toFormat());
-    //             let temp = await TestBancorFormula.methods.optimalLogTest(tmp).call();
-    //             let fixedPoint = new BigNumber(temp);
-    //             let floatPoint = new BigNumber(Decimal(x.toFixed()).ln().times(FIXED_1.toFixed()).toFixed());
-    //             let ratio = fixedPoint.isEqualTo(floatPoint) ? BigNumber(1) : fixedPoint.dividedBy(floatPoint);
-    //             assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
-    //         }
-    //         catch (error) {
-    //             assert(false, error.message);
-    //         }
-    //     });
-    // }
+        it(`Function optimalLog(${x.toFixed()})`, async () => {
+            try {
+                let tmp = web3.utils.toHex(FIXED_1.times(x).integerValue());
+                let temp = await TestBancorFormula.methods.optimalLogTest(tmp).call();
+                let fixedPoint = new BigNumber(temp);
+                let floatPoint = new BigNumber(Decimal(x.toFixed()).ln().times(FIXED_1.toFixed()).toFixed());
+                let ratio = fixedPoint.isEqualTo(floatPoint) ? BigNumber(1) : fixedPoint.dividedBy(floatPoint);
+                assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
+            }
+            catch (error) {
+                assert(false, error.message);
+            }
+        });
+    }
 
-    // for (let percent = 0; percent < 100; percent++) {
-    //     let x = new BigNumber(percent).dividedBy(100).times(EXP_MAX.minus(EXP_MIN)).plus(EXP_MIN);
+    for (let percent = 0; percent < 100; percent++) {
+        let x = new BigNumber(percent).dividedBy(100).times(EXP_MAX.minus(EXP_MIN)).plus(EXP_MIN);
 
-    //     it(`Function optimalExp(${x.toFixed()})`, async () => {
-    //         try {
-    //             let tmp = web3.utils.toHex(FIXED_1.times(x).toFormat());
-    //             let temp = await TestBancorFormula.methods.optimalExpTest(tmp).call();
-    //             let fixedPoint = new BigNumber(temp);
-    //             let floatPoint = new BigNumber(Decimal(x.toFixed()).exp().times(FIXED_1.toFixed()).toFixed());
-    //             let ratio = fixedPoint.isEqualTo(floatPoint) ? new BigNumber(1) : fixedPoint.dividedBy(floatPoint);
-    //             assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
-    //         }
-    //         catch (error) {
-    //             assert(false, error.message);
-    //         }
-    //     });
-    // }
+        it(`Function optimalExp(${x.toFixed()})`, async () => {
+            try {
+                let tmp = web3.utils.toHex(FIXED_1.times(x).integerValue());
+                let temp = await TestBancorFormula.methods.optimalExpTest(tmp).call();
+                let fixedPoint = new BigNumber(temp);
+                let floatPoint = new BigNumber(Decimal(x.toFixed()).exp().times(FIXED_1.toFixed()).toFixed());
+                let ratio = fixedPoint.isEqualTo(floatPoint) ? new BigNumber(1) : fixedPoint.dividedBy(floatPoint);
+                assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
+            }
+            catch (error) {
+                assert(false, error.message);
+            }
+        });
+    }
 
-    // for (let n = 0; n < 256 - constants.MAX_PRECISION; n++) {
-    //     let values = [
-    //         new BigNumber(2).exponentiatedBy(n),
-    //         new BigNumber(2).exponentiatedBy(n).plus(1),
-    //         new BigNumber(2).exponentiatedBy(n).times(1.5),
-    //         new BigNumber(2).exponentiatedBy(n+1).minus(1),
-    //     ];
+    for (let n = 0; n < 256 - constants.MAX_PRECISION; n++) {
+        let values = [
+            new BigNumber(2).exponentiatedBy(n),
+            new BigNumber(2).exponentiatedBy(n).plus(1),
+            new BigNumber(2).exponentiatedBy(n).times(1.5),
+            new BigNumber(2).exponentiatedBy(n+1).minus(1),
+        ];
 
-    //     for (let index = 0; index < values.length; index++) {
-    //         let x = values[index];
+        for (let index = 0; index < values.length; index++) {
+            let x = values[index];
 
-    //         it(`Function generalLog(${x.toFixed()})`, async () => {
-    //             try {
-    //                 let tmp = web3.utils.toHex(FIXED_1.times(x).toFormat());
-    //                 let fixedPoint = await TestBancorFormula.methods.generalLogTest(tmp).call();
-    //                 let floatPoint = new BigNumber(Decimal(x.toFixed()).ln().times(FIXED_1.toFixed()).toFixed());
-    //                 let ratio = fixedPoint.isEqualTo(floatPoint) ? new BigNumber(1) : fixedPoint.dividedBy(floatPoint);
-    //                 assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
-    //             }
-    //             catch (error) {
-    //                 assert(false, error.message);
-    //             }
-    //         });
-    //     }
-    // }
+            it(`Function generalLog(${x.toFixed()})`, async () => {
+                try {
+                    let tmp = web3.utils.toHex(FIXED_1.times(x).integerValue());
+                    let temp = await TestBancorFormula.methods.generalLogTest(tmp).call();
+                    let fixedPoint = new BigNumber(temp);
+                    let floatPoint = new BigNumber(Decimal(x.toFixed()).ln().times(FIXED_1.toFixed()).toFixed());
+                    let ratio = fixedPoint.isEqualTo(floatPoint) ? new BigNumber(1) : fixedPoint.dividedBy(floatPoint);
+                    assert(ratio.isGreaterThanOrEqualTo("0.99999999999999999999999999999999999") && ratio.isLessThanOrEqualTo("1"), `ratio = ${ratio.toFixed()}`);
+                }
+                catch (error) {
+                    assert(false, error.message);
+                }
+            });
+        }
+    }
 });

@@ -57,6 +57,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "bignumber.js": "^8.1.1",
     "embarkjs-connector-web3": "^4.0.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
