@@ -131,34 +131,26 @@ contract("DAppStore", function () {
     }
   })
 
-  it("should set the metadata correctly", async function () {
-    let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000001";
-    await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[0] });
-    let receipt = await DAppStore.methods.dapps(0).call();
-    assert.strictEqual(metadata, receipt.metadata);
-  })
-
   it("should update the metadata correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000002";
-    await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[0] });
+    let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
+    await DAppStore.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[0] });
     let receipt = await DAppStore.methods.dapps(0).call();
-    assert.strictEqual(metadata, receipt.metadata);
+    assert.strictEqual(TestUtils.getBytes32FromIpfsHash(metadata), receipt.metadata);
   })
 
   it("should not let anyone other than the developer update the metadata", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let metadata_actual = "0x0000000000000000000000000000000000000000000000000000000000000002";
-    let metadata = "0x0000000000000000000000000000000000000000000000000000000000000003";
+    let metadata_actual = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
+    let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBDDeu";
     try {
-      await DAppStore.methods.setMetadata(id,metadata).send({ from: accounts[1] });
+      await DAppStore.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[1] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
     let receipt = await DAppStore.methods.dapps(0).call();
-    assert.strictEqual(metadata_actual, receipt.metadata);
+    assert.strictEqual(TestUtils.getBytes32FromIpfsHash(metadata_actual), receipt.metadata);
   })
 
   it("should handle first upvote correctly", async function () {
@@ -599,9 +591,10 @@ contract("DAppStore", function () {
     let id = "0x0000000000000000000000000000000000000000000000000000000000000001";
     let temp = await DAppStore.methods.safeMax().call();
     let amount = parseInt(temp, 10);
+    let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
 
     let receipt = await DAppStore.methods.dapps(1).call();   
@@ -638,9 +631,10 @@ contract("DAppStore", function () {
     let safe = await DAppStore.methods.safeMax().call();
     let percent = (safe/max * 100) + 1;
     let amount = parseInt(max, 10) * percent;
+    let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
       await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
