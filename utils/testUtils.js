@@ -1,4 +1,5 @@
 /*global assert, web3*/
+const bs58 = require('bs58');
 
 // This has been tested with the real Ethereum network and Testrpc.
 // Copied and edited from: https://gist.github.com/xavierlepretre/d5583222fde52ddfbc58b7cfa0d2d0a9
@@ -146,3 +147,16 @@ exports.assertReverts = (contractMethodCall, maxGasAvailable) => {
     await evmMethod("evm_increaseTime", [Number(amount)]);
     await evmMethod("evm_mine");
   };
+
+
+exports.getBytes32FromIpfsHash = ipfsListing => {
+  const decodedHash = bs58.decode(ipfsListing).slice(2).toString('hex')
+  return `0x${decodedHash}`
+}
+
+exports.getIpfsHashFromBytes32 = bytes32Hex => {
+  const hashHex = `1220${bytes32Hex.slice(2)}`
+  const hashBytes = Buffer.from(hashHex, 'hex')
+  const hashStr = bs58.encode(hashBytes)
+  return hashStr
+}

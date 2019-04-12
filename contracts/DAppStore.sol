@@ -31,7 +31,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     struct Data {
         address developer;
         bytes32 id;
-        bytes metadata;
+        bytes32 metadata;
         uint balance;
         uint rate;
         uint available;
@@ -68,9 +68,14 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
      * @dev Anyone can create a DApp (i.e an arb piece of data this contract happens to care about).
      * @param _id bytes32 unique identifier.
      * @param _amount of tokens to stake on initial ranking.
+     * @param _metadata metadata hex string
      */
-    function createDApp(bytes32 _id, uint _amount) external { 
-        _createDApp(msg.sender, _id, _amount);
+    function createDApp(bytes32 _id, uint _amount, bytes32 _metadata) external { 
+        _createDApp(
+            msg.sender,
+            _id, 
+            _amount, 
+            _metadata);
     }
     
     /**
@@ -139,9 +144,9 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     /**
      * dev Set the content for the dapp
      * @param _id bytes32 unique identifier.
-     * @param _metadata IPFS hash of the metadata
+     * @param _metadata metadata info
      */
-    function setMetadata(bytes32 _id, bytes calldata _metadata) external {
+    function setMetadata(bytes32 _id, bytes32 _metadata) external {
         uint dappIdx = id2index[_id];
         Data storage d = dapps[dappIdx];
         require(d.developer == msg.sender, "Only the developer can update the metadata");
@@ -166,18 +171,22 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     {
         require(_token == address(SNT), "Wrong token");
         require(_token == address(msg.sender), "Wrong account");
-        require(_data.length <= 132, "Incorrect data");
+        require(_data.length <= 196, "Incorrect data");
         
         bytes4 sig;
         bytes32 id;
         uint256 amount;
+        bytes32 metadata;
 
-        (sig, id, amount) = abiDecodeRegister(_data);
-        
+        (sig, id, amount, metadata) = abiDecodeRegister(_data);
         require(_amount == amount, "Wrong amount");
 
-        if (sig == bytes4(0x1a214f43)) {
-            _createDApp(_from, id, amount);
+        if (sig == bytes4(0x7e38d973)) {
+            _createDApp(
+                _from, 
+                id, 
+                amount, 
+                metadata);
         } else if (sig == bytes4(0xac769090)) {
             _downvote(_from, id, amount);
         } else if (sig == bytes4(0x2b3df690)) {
@@ -246,7 +255,14 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         return (balanceDownBy, votesRequired, cost);
     }
 
-    function _createDApp(address _from, bytes32 _id, uint _amount) internal {
+    function _createDApp(
+        address _from, 
+        bytes32 _id, 
+        uint _amount, 
+        bytes32 _metadata
+        ) 
+      internal 
+      {
         require(!existingIDs[_id], "You must submit a unique ID");
         
         require(_amount > 0, "You must spend some SNT to submit a ranking in order to avoid spam");
@@ -259,6 +275,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         Data storage d = dapps[dappIdx];
         d.developer = _from;
         d.id = _id;
+        d.metadata = _metadata;
         
         uint precision;
         uint result;
@@ -351,16 +368,19 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
         bytes memory _data
     ) 
         private  
+        pure
         returns(
             bytes4 sig,
             bytes32 id,
-            uint256 amount
+            uint256 amount,
+            bytes32 metadata
         )
     {
         assembly {
             sig := mload(add(_data, add(0x20, 0)))
             id := mload(add(_data, 36))
             amount := mload(add(_data, 68))
+            metadata := mload(add(_data, 100))
         }
     }
 

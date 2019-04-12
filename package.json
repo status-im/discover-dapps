@@ -5,6 +5,8 @@
   "private": true,
   "dependencies": {
     "@trailofbits/embark-contract-info": "^1.0.0",
+    "bignumber.js": "^8.1.1",
+    "bs58": "^4.0.1",
     "connected-react-router": "^6.3.2",
     "debounce": "^1.2.0",
     "decimal.js": "^10.0.2",

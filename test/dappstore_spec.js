@@ -54,9 +54,10 @@ contract("DAppStore", function () {
   it("should create a new DApp and initialise it correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 10000;
+    let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
 
     let receipt = await DAppStore.methods.dapps(0).call();   
@@ -64,6 +65,7 @@ contract("DAppStore", function () {
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
+    assert.strictEqual(metadata, TestUtils.getIpfsHashFromBytes32(receipt.metadata));
 
     // Check the DApp Store actually receives the SNT!
     let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
@@ -90,9 +92,10 @@ contract("DAppStore", function () {
   it("should not create a new DApp with the same ID", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 1000;
+    let metadata = 'QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue';
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    const encodedCall = DAppStore.methods.createDApp(id,amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
       await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
@@ -104,13 +107,14 @@ contract("DAppStore", function () {
 
   it("should not create a new DApp when exceeding the ceiling or staking nothing", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
+    let metadata = 'QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue';
     let initial = await DAppStore.methods.max().call();
     let amount = parseInt(initial, 10);
     let amount0 = 0;
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
 
-    const encodedCall = DAppStore.methods.createDApp(id,amount).encodeABI();
+    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
       await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
       assert.fail('should have reverted before');
@@ -118,7 +122,7 @@ contract("DAppStore", function () {
       TestUtils.assertJump(error);
     }
 
-    const encodedCall0 = DAppStore.methods.createDApp(id,amount0).encodeABI();
+    const encodedCall0 = DAppStore.methods.createDApp(id,amount0,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
       await SNT.methods.approveAndCall(DAppStore.options.address, amount0, encodedCall0).send({from: accounts[0]});
       assert.fail('should have reverted before');
