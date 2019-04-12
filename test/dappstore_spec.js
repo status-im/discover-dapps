@@ -622,7 +622,7 @@ contract("DAppStore", function () {
     assert.ok(returned <= votes_minted);
   })
 
-  // Comment out line 253 in the contract to run this test properly and see 
+  // Comment out line 268 in the contract to run this test properly and see 
   // the BancorFormula fail to find a suitable position in the maxExponentArray
   it("should prove we have the highest safeMax allowed for by Bancor's power approximation", async function () {
     let id = "0x0000000000000000000000000000000000000000000000000000000000000002";
