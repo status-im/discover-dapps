@@ -367,8 +367,7 @@ contract DAppStore is ApproveAndCallFallBack, BancorFormula {
     function abiDecodeRegister(
         bytes memory _data
     ) 
-        private  
-        pure
+        private 
         returns(
             bytes4 sig,
             bytes32 id,
