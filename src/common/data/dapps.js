@@ -7,7 +7,7 @@ const Dapps = [
     image: '/discover-dapps/images/dapps/airswap.png',
     description: 'Meet the future of trading.',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Bancor',
@@ -15,7 +15,7 @@ const Dapps = [
     image: '/discover-dapps/images/dapps/bancor.png',
     description: 'Bancor is a decentralized liquidity network',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Kyber',
@@ -24,7 +24,7 @@ const Dapps = [
       'On-chain, instant and liquid platform for exchange and payment service',
     image: '/discover-dapps/images/dapps/kyber.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'DAI by MakerDao',
@@ -32,7 +32,7 @@ const Dapps = [
     description: 'Stability for the blockchain',
     image: '/discover-dapps/images/dapps/dai.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Augur',
@@ -41,7 +41,7 @@ const Dapps = [
       'A prediction market protocol owned and operated by the people that use it.',
     image: '/discover-dapps/images/dapps/augur.svg',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'LocalEthereum',
@@ -49,7 +49,7 @@ const Dapps = [
     description: 'The smartest way to buy and sell Ether',
     image: '/discover-dapps/images/dapps/local-ethereum.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Eth2phone',
@@ -57,7 +57,7 @@ const Dapps = [
     description: 'Send Ether by phone number',
     image: '/discover-dapps/images/dapps/eth2phone.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'DDEX',
@@ -66,7 +66,7 @@ const Dapps = [
       'Instant, real-time order matching with secure on-chain settlement',
     image: '/discover-dapps/images/dapps/ddex.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Nuo',
@@ -75,7 +75,7 @@ const Dapps = [
       'The non-custodial way to lend, borrow or margin trade cryptocurrency.',
     image: '/discover-dapps/images/dapps/nuo.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'EasyTrade',
@@ -83,7 +83,7 @@ const Dapps = [
     description: 'One exchange for every token',
     image: '/discover-dapps/images/dapps/easytrade.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'slow.trade',
@@ -92,7 +92,7 @@ const Dapps = [
       'Trade fairly priced crypto assets on the first platform built with the DutchX protocol.',
     image: '/discover-dapps/images/dapps/slowtrade.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Expo Trading',
@@ -100,7 +100,7 @@ const Dapps = [
     description: 'The simplest way to margin trade cryptocurrency.',
     image: '/discover-dapps/images/dapps/expotrading.png',
     category: Categories.EXCHANGES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'blockimmo',
@@ -109,7 +109,7 @@ const Dapps = [
       'blockimmo is a blockchain powered, regulated platform enabling shared property investments and ownership.',
     image: '/discover-dapps/images/dapps/blockimmo.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'CryptoCribs',
@@ -117,7 +117,7 @@ const Dapps = [
     description: 'Travel the globe. Pay in crypto.',
     image: '/discover-dapps/images/dapps/cryptocribs.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Ethlance',
@@ -126,7 +126,7 @@ const Dapps = [
       'The future of work is now. Hire people or work yourself in return for ETH.',
     image: '/discover-dapps/images/dapps/ethlance.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'OpenSea',
@@ -134,7 +134,7 @@ const Dapps = [
     description: 'The largest decentralized marketplace for cryptogoods',
     image: '/discover-dapps/images/dapps/opensea.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'KnownOrigin',
@@ -142,7 +142,7 @@ const Dapps = [
     description: 'Discover, buy and collect digital artwork.',
     image: '/discover-dapps/images/dapps/knownorigin.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'Name Bazaar',
@@ -150,7 +150,7 @@ const Dapps = [
     description: 'ENS name marketplace',
     image: '/discover-dapps/images/dapps/name-bazaar.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'The Bounties Network',
@@ -158,7 +158,7 @@ const Dapps = [
     description: 'Bounties on any task, paid in any token',
     image: '/discover-dapps/images/dapps/bounties-network.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Emoon',
@@ -167,7 +167,7 @@ const Dapps = [
       'A decentralized marketplace for buying & selling crypto assets',
     image: '/discover-dapps/images/dapps/emoon.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Astro Ledger',
@@ -175,7 +175,7 @@ const Dapps = [
     description: 'Funding space grants with blockchain star naming.',
     image: '/discover-dapps/images/dapps/astroledger.svg',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'SuperRare',
@@ -184,7 +184,7 @@ const Dapps = [
       'Buy, sell and collect unique digital creations by artists around the world',
     image: '/discover-dapps/images/dapps/superrare.png',
     category: Categories.MARKETPLACES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'CryptoCare',
@@ -193,7 +193,7 @@ const Dapps = [
       'Give your Ether some heart! Collectibles that make the world a better place.',
     image: '/discover-dapps/images/dapps/cryptocare.jpg',
     category: Categories.COLLECTIBLES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'CryptoKitties',
@@ -201,7 +201,7 @@ const Dapps = [
     description: 'Collect and breed adorable digital cats.',
     image: '/discover-dapps/images/dapps/cryptokitties.png',
     category: Categories.COLLECTIBLES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Cryptographics',
@@ -210,7 +210,7 @@ const Dapps = [
       'Cryptographics is a digital art hub where artists, creators and collectors can submit asset packs, create unique cryptographics and trade them.',
     image: '/discover-dapps/images/dapps/cryptographics.png',
     category: Categories.COLLECTIBLES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'CryptoPunks',
@@ -218,7 +218,7 @@ const Dapps = [
     description: '10,000 unique collectible punks',
     image: '/discover-dapps/images/dapps/cryptopunks.png',
     category: Categories.COLLECTIBLES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Crypto Takeovers',
@@ -226,7 +226,7 @@ const Dapps = [
     description: 'Predict and conquer the world. Make a crypto fortune.',
     image: '/discover-dapps/images/dapps/cryptotakeovers.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'CryptoFighters',
@@ -234,7 +234,7 @@ const Dapps = [
     description: 'Collect train and fight digital fighters.',
     image: '/discover-dapps/images/dapps/cryptofighters.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'Decentraland',
@@ -243,7 +243,7 @@ const Dapps = [
       'Decentraland is a virtual reality platform powered by the Ethereum blockchain.',
     image: '/discover-dapps/images/dapps/decentraland.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Dragonereum',
@@ -251,7 +251,7 @@ const Dapps = [
     description: 'Own and trade dragons, fight with other players.',
     image: '/discover-dapps/images/dapps/dragonereum.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Etherbots',
@@ -259,7 +259,7 @@ const Dapps = [
     description: 'Robot wars on the Ethereum Platform',
     image: '/discover-dapps/images/dapps/etherbots.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Etheremon',
@@ -267,7 +267,7 @@ const Dapps = [
     description: 'Decentralized World of Ether Monsters',
     image: '/discover-dapps/images/dapps/etheremon.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'CryptoStrikers',
@@ -275,7 +275,7 @@ const Dapps = [
     description: 'The Beautiful (card) Game',
     image: '/discover-dapps/images/dapps/cryptostrikers.png',
     category: Categories.GAMES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   // {
   //   name: 'FairHouse',
@@ -283,7 +283,7 @@ const Dapps = [
   //   description: 'Fair and transparent entertainment games.',
   //   image: '/discover-dapps/images/dapps/fairhouse.png',
   //   category: Categories.GAMES,
-  //   dateAdded: null,
+  //   dateAdded: '2019-04-11',
   // },
   {
     name: 'Cent',
@@ -291,7 +291,7 @@ const Dapps = [
     description: 'Get wisdom, get money',
     image: '/discover-dapps/images/dapps/cent.png',
     category: Categories.SOCIAL_NETWORKS,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Kickback',
@@ -300,7 +300,7 @@ const Dapps = [
       'Event no shows? No problem. Kickback asks event attendees to put skin in the game with Ethereum.',
     image: '/discover-dapps/images/dapps/kickback.png',
     category: Categories.SOCIAL_NETWORKS,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Peepeth',
@@ -308,7 +308,7 @@ const Dapps = [
     description: 'Blockchain-powered microblogging',
     image: '/discover-dapps/images/dapps/peepeth.png',
     category: Categories.SOCIAL_NETWORKS,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'livepeer.tv',
@@ -316,7 +316,7 @@ const Dapps = [
     description: 'Decentralized video broadcasting',
     image: '/discover-dapps/images/dapps/livepeer.png',
     category: Categories.OTHER,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Aragon',
@@ -324,7 +324,7 @@ const Dapps = [
     description: 'Build unstoppable organizations on Ethereum.',
     image: '/discover-dapps/images/dapps/aragon.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Compound Finance',
@@ -332,7 +332,7 @@ const Dapps = [
     description: 'Decentralized Bank.',
     image: '/discover-dapps/images/dapps/compoundfinance.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'InstaDApp',
@@ -340,7 +340,7 @@ const Dapps = [
     description: 'Decentralized Bank.',
     image: '/discover-dapps/images/dapps/instadapp.jpg',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'Livepeer',
@@ -348,7 +348,7 @@ const Dapps = [
     description: 'Decentralized video broadcasting',
     image: '/discover-dapps/images/dapps/livepeer.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'ETHLend',
@@ -356,7 +356,7 @@ const Dapps = [
     description: 'Decentralized lending on Ethereum',
     image: '/discover-dapps/images/dapps/ethlend.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'Civitas',
@@ -364,7 +364,7 @@ const Dapps = [
     description: 'Blockchain-powered local communities',
     image: '/discover-dapps/images/dapps/civitas.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: '3Box',
@@ -372,7 +372,7 @@ const Dapps = [
     description: 'Create and manage your Ethereum Profile.',
     image: '/discover-dapps/images/dapps/3Box.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'Hexel',
@@ -380,7 +380,7 @@ const Dapps = [
     description: 'Create your own cryptocurrency',
     image: '/discover-dapps/images/dapps/hexel.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-11',
   },
   {
     name: 'Smartz',
@@ -388,7 +388,7 @@ const Dapps = [
     description: 'Easy smart contract management',
     image: '/discover-dapps/images/dapps/smartz.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
   {
     name: 'SNT Voting DApp',
@@ -397,7 +397,7 @@ const Dapps = [
       'Let your SNT be heard! Vote on decisions exclusive to SNT holders, or create a poll of your own.',
     image: '/discover-dapps/images/dapps/snt-voting.png',
     category: Categories.UTILITIES,
-    dateAdded: null,
+    dateAdded: '2019-04-05',
   },
 ]
 
