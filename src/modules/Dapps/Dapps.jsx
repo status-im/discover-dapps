@@ -18,7 +18,7 @@ class Dapps extends React.Component {
 
   componentDidMount() {
     this.scanHeaderPositions()
-    this.boundScroll = debounce(this.handleScroll.bind(this), 50)
+    this.boundScroll = debounce(this.handleScroll.bind(this), 1)
     window.addEventListener('scroll', this.boundScroll)
   }
 
