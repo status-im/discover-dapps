@@ -12,7 +12,7 @@ const Categories = props => {
   return (
     <>
       <div className={styles.header}>
-        <h2 className={styles.headline}>Discover DApps</h2>
+        <h2 className={styles.headline}>Categories</h2>
         <ViewAll size="large" />
       </div>
       <div className={styles.categories}>
