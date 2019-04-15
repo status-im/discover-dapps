@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/discover-dapps/static/media/dropdown-arrows.94569e7a.svg"
   },
   {
-    "revision": "2cc0ba3e1d222991aea608e910cf4856",
+    "revision": "0b9637365cdf276baaaf192f664b6bbe",
     "url": "/discover-dapps/index.html"
   }
 ];
