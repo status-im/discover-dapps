@@ -1,0 +1,66 @@
+@import '../../../common/styles/variables';
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: unset;
+  margin: 0 calculateRem(10) calculateRem(30) calculateRem(10);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+
+  @media (min-width: $desktop) {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: unset;
+    overflow-x: hidden;
+  }
+}
+
+.dapp {
+  font-family: $font;
+  background: $background;
+  display: flex;
+  flex-direction: column;
+  margin: 0 calculateRem(20) calculateRem(20) calculateRem(20);
+}
+
+.banner {
+  max-width: calculateRem(400);
+  max-height: calculateRem(400);
+  width: 70vw;
+  margin-top: calculateRem(30);
+  margin-right: calculateRem(16);
+  border-radius: 1%;
+}
+
+.dapp_details {
+  display: flex;
+  flex-direction: row;
+}
+
+.dapp_details__image {
+  max-width: calculateRem(40);
+  max-height: calculateRem(40);
+  margin-top: calculateRem(10);
+  margin-right: calculateRem(16);
+  border-radius: 50%;
+}
+
+.dapp_details__header {
+  color: $headline-color;
+  font-size: calculateRem(15);
+  line-height: calculateRem(22);
+  margin-bottom: calculateRem(2);
+  margin-top: calculateRem(12);
+  font-weight: 500;
+}
+
+.dapp_details__description {
+  color: $text-color;
+  font-size: calculateRem(13);
+  line-height: calculateRem(18);
+  margin-bottom: calculateRem(2);
+  margin-top: 0;
+  max-height: calculateRem(40);
+  overflow-y: hidden;
+}
