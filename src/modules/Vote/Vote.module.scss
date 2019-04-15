@@ -154,6 +154,14 @@
   font-family: $font;
 }
 
+.inputArea span {
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+  position: relative;
+  top: 5px;
+}
+
 .image {
   max-width: calculateRem(40);
   max-height: calculateRem(40);

@@ -110,17 +110,37 @@ class Vote extends Component {
             {`${getCategoryName(dapp.category)} №${categoryPosition}`}
           </span>
         </div>
-        <div className={styles.inputArea}>
-          <input type="text" value={sntValue} onChange={this.handleChange} />
-        </div>
+        {!isUpvote && (
+          <div className={styles.inputArea}>
+            <span>{downvoteSNTcost}</span>
+          </div>
+        )}
+        {isUpvote && (
+          <div className={styles.inputArea}>
+            <input type="text" value={sntValue} onChange={this.handleChange} />
+          </div>
+        )}
+
         <div className={styles.footer}>
-          <p className={styles.disclaimer}>
-            SNT you spend to upvote is locked in the contract and contributes
-            directly to {dapp.name}'s ranking.{' '}
-            <a href="#" target="_blank">
-              Learn more↗
-            </a>
-          </p>
+          {isUpvote && (
+            <p className={styles.disclaimer}>
+              SNT you spend to upvote is locked in the contract and contributes
+              directly to {dapp.name}'s ranking.{' '}
+              <a href="#" target="_blank">
+                Learn more↗
+              </a>
+            </p>
+          )}
+          {!isUpvote && (
+            <p className={styles.disclaimer}>
+              SNT you spend to downvote goes directly back to {dapp.name}.
+              Downvoting moves their DApp down by 1% of the current ranking. The
+              cost is fixed by our unique bonded curve.{' '}
+              <a href="#" target="_blank">
+                Learn more↗
+              </a>
+            </p>
+          )}
           <button type="submit" disabled={!sntValue}>
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
