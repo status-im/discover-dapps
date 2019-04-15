@@ -1,5 +1,6 @@
 import React from 'react'
 import RecentlyAdded from '../RecentlyAdded'
+import HighestRanked from '../HighestRanked'
 import Categories from '../Categories'
 import FeaturedDapps from '../../common/components/FeatureDapps'
 import Footer from '../Footer'
@@ -36,6 +37,7 @@ class Home extends React.Component {
             </div>
             <FeaturedDapps featured={featured} />
             <Categories />
+            <HighestRanked />
             <RecentlyAdded />
             <Footer />
           </>
