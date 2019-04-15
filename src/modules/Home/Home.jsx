@@ -1,9 +1,11 @@
 import React from 'react'
 import RecentlyAdded from '../RecentlyAdded'
-import HighestRanked from '../HighestRanked'
 import Categories from '../Categories'
+import FeaturedDapps from '../../common/components/FeatureDapps'
 import Footer from '../Footer'
 import LoadingHome from '../LoadingHome'
+import featured from '../../common/data/featured'
+import styles from './Home.module.scss'
 
 class Home extends React.Component {
   constructor(props) {
@@ -29,8 +31,11 @@ class Home extends React.Component {
       <>
         {loaded && (
           <>
+            <div className={styles.header}>
+              <h2 className={styles.headline}>Discover</h2>
+            </div>
+            <FeaturedDapps featured={featured} />
             <Categories />
-            <HighestRanked />
             <RecentlyAdded />
             <Footer />
           </>
