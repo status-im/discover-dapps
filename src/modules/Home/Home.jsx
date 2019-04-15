@@ -1,9 +1,10 @@
 import React from 'react'
 import RecentlyAdded from '../RecentlyAdded'
-import HighestRanked from '../HighestRanked'
 import Categories from '../Categories'
+import FeaturedDapps from '../../common/components/FeatureDapps'
 import Footer from '../Footer'
 import LoadingHome from '../LoadingHome'
+import featured from '../../common/data/featured'
 
 class Home extends React.Component {
   constructor(props) {
@@ -29,8 +30,8 @@ class Home extends React.Component {
       <>
         {loaded && (
           <>
+            <FeaturedDapps featured={featured} />
             <Categories />
-            <HighestRanked />
             <RecentlyAdded />
             <Footer />
           </>
