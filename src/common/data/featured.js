@@ -8,19 +8,19 @@ import KyberLogo from '../assets/images/featured/kyber_logo.png'
 const featuredDapps = [
   {
     name: 'CryptoKittes',
-    description: 'Get purring with two new crypto influencer Kitties',
+    description: 'Collect and breed adorable digital cats',
     banner: CryptoKittiesBanner,
     icon: CryptoKittiesLogo,
   },
   {
     name: 'Airswap',
-    description: 'Get purring with two new crypto influencer Kitties',
+    description: 'Meet the future of trading',
     banner: AirswapBanner,
     icon: AirswapLogo,
   },
   {
     name: 'Kyber',
-    description: 'Get purring with two new crypto influencer Kitties',
+    description: 'On-chain, instant and liquid exchange and payment',
     banner: KyberBanner,
     icon: KyberLogo,
   },

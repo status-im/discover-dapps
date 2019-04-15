@@ -21,7 +21,7 @@ const Dapps = [
     name: 'Kyber',
     url: 'https://web3.kyber.network',
     description:
-      'On-chain, instant and liquid platform for exchange and payment service',
+      'On-chain, instant and liquid platform for exchange and payment',
     image: '/images/dapps/kyber.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
