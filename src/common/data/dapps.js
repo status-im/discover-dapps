@@ -5,7 +5,7 @@ const Dapps = [
     name: 'Airswap',
     url: 'https://instant.airswap.io/',
     image: '/images/dapps/airswap.png',
-    description: 'Meet the future of trading.',
+    description: 'Meet the future of trading',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
   },
@@ -38,7 +38,7 @@ const Dapps = [
     name: 'Augur',
     url: 'https://augur.net',
     description:
-      'A prediction market protocol owned and operated by the people that use it.',
+      'A prediction market protocol owned and operated by the people that use it',
     image: '/images/dapps/augur.svg',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-11',
@@ -72,7 +72,7 @@ const Dapps = [
     name: 'Nuo',
     url: 'https://app.nuo.network/lend/',
     description:
-      'The non-custodial way to lend, borrow or margin trade cryptocurrency.',
+      'The non-custodial way to lend, borrow or margin trade cryptocurrency',
     image: '/images/dapps/nuo.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
@@ -89,7 +89,7 @@ const Dapps = [
     name: 'slow.trade',
     url: 'https://slow.trade/',
     description:
-      'Trade fairly priced crypto assets on the first platform built with the DutchX protocol.',
+      'Trade fairly priced crypto assets on the first platform built with the DutchX protocol',
     image: '/images/dapps/slowtrade.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
@@ -97,7 +97,7 @@ const Dapps = [
   {
     name: 'Expo Trading',
     url: 'https://expotrading.com/trade/',
-    description: 'The simplest way to margin trade cryptocurrency.',
+    description: 'The simplest way to margin trade cryptocurrency',
     image: '/images/dapps/expotrading.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-11',
@@ -106,7 +106,7 @@ const Dapps = [
     name: 'blockimmo',
     url: 'https://blockimmo.ch',
     description:
-      'blockimmo is a blockchain powered, regulated platform enabling shared property investments and ownership.',
+      'blockimmo is a blockchain powered, regulated platform enabling shared property investments and ownership',
     image: '/images/dapps/blockimmo.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
@@ -114,7 +114,7 @@ const Dapps = [
   {
     name: 'CryptoCribs',
     url: 'https://cryptocribs.com',
-    description: 'Travel the globe. Pay in crypto.',
+    description: 'Travel the globe. Pay in crypto',
     image: '/images/dapps/cryptocribs.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
@@ -123,7 +123,7 @@ const Dapps = [
     name: 'Ethlance',
     url: 'https://ethlance.com',
     description:
-      'The future of work is now. Hire people or work yourself in return for ETH.',
+      'The future of work is now. Hire people or work yourself in return for ETH',
     image: '/images/dapps/ethlance.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
@@ -139,7 +139,7 @@ const Dapps = [
   {
     name: 'KnownOrigin',
     url: 'https://dapp.knownorigin.io/gallery',
-    description: 'Discover, buy and collect digital artwork.',
+    description: 'Discover, buy and collect digital artwork',
     image: '/images/dapps/knownorigin.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-11',
@@ -172,7 +172,7 @@ const Dapps = [
   {
     name: 'Astro Ledger',
     url: 'https://www.astroledger.org/#/onSale',
-    description: 'Funding space grants with blockchain star naming.',
+    description: 'Funding space grants with blockchain star naming',
     image: '/images/dapps/astroledger.svg',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-11',
@@ -190,7 +190,7 @@ const Dapps = [
     name: 'CryptoCare',
     url: 'https://cryptocare.tech',
     description:
-      'Give your Ether some heart! Collectibles that make the world a better place.',
+      'Give your Ether some heart! Collectibles that make the world a better place',
     image: '/images/dapps/cryptocare.jpg',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-11',
@@ -198,7 +198,7 @@ const Dapps = [
   {
     name: 'CryptoKitties',
     url: 'https://www.cryptokitties.co',
-    description: 'Collect and breed adorable digital cats.',
+    description: 'Collect and breed adorable digital cats',
     image: '/images/dapps/cryptokitties.png',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-05',
@@ -207,7 +207,7 @@ const Dapps = [
     name: 'Cryptographics',
     url: 'https://cryptographics.app/',
     description:
-      'Cryptographics is a digital art hub where artists, creators and collectors can submit asset packs, create unique cryptographics and trade them.',
+      'A digital art hub for creation, trading, and collecting unique items',
     image: '/images/dapps/cryptographics.png',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-05',
@@ -223,7 +223,7 @@ const Dapps = [
   {
     name: 'Crypto Takeovers',
     url: 'https://cryptotakeovers.com/',
-    description: 'Predict and conquer the world. Make a crypto fortune.',
+    description: 'Predict and conquer the world. Make a crypto fortune',
     image: '/images/dapps/cryptotakeovers.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
@@ -231,7 +231,7 @@ const Dapps = [
   {
     name: 'CryptoFighters',
     url: 'https://cryptofighters.io',
-    description: 'Collect train and fight digital fighters.',
+    description: 'Collect train and fight digital fighters',
     image: '/images/dapps/cryptofighters.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-11',
@@ -240,7 +240,7 @@ const Dapps = [
     name: 'Decentraland',
     url: 'https://market.decentraland.org/',
     description:
-      'Decentraland is a virtual reality platform powered by the Ethereum blockchain.',
+      'A virtual reality platform powered by the Ethereum blockchain',
     image: '/images/dapps/decentraland.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
@@ -248,7 +248,7 @@ const Dapps = [
   {
     name: 'Dragonereum',
     url: 'https://dapp.dragonereum.io',
-    description: 'Own and trade dragons, fight with other players.',
+    description: 'Own and trade dragons, fight with other players',
     image: '/images/dapps/dragonereum.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
@@ -256,7 +256,7 @@ const Dapps = [
   {
     name: 'Etherbots',
     url: 'https://etherbots.io/',
-    description: 'Robot wars on the Ethereum Platform',
+    description: 'Robot wars on Ethereum',
     image: '/images/dapps/etherbots.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
@@ -297,7 +297,7 @@ const Dapps = [
     name: 'Kickback',
     url: 'https://kickback.events/',
     description:
-      'Event no shows? No problem. Kickback asks event attendees to put skin in the game with Ethereum.',
+      'Event no shows? No problem. Kickback asks event attendees to put skin in the game with Ethereum',
     image: '/images/dapps/kickback.png',
     category: Categories.SOCIAL_NETWORKS,
     dateAdded: '2019-04-05',
@@ -321,7 +321,7 @@ const Dapps = [
   {
     name: 'Aragon',
     url: 'https://mainnet.aragon.org/',
-    description: 'Build unstoppable organizations on Ethereum.',
+    description: 'Build unstoppable organizations on Ethereum',
     image: '/images/dapps/aragon.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-05',
@@ -329,7 +329,8 @@ const Dapps = [
   {
     name: 'Compound Finance',
     url: 'https://app.compound.finance/',
-    description: 'Decentralized Bank.',
+    description:
+      'An open-source protocol for algorithmic, efficient Money Markets on Ethereum',
     image: '/images/dapps/compoundfinance.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
@@ -337,7 +338,7 @@ const Dapps = [
   {
     name: 'InstaDApp',
     url: 'https://instadapp.io/',
-    description: 'Decentralized Bank.',
+    description: 'Decentralized Banking',
     image: '/images/dapps/instadapp.jpg',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
@@ -369,7 +370,7 @@ const Dapps = [
   {
     name: '3Box',
     url: 'https://3box.io/',
-    description: 'Create and manage your Ethereum Profile.',
+    description: 'Create and manage your Ethereum Profile',
     image: '/images/dapps/3Box.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',

@@ -8,7 +8,7 @@ import Dapps from '../Dapps'
 
 export default () => (
   <Switch>
-    <Route exact path="/discover-dapps/" component={Home} />
+    <Route exact path="/" component={Home} />
     <Route path="/categories" component={Filtered} />
     <Route path="/all" component={Dapps} />
     <Route path="/recently-added" component={RecentlyAdded} />
