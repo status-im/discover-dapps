@@ -1,0 +1,170 @@
+@import '../../common/styles/variables';
+
+.tabs {
+  width: 100%;
+  border-bottom: 1px solid #eef2f5;
+  text-align: center;
+}
+
+.tabs button {
+  color: #939ba1;
+  background: transparent;
+  border: none;
+  text-transform: uppercase;
+  font-family: $font;
+  height: calculateRem(40);
+  letter-spacing: calculateRem(0.2);
+  display: inline-block;
+  width: 130px;
+  cursor: pointer;
+}
+
+.tabs button.active:after {
+  display: block;
+  clear: both;
+  content: '';
+  position: relative;
+  left: 0;
+  bottom: -9px;
+  height: 1px;
+  width: 24px;
+  border-bottom: 2px solid $link-color;
+  margin: 0 auto;
+}
+
+.tabs button.active {
+  color: $link-color;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+
+.footer button {
+  background: $link-color;
+  border-radius: 8px;
+  color: #fff;
+  margin: calculateRem(10) auto;
+  border: none;
+  font-family: $font;
+  padding: calculateRem(11) calculateRem(38);
+  font-size: calculateRem(15);
+}
+
+.footer button:disabled,
+.footer button[disabled] {
+  background: $text-color;
+}
+
+.footer .disclaimer {
+  font-size: calculateRem(15);
+  color: $text-color;
+  line-height: 22px;
+  font-family: $font;
+  padding: calculateRem(16);
+  border-bottom: 1px solid #eef2f5;
+  margin: 0;
+}
+
+.footer .disclaimer a {
+  text-decoration: none;
+  color: $link-color;
+}
+
+.item,
+.dapp {
+  line-height: 22px;
+  font-family: $font;
+  font-size: calculateRem(15);
+  display: block;
+  height: calculateRem(32);
+  padding: 0 calculateRem(12);
+}
+
+.item img,
+.dapp img {
+  margin-right: calculateRem(12);
+  vertical-align: middle;
+}
+
+.dapp {
+  margin-bottom: calculateRem(12);
+  font-size: calculateRem(17);
+  font-weight: 500;
+}
+
+.dapp img {
+  vertical-align: bottom;
+}
+
+.badge {
+  float: right;
+  border-radius: 24px;
+  color: #ffffff;
+  font-family: $font;
+  font-size: calculateRem(15);
+  margin-right: calculateRem(16);
+  padding: calculateRem(3) calculateRem(10);
+}
+
+.greenBadge {
+  @extend .badge;
+  background: #44d058;
+}
+
+.redBadge {
+  @extend .badge;
+  background: #f00;
+}
+
+.inputArea {
+  text-align: center;
+  width: 300px;
+  position: fixed;
+  top: 40%;
+}
+
+.inputArea input {
+  margin: auto;
+  width: 50%;
+  border: none;
+  border-bottom: 1px solid #eef2f5;
+  text-align: center;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+}
+
+.inputArea input:focus {
+  outline: none;
+}
+
+.inputArea::after {
+  position: absolute;
+  top: 5px;
+  right: 0;
+  transition: all 0.05s ease-in-out;
+  content: 'SNT';
+  color: #939ba1;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+}
+
+.inputArea span {
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+  position: relative;
+  top: 5px;
+}
+
+.image {
+  max-width: calculateRem(40);
+  max-height: calculateRem(40);
+  margin-top: calculateRem(15);
+  margin-right: calculateRem(16);
+}
