@@ -42,11 +42,11 @@ const DappListItem = props => {
               <img src={sntIcon} alt="SNT" width="16" height="16" />
               12,345
             </span>
-            <a className={styles.vote} href="#abc">
+            <a className={styles.vote} href="/vote">
               <img src={upvoteArrowIcon} alt="" />
               Upvote
             </a>
-            <a className={styles.vote} href="#abc">
+            <a className={styles.vote} href="/vote">
               <img src={downvoteArrowIcon} alt="" />
               Downvote
             </a>
