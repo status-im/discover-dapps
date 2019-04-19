@@ -3,7 +3,9 @@ import { routerMiddleware } from 'connected-react-router'
 import { createBrowserHistory } from 'history'
 import reducer from './reducers'
 
-export const history = createBrowserHistory()
+export const history = createBrowserHistory({
+  basename: '/discover-dapps/',
+})
 
 const composeWithDevTools =
   /* eslint-disable-next-line no-underscore-dangle */
