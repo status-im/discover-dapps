@@ -59,9 +59,9 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
 
         decimals = 1000000; // 4 decimal points for %, 2 because we only use 1/100th of total in circulation
         
-        max = (total * ceiling) / decimals; 
+        max = total.mul(ceiling).div(decimals); 
 
-        safeMax = 77 * max / 100; // Limited by accuracy of BancorFormula
+        safeMax = uint(77).mul(max).div(100); // Limited by accuracy of BancorFormula
     }
     
     /**
@@ -115,9 +115,9 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         uint precision;
         uint result;
 
-        d.balance = d.balance - _amount;
-        d.rate = decimals - (d.balance * decimals/max);
-        d.available = d.balance * d.rate;
+        d.balance = d.balance.sub(_amount);
+        d.rate = decimals.sub(d.balance.mul(decimals).div(max));
+        d.available = d.balance.mul(d.rate);
         
         (result, precision) = BancorFormula.power(
             d.available, 
@@ -130,11 +130,11 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
             d.votesCast = d.votesMinted;
         }
         
-        uint temp1 = d.votesCast * d.rate * d.available;
-        uint temp2 = d.votesMinted * decimals * decimals;
-        uint effect = temp1 / temp2;
+        uint temp1 = d.votesCast.mul(d.rate).mul(d.available);
+        uint temp2 = d.votesMinted.mul(decimals).mul(decimals);
+        uint effect = temp1.div(temp2);
 
-        d.effectiveBalance = d.balance - effect;
+        d.effectiveBalance = d.balance.sub(effect);
         
         require(SNT.transfer(d.developer, _amount), "Transfer failed");
         
@@ -206,7 +206,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         uint dappIdx = id2index[_id];
         Data memory d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
-        require(d.balance + _amount <= safeMax, "You cannot upvote by this much, try with a lower amount");
+        require(d.balance.add(_amount) <= safeMax, "You cannot upvote by this much, try with a lower amount");
 
         // Special case - no downvotes yet cast
         if (d.votesCast == 0) {
@@ -216,9 +216,9 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         uint precision;
         uint result;
         
-        uint mBalance = d.balance + _amount;
-        uint mRate = decimals - (mBalance * decimals/max);
-        uint mAvailable = mBalance * mRate;
+        uint mBalance = d.balance.add(_amount);
+        uint mRate = decimals.sub(mBalance.mul(decimals).div(max));
+        uint mAvailable = mBalance.mul(mRate);
         
         (result, precision) = BancorFormula.power(
             mAvailable, 
@@ -228,13 +228,13 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         
         uint mVMinted = result >> precision;
 
-        uint temp1 = d.votesCast * mRate * mAvailable;
-        uint temp2 = mVMinted * decimals * decimals;
-        uint mEffect = temp1 / temp2;
+        uint temp1 = d.votesCast.mul(mRate).mul(mAvailable);
+        uint temp2 = mVMinted.mul(decimals).mul(decimals);
+        uint mEffect = temp1.div(temp2);
         
-        uint mEBalance = mBalance - mEffect;
+        uint mEBalance = mBalance.sub(mEffect);
         
-        return (mEBalance - d.effectiveBalance);
+        return (mEBalance.sub(d.effectiveBalance));
     }
 
      /**
@@ -247,11 +247,11 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         Data memory d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        uint balanceDownBy = (d.effectiveBalance / 100);
-        uint votesRequired = (balanceDownBy * d.votesMinted * d.rate) / d.available;
-        uint votesAvailable = d.votesMinted - d.votesCast - votesRequired;
-        uint temp = (d.available / votesAvailable) * (votesRequired);
-        uint cost = temp / decimals;
+        uint balanceDownBy = (d.effectiveBalance.div(100));
+        uint votesRequired = (balanceDownBy.mul(d.votesMinted).mul(d.rate)).div(d.available);
+        uint votesAvailable = d.votesMinted.sub(d.votesCast).sub(votesRequired);
+        uint temp = (d.available.div(votesAvailable)).mul(votesRequired);
+        uint cost = temp.div(decimals);
         return (balanceDownBy, votesRequired, cost);
     }
 
@@ -281,8 +281,8 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         uint result;
         
         d.balance = _amount;
-        d.rate = decimals - (d.balance * decimals/max);
-        d.available = d.balance * d.rate;
+        d.rate = decimals.sub((d.balance).mul(decimals).div(max));
+        d.available = d.balance.mul(d.rate);
         
         (result, precision) = BancorFormula.power(
             d.available, 
@@ -310,14 +310,14 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
-        require(d.balance + _amount <= safeMax, "You cannot upvote by this much, try with a lower amount");
+        require(d.balance.add(_amount) <= safeMax, "You cannot upvote by this much, try with a lower amount");
         
         uint precision;
         uint result;
 
-        d.balance = d.balance + _amount;
-        d.rate = decimals - (d.balance * decimals/max);
-        d.available = d.balance * d.rate;
+        d.balance = d.balance.add(_amount);
+        d.rate = decimals.sub((d.balance).mul(decimals).div(max));
+        d.available = d.balance.mul(d.rate);
         
         (result, precision) = BancorFormula.power(
             d.available, 
@@ -327,11 +327,11 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         
         d.votesMinted = result >> precision;
 
-        uint temp1 = d.votesCast * d.rate * d.available;
-        uint temp2 = d.votesMinted * decimals * decimals;
-        uint effect = temp1 / temp2;
+        uint temp1 = d.votesCast.mul(d.rate).mul(d.available);
+        uint temp2 = d.votesMinted.mul(decimals).mul(decimals);
+        uint effect = temp1.div(temp2);
 
-        d.effectiveBalance = d.balance - effect;
+        d.effectiveBalance = d.balance.sub(effect);
 
         require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
         require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
@@ -348,9 +348,9 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
 
         require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         
-        d.available = d.available - _amount;
-        d.votesCast = d.votesCast + vR;
-        d.effectiveBalance = d.effectiveBalance - b;
+        d.available = d.available.sub(_amount);
+        d.votesCast = d.votesCast.add(vR);
+        d.effectiveBalance = d.effectiveBalance.sub(b);
 
         require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
         require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
