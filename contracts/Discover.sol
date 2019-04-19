@@ -6,7 +6,7 @@ import "./utils/SafeMath.sol";
 import "./utils/BancorFormula.sol";
 
 
-contract DAppStore is ApproveAndCallFallBack, BancorFormula {
+contract Discover is ApproveAndCallFallBack, BancorFormula {
     using SafeMath for uint;
 
     // Could be any MiniMe token

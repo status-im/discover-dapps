@@ -52,7 +52,7 @@ module.exports = {
     //strategy: 'implicit',
 
     contracts: {
-      DAppStore: {
+      Discover: {
        args: { _SNT: "0x744d70fdbe2ba4cf95131626614a1763df805b9e" }
       },
       MiniMeToken: { "deploy": false },

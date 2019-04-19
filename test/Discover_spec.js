@@ -1,6 +1,6 @@
 const TestUtils = require("../utils/testUtils");
 
-const DAppStore = require('Embark/contracts/DAppStore');
+const Discover = require('Embark/contracts/Discover');
 const SNT = embark.require('Embark/contracts/SNT');
 
 
@@ -29,7 +29,7 @@ config({
         true
       ]
     },
-    "DAppStore": {
+    "Discover": {
       args: [ "$SNT" ]
     },
     "TestBancorFormula": { }
@@ -38,13 +38,13 @@ config({
   accounts = web3_accounts
 });
 
-contract("DAppStore", function () {
+contract("Discover", function () {
 
   this.timeout(0);
 
   it("should set max and safeMax values correctly", async function () {
-    let resultMax = await DAppStore.methods.max().call();
-    let resultSafeMax = await DAppStore.methods.safeMax().call();
+    let resultMax = await Discover.methods.max().call();
+    let resultSafeMax = await Discover.methods.safeMax().call();
     let expectedMax = 3470483788 * 588 / 1000000;
     let expectedSafeMax = expectedMax * 77 / 100 - 1;
     assert.strictEqual(parseInt(resultMax, 10), Math.round(expectedMax));
@@ -57,25 +57,25 @@ contract("DAppStore", function () {
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
 
-    let receipt = await DAppStore.methods.dapps(0).call();   
+    let receipt = await Discover.methods.dapps(0).call();   
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
     assert.strictEqual(metadata, TestUtils.getIpfsHashFromBytes32(receipt.metadata));
 
-    // Check the DApp Store actually receives the SNT!
-    let bal_receipt = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    // Check Discover actually receives the SNT!
+    let bal_receipt = await SNT.methods.balanceOf(Discover.options.address).call();
     assert.strictEqual(amount, parseInt(bal_receipt, 10));
 
     // Having received the SNT, check that it updates the particular DApp's storage values
     assert.strictEqual(amount, parseInt(receipt.balance, 10));
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     let rate = Math.round(decimals - (amount * decimals/max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
@@ -95,10 +95,10 @@ contract("DAppStore", function () {
     let metadata = 'QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue';
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id,amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -108,23 +108,23 @@ contract("DAppStore", function () {
   it("should not create a new DApp when exceeding the ceiling or staking nothing", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let metadata = 'QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue';
-    let initial = await DAppStore.methods.max().call();
+    let initial = await Discover.methods.max().call();
     let amount = parseInt(initial, 10);
     let amount0 = 0;
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
 
-    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
 
-    const encodedCall0 = DAppStore.methods.createDApp(id,amount0,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall0 = Discover.methods.createDApp(id,amount0,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount0, encodedCall0).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount0, encodedCall0).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -134,8 +134,8 @@ contract("DAppStore", function () {
   it("should update the metadata correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
-    await DAppStore.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[0] });
-    let receipt = await DAppStore.methods.dapps(0).call();
+    await Discover.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[0] });
+    let receipt = await Discover.methods.dapps(0).call();
     assert.strictEqual(TestUtils.getBytes32FromIpfsHash(metadata), receipt.metadata);
   })
 
@@ -144,12 +144,12 @@ contract("DAppStore", function () {
     let metadata_actual = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBDDeu";
     try {
-      await DAppStore.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[1] });
+      await Discover.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[1] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
     assert.strictEqual(TestUtils.getBytes32FromIpfsHash(metadata_actual), receipt.metadata);
   })
 
@@ -157,24 +157,24 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 100;
 
-    let initial = await DAppStore.methods.dapps(0).call();
-    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let initial = await Discover.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(Discover.options.address).call();
     // This is the special case where no downvotes have yet been cast
-    let up_effect = await DAppStore.methods.upvoteEffect(id,amount).call();
+    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
 
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
     
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
 
-    // Check the DApp Store actually receives the SNT!
-    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    // Check Discover  actually receives the SNT!
+    let after = await SNT.methods.balanceOf(Discover.options.address).call();
     let bal_effect = parseInt(after, 10) - parseInt(before, 10);
     assert.strictEqual(bal_effect, amount);
 
@@ -182,8 +182,8 @@ contract("DAppStore", function () {
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(upvotedBalance, parseInt(receipt.balance, 10));
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     let rate = Math.round(decimals - (upvotedBalance * decimals/max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
@@ -206,9 +206,9 @@ contract("DAppStore", function () {
     let amount = 0;
 
     await SNT.methods.generateTokens(accounts[0], 10000).send();
-    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
+    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -217,13 +217,13 @@ contract("DAppStore", function () {
 
   it("should not let you upvote by an amount that exceeds the ceiling", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let initial = await DAppStore.methods.max().call();
+    let initial = await Discover.methods.max().call();
     let amount = parseInt(initial, 10);
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
+    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -232,18 +232,18 @@ contract("DAppStore", function () {
 
   it("should handle first downvote correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let cost = await DAppStore.methods.downvoteCost(id).call()
+    let cost = await Discover.methods.downvoteCost(id).call()
     let amount = parseInt(cost.c, 10);
 
     let developer = accounts[0];
-    let initial = await DAppStore.methods.dapps(0).call();
+    let initial = await Discover.methods.dapps(0).call();
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
+    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
     
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
@@ -270,18 +270,18 @@ contract("DAppStore", function () {
 
   it("should handle second downvote correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let cost = await DAppStore.methods.downvoteCost(id).call()
+    let cost = await Discover.methods.downvoteCost(id).call()
     let amount = parseInt(cost.c, 10);
     let developer = accounts[0];
 
-    let initial = await DAppStore.methods.dapps(0).call();
+    let initial = await Discover.methods.dapps(0).call();
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
+    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
     
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
@@ -313,17 +313,17 @@ contract("DAppStore", function () {
 
     await SNT.methods.generateTokens(accounts[1], amount_above + amount_below).send();
 
-    const encodedCall = DAppStore.methods.downvote(id,amount_above).encodeABI();
+    const encodedCall = Discover.methods.downvote(id,amount_above).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount_above, encodedCall).send({from: accounts[1]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount_above, encodedCall).send({from: accounts[1]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
 
-    const encodedCall1 = DAppStore.methods.downvote(id,amount_below).encodeABI();
+    const encodedCall1 = Discover.methods.downvote(id,amount_below).encodeABI();
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount_below, encodedCall1).send({from: accounts[1]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount_below, encodedCall1).send({from: accounts[1]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -334,22 +334,22 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 500;
 
-    let initial = await DAppStore.methods.dapps(0).call();
-    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
-    let up_effect = await DAppStore.methods.upvoteEffect(id,amount).call();
+    let initial = await Discover.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(Discover.options.address).call();
+    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
 
-    let receipt = await DAppStore.methods.dapps(0).call();  
+    let receipt = await Discover.methods.dapps(0).call();  
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
 
-    // Check the DApp Store actually receives the SNT!
-    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    // Check Discover actually receives the SNT!
+    let after = await SNT.methods.balanceOf(Discover.options.address).call();
     let bal_effect = parseInt(after, 10) - parseInt(before, 10);
     assert.strictEqual(bal_effect, amount);
 
@@ -357,8 +357,8 @@ contract("DAppStore", function () {
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(upvotedBalance, parseInt(receipt.balance, 10));
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     let rate = Math.round(decimals - (upvotedBalance * decimals/max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
@@ -383,14 +383,14 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 10;
 
-    let receipt = await DAppStore.methods.dapps(0).call();
-    let effect = await DAppStore.methods.upvoteEffect(id,amount).call();
+    let receipt = await Discover.methods.dapps(0).call();
+    let effect = await Discover.methods.upvoteEffect(id,amount).call();
 
     // Mock receiving the SNT
     let mBalance = parseInt(receipt.balance, 10) + amount
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     
     let mRate = Math.round(decimals - (mBalance * decimals/max));
     let mAvailable = mBalance * mRate;
@@ -408,10 +408,10 @@ contract("DAppStore", function () {
 
   it("should throw already in upvoteEffect if you exceed the ceiling", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let initial = await DAppStore.methods.max().call();
+    let initial = await Discover.methods.max().call();
     let amount = parseInt(initial, 10);
     try {
-      await DAppStore.methods.upvoteEffect(id,amount).call();
+      await Discover.methods.upvoteEffect(id,amount).call();
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -422,16 +422,16 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 100;
 
-    let initial = await DAppStore.methods.dapps(0).call();
-    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    let initial = await Discover.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(Discover.options.address).call();
     let before_dev = await SNT.methods.balanceOf(accounts[0]).call();
-    let receipt_obj = await DAppStore.methods.withdraw(id,amount).send({from: accounts[0]});
+    let receipt_obj = await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
     let receipt = receipt_obj.events.Withdraw.returnValues;
 
     assert.strictEqual(id, receipt.id);
 
-    // Check the DApp Store actually sends SNT to the developer
-    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    // Check Discover actually sends SNT to the developer
+    let after = await SNT.methods.balanceOf(Discover.options.address).call();
     let after_dev = await SNT.methods.balanceOf(accounts[0]).call();
     let difference = parseInt(before, 10) - parseInt(after, 10);
     let difference_dev =  parseInt(after_dev, 10) - parseInt(before_dev, 10);
@@ -440,8 +440,8 @@ contract("DAppStore", function () {
     assert.strictEqual(difference_dev, amount)
 
     // Recalculate e_balance manually and check it matches what is returned
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
 
     let balance = parseInt(initial.balance, 10) - amount
     let rate = Math.round(decimals - (balance * decimals/max));
@@ -457,7 +457,7 @@ contract("DAppStore", function () {
     assert.strictEqual(e_balance, effective_balance);
 
     // Having withdrawn the SNT, check that it updates the particular DApp's storage values properly
-    let check = await DAppStore.methods.dapps(0).call();
+    let check = await Discover.methods.dapps(0).call();
 
     let withdrawnBalance = parseInt(initial.balance, 10) - amount
     assert.strictEqual(parseInt(check.balance, 10), withdrawnBalance);
@@ -471,7 +471,7 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 150000;
     try {
-      await DAppStore.methods.withdraw(id,amount).send({from: accounts[0]});
+      await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -480,10 +480,10 @@ contract("DAppStore", function () {
 
   it("should not allow withdrawing more than was staked minus what has already been received", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
     let amount = parseInt(receipt.available, 10) + 1;
     try {
-      await DAppStore.methods.withdraw(id,amount).send({from: accounts[0]});
+      await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -494,7 +494,7 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 1000;
     try {
-      await DAppStore.methods.withdraw(id,amount).send({from: accounts[1]});
+      await Discover.methods.withdraw(id,amount).send({from: accounts[1]});
     } catch (error) {
       TestUtils.assertJump(error);
     }
@@ -502,18 +502,18 @@ contract("DAppStore", function () {
 
   it("should handle downvotes after withdrawals correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
-    let cost = await DAppStore.methods.downvoteCost(id).call()
+    let cost = await Discover.methods.downvoteCost(id).call()
     let amount = parseInt(cost.c, 10);
     let developer = accounts[0];
 
-    let initial = await DAppStore.methods.dapps(0).call();
+    let initial = await Discover.methods.dapps(0).call();
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = DAppStore.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[1]});
+    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
     
-    let receipt = await DAppStore.methods.dapps(0).call();
+    let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
@@ -542,22 +542,22 @@ contract("DAppStore", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 100;
 
-    let initial = await DAppStore.methods.dapps(0).call();
-    let before = await SNT.methods.balanceOf(DAppStore.options.address).call();
-    let up_effect = await DAppStore.methods.upvoteEffect(id,amount).call();
+    let initial = await Discover.methods.dapps(0).call();
+    let before = await SNT.methods.balanceOf(Discover.options.address).call();
+    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
 
-    let receipt = await DAppStore.methods.dapps(0).call();  
+    let receipt = await Discover.methods.dapps(0).call();  
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
     assert.strictEqual(id, receipt.id);
 
-    // Check the DApp Store actually receives the SNT!
-    let after = await SNT.methods.balanceOf(DAppStore.options.address).call();
+    // Check Discover  actually receives the SNT!
+    let after = await SNT.methods.balanceOf(Discover.options.address).call();
     let bal_effect = parseInt(after, 10) - parseInt(before, 10);
     assert.strictEqual(bal_effect, amount);
 
@@ -565,8 +565,8 @@ contract("DAppStore", function () {
     let upvotedBalance = parseInt(initial.balance, 10) + amount
     assert.strictEqual(upvotedBalance, parseInt(receipt.balance, 10));
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     let rate = Math.round(decimals - (upvotedBalance * decimals/max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
@@ -589,15 +589,15 @@ contract("DAppStore", function () {
 
   it("should create a DApp without overflowing", async function () {
     let id = "0x0000000000000000000000000000000000000000000000000000000000000001";
-    let temp = await DAppStore.methods.safeMax().call();
+    let temp = await Discover.methods.safeMax().call();
     let amount = parseInt(temp, 10);
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
-    await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
 
-    let receipt = await DAppStore.methods.dapps(1).call();   
+    let receipt = await Discover.methods.dapps(1).call();   
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -606,8 +606,8 @@ contract("DAppStore", function () {
     // Having received the SNT, check that it updates the particular DApp's storage values
     assert.strictEqual(amount, parseInt(receipt.balance, 10));
 
-    let max = await DAppStore.methods.max().call();
-    let decimals = await DAppStore.methods.decimals().call();
+    let max = await Discover.methods.max().call();
+    let decimals = await Discover.methods.decimals().call();
     let rate = Math.ceil(decimals - (amount * decimals/max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
@@ -626,18 +626,18 @@ contract("DAppStore", function () {
   // the BancorFormula fail to find a suitable position in the maxExponentArray
   it("should prove we have the highest safeMax allowed for by Bancor's power approximation", async function () {
     let id = "0x0000000000000000000000000000000000000000000000000000000000000002";
-    let max = await DAppStore.methods.max().call();
+    let max = await Discover.methods.max().call();
     // Choose a safeMax 1% higher than is currently set
-    let safe = await DAppStore.methods.safeMax().call();
+    let safe = await Discover.methods.safeMax().call();
     let percent = (safe/max * 100) + 1;
     let amount = parseInt(max, 10) * percent;
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = DAppStore.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
-      await SNT.methods.approveAndCall(DAppStore.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
     } catch (error) {
       TestUtils.assertJump(error);
     }

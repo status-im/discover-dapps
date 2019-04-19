@@ -1,8 +1,8 @@
-# DApp Store SNT Ranking
+# Discover SNT Ranking
 
 ## Summary
 
-In order to fulfill one of our whitepaper promises, we need a mechanism in the Status DApp Store that uses SNT to curate DApps. While this is not the only mechanism we will make available to users to find interesting and relevant DApps, it is one of the most important, both for SNT utility and because economic mechanisms are at the heart of how we buidl sustainable peer-to-peer networks.
+In order to fulfill one of our whitepaper promises, we need a mechanism  that uses SNT to curate DApps. While this is not the only mechanism we will make available to users to find interesting and relevant DApps, it is one of the most important, both for SNT utility and because economic mechanisms are at the heart of how we buidl sustainable peer-to-peer networks.
 
 ## Abstract
 
