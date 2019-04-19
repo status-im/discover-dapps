@@ -7,7 +7,7 @@ import supportIcon from '../../common/assets/images/support.svg'
 const Footer = () => (
   <div className={styles.footer}>
     <a
-      href="https://get.status.im/chat/public/status-core-dapps"
+      href="https://get.status.im/chat/public/dapps"
       className={styles.footerItem}
     >
       <div className={styles.iconWrap}>
@@ -30,7 +30,10 @@ const Footer = () => (
         <p>Submit your favourite DApp now! No permission required.</p>
       </div>
     </div>
-    <div className={styles.footerItem}>
+    <a
+      href="https://get.status.im/chat/public/status-core-dapps"
+      className={styles.footerItem}
+    >
       <div className={styles.iconWrap}>
         <img src={supportIcon} alt="Support" />
       </div>
@@ -41,7 +44,7 @@ const Footer = () => (
           see if we can help.
         </p>
       </div>
-    </div>
+    </a>
   </div>
 )
 

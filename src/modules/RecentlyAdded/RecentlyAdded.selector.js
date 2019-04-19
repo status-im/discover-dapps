@@ -5,6 +5,7 @@ const getDapps = state => state.dapps
 
 const recentDapps = createSelector(
   [getDapps],
+  dapps => [...dapps].sort((a, b) => moment(b.dateAdded).diff(a.dateAdded)),
   dapps =>
     [...dapps].filter(dapp => {
       return (
