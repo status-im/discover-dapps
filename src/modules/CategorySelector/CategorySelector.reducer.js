@@ -1,4 +1,5 @@
 import reducerUtil from '../../common/utils/reducer'
+import { EXCHANGES } from '../../common/data/categories'
 
 const UPDATE_CATEGORY = 'UPDATE_CATEGORY'
 
@@ -7,7 +8,7 @@ export const selectCategory = category => ({
   payload: category,
 })
 
-const initialState = null
+const initialState = EXCHANGES
 
 const categoryChange = (_, category) => category
 
