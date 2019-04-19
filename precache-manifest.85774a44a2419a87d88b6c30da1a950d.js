@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/static/media/collectibles.48f1d6ea.svg"
   },
   {
-    "revision": "4b4af04a70a342677f7b",
-    "url": "/static/css/main.1f248ec6.chunk.css"
+    "revision": "10a7e90e3283e5ca4a47",
+    "url": "/static/css/main.00846cbe.chunk.css"
   },
   {
     "revision": "42ac5946195a7306e2a5",
     "url": "/static/js/runtime~main.a8a9905a.js"
   },
   {
-    "revision": "781643bf7f44509dcbb5",
-    "url": "/static/js/2.eabda77e.chunk.js"
+    "revision": "c616d234449abdf817ff",
+    "url": "/static/js/2.f46d66af.chunk.js"
   },
   {
     "revision": "b112cc42d144643c37a186d5119386b8",
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/static/media/games.5f2fc3ba.svg"
   },
   {
-    "revision": "4b4af04a70a342677f7b",
-    "url": "/static/js/main.c954b2a1.chunk.js"
+    "revision": "10a7e90e3283e5ca4a47",
+    "url": "/static/js/main.8c6c5dcf.chunk.js"
   },
   {
     "revision": "f0cf579541f81ddf3561cb4c73fd8128",
@@ -96,7 +96,7 @@ self.__precacheManifest = [
     "url": "/static/media/dropdown-arrows.94569e7a.svg"
   },
   {
-    "revision": "7bf9546cdf5b183f34838f3b815b870d",
+    "revision": "9ccb66851838c8ed736850f50a2fe43a",
     "url": "/index.html"
   }
 ];
