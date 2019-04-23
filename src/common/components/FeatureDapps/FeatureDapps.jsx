@@ -9,7 +9,7 @@ const FeatureDapps = props => {
     <>
       <div className={styles.grid}>
         {props.featured.map((dapp, index) => (
-          <div className={styles.dapp} key={index}>
+          <a className={styles.dapp} key={index} href={dapp.url}>
             <ReactImageFallback
               src={dapp.banner}
               className={styles.banner}
@@ -30,7 +30,7 @@ const FeatureDapps = props => {
                 </span>
               </div>
             </div>
-          </div>
+          </a>
         ))}
       </div>
     </>
