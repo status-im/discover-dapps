@@ -154,6 +154,14 @@ const Dapps = [
     dateAdded: '2019-04-11',
   },
   {
+    name: 'dBay',
+    url: 'https://dbay.ai',
+    description: 'Buy from all your favorite DApps in one place',
+    image: '/images/dapps/dBay.png',
+    category: Categories.MARKETPLACES,
+    dateAdded: '2019-04-23',
+  },
+  {
     name: 'Name Bazaar',
     url: 'https://namebazaar.io',
     description: 'ENS name marketplace',
