@@ -4,8 +4,8 @@ self.__precacheManifest = [
     "url": "/static/media/collectibles.48f1d6ea.svg"
   },
   {
-    "revision": "10a7e90e3283e5ca4a47",
-    "url": "/static/css/main.00846cbe.chunk.css"
+    "revision": "85b5b15269235fa98268",
+    "url": "/static/css/main.ca0c0ab8.chunk.css"
   },
   {
     "revision": "42ac5946195a7306e2a5",
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/static/media/games.5f2fc3ba.svg"
   },
   {
-    "revision": "10a7e90e3283e5ca4a47",
-    "url": "/static/js/main.8c6c5dcf.chunk.js"
+    "revision": "85b5b15269235fa98268",
+    "url": "/static/js/main.d5af849d.chunk.js"
   },
   {
     "revision": "f0cf579541f81ddf3561cb4c73fd8128",
@@ -96,7 +96,7 @@ self.__precacheManifest = [
     "url": "/static/media/dropdown-arrows.94569e7a.svg"
   },
   {
-    "revision": "9ccb66851838c8ed736850f50a2fe43a",
+    "revision": "9e152bfc3d1bd68d5ee7ffe6f837fc5c",
     "url": "/index.html"
   }
 ];
