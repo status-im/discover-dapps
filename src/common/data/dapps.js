@@ -27,6 +27,15 @@ const Dapps = [
     dateAdded: '2019-04-05',
   },
   {
+    name: 'Uniswap',
+    url: 'https://uniswap.exchange/',
+    description:
+      'Seamlessly exchange of ERC20 tokens, or use a formalized model to pooling liquidity reserves.',
+    image: '/images/dapps/uniswap.png',
+    category: Categories.EXCHANGES,
+    dateAdded: '2019-04-23',
+  },
+  {
     name: 'DAI by MakerDao',
     url: 'https://dai.makerdao.com',
     description: 'Stability for the blockchain',
