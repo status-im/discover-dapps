@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import ReactImageFallback from 'react-image-fallback'
 import styles from './Vote.module.scss'
 import sntIcon from '../../common/assets/images/SNT.svg'
 import CategoriesUtils from '../Categories/Categories.utils'
 import Categories from '../../common/utils/categories'
 import icon from '../../common/assets/images/icon.svg'
+import Modal from '../../common/components/Modal'
 
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
@@ -33,6 +34,7 @@ class Vote extends Component {
 
   render() {
     const { isUpvote, sntValue } = this.state
+    const { visible } = this.props
 
     // TODO: extract these to props
 
@@ -52,7 +54,7 @@ class Vote extends Component {
     const downvoteSNTcost = 3244
 
     return (
-      <div>
+      <Modal visible={visible}>
         <div className={styles.tabs}>
           <button
             className={isUpvote ? styles.active : ''}
@@ -145,11 +147,13 @@ class Vote extends Component {
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
         </div>
-      </div>
+      </Modal>
     )
   }
 }
 
-Vote.propTypes = {}
+Vote.propTypes = {
+  visible: PropTypes.bool.isRequired,
+}
 
 export default Vote

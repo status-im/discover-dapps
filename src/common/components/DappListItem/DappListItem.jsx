@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import ReactImageFallback from 'react-image-fallback'
 import { DappModel } from '../../utils/models'
 import styles from './DappListItem.module.scss'
@@ -16,6 +17,8 @@ const DappListItem = props => {
     isRanked,
     position,
     showActionButtons,
+    onClickUpVote,
+    onClickDownVote,
   } = props
 
   return (
@@ -42,14 +45,14 @@ const DappListItem = props => {
               <img src={sntIcon} alt="SNT" width="16" height="16" />
               12,345
             </span>
-            <a className={styles.vote} href="/vote">
+            <span className={styles.vote} onClick={onClickUpVote}>
               <img src={upvoteArrowIcon} alt="" />
               Upvote
-            </a>
-            <a className={styles.vote} href="/vote">
+            </span>
+            <span className={styles.vote} onClick={onClickDownVote}>
               <img src={downvoteArrowIcon} alt="" />
               Downvote
-            </a>
+            </span>
           </p>
         )}
       </div>
@@ -62,6 +65,9 @@ DappListItem.defaultProps = {
   showActionButtons: false,
 }
 
-DappListItem.propTypes = DappModel
+DappListItem.propTypes = Object.assign({}, DappModel, {
+  onClickUpVote: PropTypes.func.isRequired,
+  onClickDownVote: PropTypes.func.isRequired,
+})
 
 export default DappListItem
