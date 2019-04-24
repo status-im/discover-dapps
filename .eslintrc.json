@@ -1,8 +1,16 @@
 {
-  "extends": ["airbnb", "plugin:prettier/recommended"],
-  "plugins": ["prettier"],
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": [
+    "prettier"
+  ],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": "error",
+    "func-names": "off",
+    "eqeqeq": "off",
+    "class-methods-use-this": "off"
   },
   "env": {
     "browser": true,
