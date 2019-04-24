@@ -1,10 +1,7 @@
+import DiscoverValidator from '../discover-validator'
 import DiscoverValidatorUtils from '../discover-validator-utils'
 
-class DiscoverReadServiceValidator {
-  constructor(service) {
-    this.service = service
-  }
-
+class DiscoverReadServiceValidator extends DiscoverValidator {
   async validateUpVoteEffect(id, amount) {
     const dapp = await this.service.getDAppById()
     await DiscoverValidatorUtils.checkDappCorrectness(dapp, id)

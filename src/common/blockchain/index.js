@@ -11,11 +11,13 @@ const ReadOnlyServices = {
 // TODO: ask Andy what kind of wallets is going to be used
 const init = async function() {
   try {
-    const account = await EmbarkJS.enableEthereum()
+    const account = (await EmbarkJS.enableEthereum())[0]
 
-    const discoverService = new DiscoverWriteService(account)
+    const DiscoverService = new DiscoverWriteService(account)
 
-    return { DiscoverService: discoverService, ...ReadOnlyServices }
+    return {
+      DiscoverService,
+    }
   } catch (error) {
     // TODO: Should handle it in an elegant way
     throw new Error(error.message)

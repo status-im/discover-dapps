@@ -4,10 +4,10 @@ import DiscoverRServiceValidator from '../read-service/validator'
 class DiscoverWriteServiceValidator extends DiscoverRServiceValidator {
   // TODO: Add SNT allowance checks
   async validateDAppCreation(id, amount) {
-    const dappExists = await this.service.isDAppExists(id)
-    if (dappExists) {
-      throw new Error('You must submit a unique ID')
-    }
+    // const dappExists = await this.service.isDAppExists(id)
+    // if (dappExists) {
+    //   throw new Error('You must submit a unique ID')
+    // }
 
     if (amount <= 0) {
       throw new Error(

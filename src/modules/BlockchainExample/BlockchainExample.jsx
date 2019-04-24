@@ -1,12 +1,16 @@
 import React from 'react'
 import BlockchainSDK from '../../common/blockchain'
-// import EmbarkJS from '../../embarkArtifacts/embarkjs';
 
 class Example extends React.Component {
   async logDiscoverMethod() {
-    console.log('here')
-    debugger
-    console.log(await BlockchainSDK.DiscoverService.safeMax())
+    const services = await BlockchainSDK.init()
+    console.log(
+      await services.DiscoverService.createDApp(
+        '0x123',
+        '100000000000000000',
+        '0x123',
+      ),
+    )
   }
 
   render() {
