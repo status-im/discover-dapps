@@ -30,7 +30,7 @@ const Dapps = [
     name: 'Uniswap',
     url: 'https://uniswap.exchange/',
     description:
-      'Seamlessly exchange of ERC20 tokens, or use a formalized model to pooling liquidity reserves.',
+      'Seamlessly exchange ERC20 tokens, or use a formalized model to pool liquidity reserves',
     image: '/images/dapps/uniswap.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-23',
