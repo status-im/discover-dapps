@@ -4,16 +4,16 @@ self.__precacheManifest = [
     "url": "/static/media/collectibles.48f1d6ea.svg"
   },
   {
-    "revision": "9ebde5c1b694e916a0ec",
-    "url": "/static/css/main.f95800b6.chunk.css"
+    "revision": "3bd6671ce46e5e45d20d",
+    "url": "/static/css/main.093d57c3.chunk.css"
   },
   {
     "revision": "42ac5946195a7306e2a5",
     "url": "/static/js/runtime~main.a8a9905a.js"
   },
   {
-    "revision": "c616d234449abdf817ff",
-    "url": "/static/js/2.f46d66af.chunk.js"
+    "revision": "e30b017ff5480496a1c0",
+    "url": "/static/js/2.6bd6644b.chunk.js"
   },
   {
     "revision": "b112cc42d144643c37a186d5119386b8",
@@ -48,8 +48,8 @@ self.__precacheManifest = [
     "url": "/static/media/games.5f2fc3ba.svg"
   },
   {
-    "revision": "9ebde5c1b694e916a0ec",
-    "url": "/static/js/main.1a3e0c59.chunk.js"
+    "revision": "3bd6671ce46e5e45d20d",
+    "url": "/static/js/main.5f7e9c58.chunk.js"
   },
   {
     "revision": "f0cf579541f81ddf3561cb4c73fd8128",
@@ -66,10 +66,6 @@ self.__precacheManifest = [
   {
     "revision": "f0a6587b049e7bce20a926d99a0cf648",
     "url": "/static/media/community.f0a6587b.svg"
-  },
-  {
-    "revision": "77c8e818d2b36996d9b2ff199e29ab62",
-    "url": "/static/media/add-dapp.77c8e818.svg"
   },
   {
     "revision": "fbdb812bee71e2c02c105e6029ea0a14",
@@ -96,7 +92,11 @@ self.__precacheManifest = [
     "url": "/static/media/dropdown-arrows.94569e7a.svg"
   },
   {
-    "revision": "e277333ddd4711e2a8fba99e4d65b085",
+    "revision": "77c8e818d2b36996d9b2ff199e29ab62",
+    "url": "/static/media/add-dapp.77c8e818.svg"
+  },
+  {
+    "revision": "57138a4d2d5a5a0c9b27b8e41a5a5866",
     "url": "/index.html"
   }
 ];
