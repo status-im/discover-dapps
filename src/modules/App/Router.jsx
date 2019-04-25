@@ -9,7 +9,7 @@ import Vote from '../Vote'
 export default () => [
   <Switch key={1}>
     <Route exact path="/" component={Home} />
-    <Route path="/categories" component={Filtered} />
+    <Route path="/categories/:id" component={Filtered} />
     <Route path="/all" component={Dapps} />
     <Route path="/recently-added" component={RecentlyAdded} />
   </Switch>,

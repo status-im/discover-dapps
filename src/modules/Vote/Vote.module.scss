@@ -1,5 +1,29 @@
 @import '../../common/styles/variables';
 
+.modalWindow {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: $desktop) {
+  .modalWindow {
+    height: auto;
+  }
+}
+
+.modalContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+@media (min-width: $desktop) {
+  .modalContent {
+    height: 512px;
+  }
+}
+
 .tabs {
   width: 100%;
   border-bottom: 1px solid #eef2f5;
@@ -8,38 +32,143 @@
 
 .tabs button {
   color: #939ba1;
+  position: relative;
   background: transparent;
   border: none;
   text-transform: uppercase;
   font-family: $font;
+  font-size: 13px;
   height: calculateRem(40);
   letter-spacing: calculateRem(0.2);
-  display: inline-block;
-  width: 130px;
+  display: inline-flex;
+  align-items: center;
   cursor: pointer;
+}
+
+.tabs button:first-child {
+  margin-right: 32px;
 }
 
 .tabs button.active:after {
   display: block;
   clear: both;
   content: '';
-  position: relative;
+  position: absolute;
   left: 0;
-  bottom: -9px;
-  height: 1px;
+  right: 0;
+  bottom: 0;
   width: 24px;
   border-bottom: 2px solid $link-color;
-  margin: 0 auto;
+  margin: 0 auto 0 auto;
 }
 
 .tabs button.active {
   color: $link-color;
 }
 
+.dapp {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  font-family: $font;
+  font-weight: 500;
+  padding: 0 calculateRem(12);
+}
+
+.dapp .image {
+  max-width: 24px;
+  max-height: 24px;
+  border-radius: 50%;
+  margin-right: calculateRem(12);
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  font-family: $font;
+}
+
+.items .itemRow {
+  height: 32px;
+  display: flex;
+  align-items: center;
+  padding: 0 calculateRem(12);
+}
+
+.items .item {
+  display: flex;
+  align-items: center;
+}
+
+.items .item img {
+  margin-right: calculateRem(12);
+}
+
+.badge {
+  border-radius: 24px;
+  color: #ffffff;
+  font-family: $font;
+  font-size: calculateRem(15);
+  margin-right: calculateRem(16);
+  margin-left: auto;
+  padding: calculateRem(3) calculateRem(10);
+}
+
+.greenBadge {
+  @extend .badge;
+  background: #44d058;
+}
+
+.redBadge {
+  @extend .badge;
+  background: #f00;
+}
+
+.inputArea {
+  width: calc(100% - 2 * 16px);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin: auto;
+}
+
+.inputArea.inputAreaBorder {
+  border-bottom: 1px solid #eef2f5;
+}
+
+.inputArea input {
+  width: 19px;
+  border: none;
+  text-align: center;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+  margin-right: calculateRem(6);
+}
+
+.inputArea input:focus {
+  outline: none;
+}
+
+.inputArea::after {
+  transition: all 0.05s ease-in-out;
+  content: 'SNT';
+  color: #939ba1;
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+}
+
+.inputArea span {
+  font-size: calculateRem(32);
+  line-height: calculateRem(28);
+  font-family: $font;
+  margin-right: calculateRem(6);
+}
+
 .footer {
-  // position: fixed;
-  bottom: 0;
-  width: 100%;
   text-align: center;
 }
 
@@ -72,100 +201,4 @@
 .footer .disclaimer a {
   text-decoration: none;
   color: $link-color;
-}
-
-.item,
-.dapp {
-  line-height: 22px;
-  font-family: $font;
-  font-size: calculateRem(15);
-  display: block;
-  height: calculateRem(32);
-  padding: 0 calculateRem(12);
-}
-
-.item img,
-.dapp img {
-  margin-right: calculateRem(12);
-  vertical-align: middle;
-}
-
-.dapp {
-  margin-bottom: calculateRem(12);
-  font-size: calculateRem(17);
-  font-weight: 500;
-}
-
-.dapp img {
-  vertical-align: bottom;
-}
-
-.badge {
-  float: right;
-  border-radius: 24px;
-  color: #ffffff;
-  font-family: $font;
-  font-size: calculateRem(15);
-  margin-right: calculateRem(16);
-  padding: calculateRem(3) calculateRem(10);
-}
-
-.greenBadge {
-  @extend .badge;
-  background: #44d058;
-}
-
-.redBadge {
-  @extend .badge;
-  background: #f00;
-}
-
-.inputArea {
-  text-align: center;
-  width: 300px;
-  position: relative;
-  // position: fixed;
-  top: 40%;
-}
-
-.inputArea input {
-  margin: auto;
-  width: 50%;
-  border: none;
-  border-bottom: 1px solid #eef2f5;
-  text-align: center;
-  font-size: calculateRem(32);
-  line-height: calculateRem(28);
-  font-family: $font;
-}
-
-.inputArea input:focus {
-  outline: none;
-}
-
-.inputArea::after {
-  position: absolute;
-  top: 5px;
-  right: 0;
-  transition: all 0.05s ease-in-out;
-  content: 'SNT';
-  color: #939ba1;
-  font-size: calculateRem(32);
-  line-height: calculateRem(28);
-  font-family: $font;
-}
-
-.inputArea span {
-  font-size: calculateRem(32);
-  line-height: calculateRem(28);
-  font-family: $font;
-  position: relative;
-  top: 5px;
-}
-
-.image {
-  max-width: calculateRem(40);
-  max-height: calculateRem(40);
-  margin-top: calculateRem(15);
-  margin-right: calculateRem(16);
 }
