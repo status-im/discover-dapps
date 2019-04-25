@@ -59,8 +59,9 @@
 .sntAmount {
   font-size: calculateRem(12);
   font-weight: 500;
-  width: 80px;
+  // width: 80px;
   display: inline-block;
+  margin-right: calculateRem(12);
 }
 
 .sntAmount img {
@@ -74,8 +75,13 @@
   color: $link-color;
   font-weight: 600;
   text-decoration: none;
-  width: calculateRem(80);
+  // width: calculateRem(80);
   display: inline-block;
+  cursor: pointer;
+}
+
+.vote:not(:last-child) {
+  margin-right: calculateRem(12);
 }
 
 .vote img {

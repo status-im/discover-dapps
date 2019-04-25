@@ -1,9 +1,7 @@
 import { connect } from 'react-redux'
 import Vote from './Vote'
 
-const mapDispatchToProps = dispatch => ({})
+const mapStateToProps = state => state.vote
+// const mapDispatchToProps = dispatch => ({})
 
-export default connect(
-  null,
-  mapDispatchToProps,
-)(Vote)
+export default connect(mapStateToProps)(Vote)

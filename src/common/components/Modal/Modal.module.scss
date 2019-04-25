@@ -1,0 +1,53 @@
+.wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 4096;
+
+  transition-property: opacity;
+  transition-duration: 0.25s;
+
+  .window {
+    width: 800px;
+    max-height: 90%;
+    line-height: normal;
+    position: relative;
+    background: #f3f3f3;
+    box-shadow: 0px 0px 17px 0px #bbb;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+.wrapper.active {
+  pointer-events: auto;
+  opacity: 1;
+}
+
+// .PopupWindowWrapper > .PopupWindow > .Close {
+//     width:16px; height:16px; line-height:16px;
+//     position:absolute;
+//     right:0; top:0;
+//     font-size:24px;
+//     padding:8px;
+//     transform:rotate(45deg);
+//     z-index:1;
+//     cursor:pointer;
+// }
+
+// .PopupWindowWrapper {
+//     background:transparent;
+// }
+
+// .PopupWindowWrapper > .PopupWindow {
+//     background:transparent;
+//     box-shadow:none;
+// }

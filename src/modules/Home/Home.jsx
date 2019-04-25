@@ -37,7 +37,7 @@ class Home extends React.Component {
             </div>
             <FeaturedDapps featured={featured} />
             <Categories />
-            {/* <HighestRanked /> */}
+            <HighestRanked />
             <RecentlyAdded />
             <Footer />
           </>

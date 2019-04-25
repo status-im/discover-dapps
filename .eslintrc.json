@@ -2,7 +2,9 @@
   "extends": ["airbnb", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": ["error", {
+     "endOfLine":"auto"
+   }]
   },
   "env": {
     "browser": true,

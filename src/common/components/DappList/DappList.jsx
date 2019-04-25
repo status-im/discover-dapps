@@ -20,7 +20,7 @@ const DappList = props => {
 }
 
 DappList.defaultProps = {
-  showActionButtons: false,
+  showActionButtons: true,
 }
 
 DappList.propTypes = {
