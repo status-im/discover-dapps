@@ -3,6 +3,7 @@ import { connectRouter } from 'connected-react-router'
 import dapps from '../../modules/Dapps/Dapps.reducer'
 import selectedCategory from '../../modules/CategorySelector/CategorySelector.reducer'
 import vote from '../../modules/Vote/Vote.reducer'
+import profile from '../../modules/Profile/Profile.reducer'
 
 export default history =>
   combineReducers({
@@ -10,4 +11,5 @@ export default history =>
     dapps,
     selectedCategory,
     vote,
+    profile,
   })

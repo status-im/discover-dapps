@@ -4,7 +4,7 @@ import { createBrowserHistory } from 'history'
 import reducer from './reducers'
 
 export const history = createBrowserHistory({
-  basename: '/discover-dapps/',
+  basename: process.env.NODE_ENV === 'development' ? '/' : '/discover-dapps/',
 })
 
 const composeWithDevTools =
