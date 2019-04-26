@@ -8,7 +8,13 @@ const MOBILE_NAVIGATE = 'MOBILE_NAVIGATE'
 export const toggleProfileModalAction = dapp => {
   const { innerWidth } = window
   if (innerWidth <= 1024) {
-    history.push(`/${dapp.name.toLowerCase()}`, dapp)
+    history.push(
+      `/${dapp.name
+        .toLowerCase()
+        .trim()
+        .replace(' ', '-')}`,
+      dapp,
+    )
     return {
       type: MOBILE_NAVIGATE,
       payload: dapp,
