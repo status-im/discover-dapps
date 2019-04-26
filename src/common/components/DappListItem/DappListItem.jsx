@@ -16,15 +16,29 @@ const DappListItem = props => {
     image,
     isRanked,
     position,
+    category,
     showActionButtons,
     onClickUpVote,
     onClickDownVote,
+    onToggleProfileModal,
   } = props
 
   return (
     <div className={isRanked ? styles.rankedListItem : styles.listItem}>
       {isRanked && <div className={styles.position}>{position}</div>}
-      <div>
+      <div
+        onClick={() =>
+          onToggleProfileModal({
+            name,
+            url,
+            description,
+            image,
+            isRanked,
+            position,
+            category,
+          })
+        }
+      >
         <ReactImageFallback
           className={styles.image}
           src={image}
@@ -33,8 +47,22 @@ const DappListItem = props => {
         />
       </div>
       <div>
-        <h2 className={styles.header}>{name}</h2>
-        <p className={styles.description}>{description}</p>
+        <div
+          onClick={() =>
+            onToggleProfileModal({
+              name,
+              url,
+              description,
+              image,
+              isRanked,
+              position,
+              category,
+            })
+          }
+        >
+          <h2 className={styles.header}>{name}</h2>
+          <p className={styles.description}>{description}</p>
+        </div>
         <a className={styles.url} href={url}>
           {url}
           &nbsp;&rarr;
