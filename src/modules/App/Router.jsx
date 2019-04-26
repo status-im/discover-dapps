@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom'
 import Home from '../Home'
 import Filtered from '../Filtered'
 import RecentlyAdded from '../RecentlyAdded'
+import Profile from '../Profile'
 import Dapps from '../Dapps'
 import Vote from '../Vote'
 
@@ -12,6 +13,8 @@ export default () => [
     <Route path="/categories" component={Filtered} />
     <Route path="/all" component={Dapps} />
     <Route path="/recently-added" component={RecentlyAdded} />
+    <Route path="/:dapp-name" component={Profile} />
   </Switch>,
   <Vote key={2} />,
+  <Profile key={3} />,
 ]
