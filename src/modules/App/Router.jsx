@@ -13,8 +13,7 @@ export default () => [
     <Route path="/categories" component={Filtered} />
     <Route path="/all" component={Dapps} />
     <Route path="/recently-added" component={RecentlyAdded} />
-    <Route path="/:dapp-name" component={Profile} />
+    <Route path="/:dapp_name" component={Profile} />
   </Switch>,
   <Vote key={2} />,
-  <Profile key={3} />,
 ]

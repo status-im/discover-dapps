@@ -5,23 +5,14 @@ import Modal from '../../common/components/Modal'
 import styles from './Profile.module.scss'
 import icon from '../../common/assets/images/icon.svg'
 import chat from '../../common/assets/images/chat.svg'
-import { Redirect } from 'react-router-dom'
+import { push } from 'connected-react-router'
 
 const DesktopScreen = props => {
   return <Modal visible={props.visible}>{props.children}</Modal>
 }
 
 const MobileScreen = props => {
-  return (
-    <>
-      {props.router.location.state &&
-      props.router.location.state.name === props.profile.dapp.name ? (
-        props.children
-      ) : (
-        <Redirect to={'/'} />
-      )}
-    </>
-  )
+  return <>{props.children}</>
 }
 
 const ProfileContent = ({
@@ -29,7 +20,6 @@ const ProfileContent = ({
   url,
   description,
   image,
-  isRanked,
   position,
   category,
 }) => {
@@ -104,26 +94,53 @@ const ProfileContent = ({
   )
 }
 
-const Profile = props => {
-  const { innerWidth } = window
-  return innerWidth >= 1024 ? (
-    <DesktopScreen {...props.profile}>
-      <ProfileContent {...props.profile.dapp} />
-    </DesktopScreen>
-  ) : (
-    <MobileScreen {...props}>
-      <ProfileContent {...props.profile.dapp} />
-    </MobileScreen>
-  )
-}
+class Profile extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      screenSize: 0,
+      visible: true,
+      dapp: {},
+    }
+  }
 
+  componentDidMount() {
+    const { innerWidth } = window
+    const { dapp_name } = this.props.match.params
+
+    this.props.dapps.find(dapp => {
+      if (dapp.name.toLowerCase() === dapp_name.toLowerCase()) {
+        if (innerWidth >= 1024) {
+          this.props.openModal(dapp.name)
+        }
+        this.setState({
+          screenSize: innerWidth,
+          visible: true,
+          dapp,
+        })
+      }
+    })
+  }
+
+  render() {
+    return this.state.screenSize >= 1024 ? (
+      <DesktopScreen visible={this.state.visible}>
+        <ProfileContent {...this.state.dapp} />
+      </DesktopScreen>
+    ) : (
+      <MobileScreen {...this.props}>
+        <ProfileContent {...this.state.dapp} />
+      </MobileScreen>
+    )
+  }
+}
 Profile.propTypes = {
-  visible: PropTypes.bool.isRequired,
+  visible: PropTypes.bool,
   dapp: PropTypes.object,
 }
 
 Profile.defaultProps = {
-  visible: false,
+  // visible: false,
 }
 
 export default Profile
