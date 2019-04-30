@@ -112,6 +112,14 @@ const Dapps = [
     dateAdded: '2019-04-11',
   },
   {
+    name: 'Bidali',
+    url: 'https://commerce.bidali.com/dapp',
+    description: 'Buy from top brands with crypto',
+    image: '/images/dapps/bidali.png',
+    category: Categories.MARKETPLACES,
+    dateAdded: '2019-04-30',
+  },
+  {
     name: 'blockimmo',
     url: 'https://blockimmo.ch',
     description:
