@@ -1,27 +1,22 @@
-// import DiscoverContract from '../../../embarkArtifacts/contracts/Discover';
-import EmbarkJS from '../../embarkArtifacts/embarkjs'
+import SNTService from './snt-services/snt-service'
+import DiscoverService from './discover-services/discover-service'
 
-import DiscoverReadService from './discover-services/read-service/discover-r-service'
-import DiscoverWriteService from './discover-services/write-service/discover-w-service'
-
-const ReadOnlyServices = {
-  DiscoverService: new DiscoverReadService(),
-}
-
-// TODO: ask Andy what kind of wallets is going to be used
 const init = async function() {
   try {
-    const account = (await EmbarkJS.enableEthereum())[0]
+    const sharedContext = {
+      account: '',
+    }
 
-    const DiscoverService = new DiscoverWriteService(account)
+    sharedContext.SNTService = new SNTService(sharedContext)
+    sharedContext.DiscoverService = new DiscoverService(sharedContext)
 
     return {
-      DiscoverService,
+      SNTService: sharedContext.SNTService,
+      DiscoverService: sharedContext.DiscoverService,
     }
   } catch (error) {
-    // TODO: Should handle it in an elegant way
     throw new Error(error.message)
   }
 }
 
-export default { init, ...ReadOnlyServices }
+export default { init }

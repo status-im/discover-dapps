@@ -20,30 +20,30 @@ module.exports = {
 
     // Accounts to use as node accounts
     // The order here corresponds to the order of `web3.eth.getAccounts`, so the first one is the `defaultAccount`
-    accounts: [
-      {
-        nodeAccounts: true, // Accounts use for the node
-        numAddresses: '1', // Number of addresses/accounts (defaults to 1)
-        password: 'config/development/password', // Password file for the accounts
-      },
-      // Below are additional accounts that will count as `nodeAccounts` in the `deployment` section of your contract config
-      // Those will not be unlocked in the node itself
-      {
-        privateKey:
-          '0xEFA9DB87A755C9D2B96F77BBCB9EF06CBDDFC01DB1A5129CE2649F73E9C2739C',
-        balance: '100 ether',
-      },
-      // {
-      //   privateKeyFile: 'path/to/file', // Either a keystore or a list of keys, separated by , or ;
-      //   password: 'passwordForTheKeystore', // Needed to decrypt the keystore file
-      // },
-      // {
-      //   mnemonic: '12 word mnemonic',
-      //   addressIndex: '0', // Optional. The index to start getting the address
-      //   numAddresses: '1', // Optional. The number of addresses to get
-      //   hdpath: "m/44'/60'/0'/0/", // Optional. HD derivation path
-      // },
-    ],
+    // accounts: [
+    // {
+    //   nodeAccounts: true, // Accounts use for the node
+    //   numAddresses: '1', // Number of addresses/accounts (defaults to 1)
+    //   password: 'config/development/password', // Password file for the accounts
+    // },
+    // Below are additional accounts that will count as `nodeAccounts` in the `deployment` section of your contract config
+    // Those will not be unlocked in the node itself
+    // {
+    //   privateKey:
+    //     '0xEFA9DB87A755C9D2B96F77BBCB9EF06CBDDFC01DB1A5129CE2649F73E9C2739C',
+    //   balance: '100 ether',
+    // },
+    // {
+    //   privateKeyFile: 'path/to/file', // Either a keystore or a list of keys, separated by , or ;
+    //   password: 'passwordForTheKeystore', // Needed to decrypt the keystore file
+    // },
+    // {
+    //   mnemonic: '12 word mnemonic',
+    //   addressIndex: '0', // Optional. The index to start getting the address
+    //   numAddresses: '1', // Optional. The number of addresses to get
+    //   hdpath: "m/44'/60'/0'/0/", // Optional. HD derivation path
+    // },
+    // ],
   },
 
   // default environment, merges with the settings in default

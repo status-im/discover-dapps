@@ -4,8 +4,8 @@ module.exports = {
     // Blockchain node to deploy the contracts
     deployment: {
       host: 'localhost', // Host of the blockchain node
-      port: 8546, // Port of the blockchain node
-      type: 'ws', // Type of connection (ws or rpc),
+      port: 8545, // Port of the blockchain node
+      type: 'rpc', // Type of connection (ws or rpc),
       // Accounts to use instead of the default account to populate your wallet
       // The order here corresponds to the order of `web3.eth.getAccounts`, so the first one is the `defaultAccount`
       /* ,accounts: [
@@ -28,6 +28,14 @@ module.exports = {
           "nodeAccounts": true // Uses the Ethereum node's accounts
         }
       ] */
+
+      accounts: [
+        {
+          privateKey:
+            '0xEFA9DB87A755C9D2B96F77BBCB9EF06CBDDFC01DB1A5129CE2649F73E9C2739C',
+          balance: '100 ether',
+        },
+      ],
     },
     // order of connections the dapp should connect to
     dappConnection: [
@@ -51,12 +59,35 @@ module.exports = {
     //            contracts section.
     // strategy: 'implicit',
 
+    // contracts: {
+    //   Discover: {
+    //     args: { _SNT: '0x744d70fdbe2ba4cf95131626614a1763df805b9e' },
+    //   },
+    //   MiniMeToken: { deploy: false },
+    //   TestBancorFormula: { deploy: false },
+    // },
+
     contracts: {
-      Discover: {
-        args: { _SNT: '0x744d70fdbe2ba4cf95131626614a1763df805b9e' },
-      },
       MiniMeToken: { deploy: false },
       TestBancorFormula: { deploy: false },
+      MiniMeTokenFactory: {},
+      SNT: {
+        from: '0x68C864373C6631984B646453138557A81224ACf6',
+        instanceOf: 'MiniMeToken',
+        args: [
+          '$MiniMeTokenFactory',
+          '0x0000000000000000000000000000000000000000',
+          0,
+          'TestMiniMeToken',
+          18,
+          'SNT',
+          true,
+        ],
+      },
+      Discover: {
+        from: '0x68C864373C6631984B646453138557A81224ACf6',
+        args: ['$SNT'],
+      },
     },
   },
 
