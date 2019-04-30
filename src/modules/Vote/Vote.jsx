@@ -59,7 +59,7 @@ class Vote extends Component {
 
     return (
       <Modal
-        visible={visible}
+        visible={visible && window.location.hash === '#vote'}
         onClickClose={onClickClose}
         windowClassName={styles.modalWindow}
         contentClassName={styles.modalContent}

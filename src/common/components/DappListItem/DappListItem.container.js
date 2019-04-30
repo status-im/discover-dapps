@@ -6,8 +6,14 @@ import {
 } from '../../../modules/Vote/Vote.reducer'
 
 const mapDispatchToProps = dispatch => ({
-  onClickUpVote: () => dispatch(showUpVoteAction()),
-  onClickDownVote: () => dispatch(showDownVoteAction()),
+  onClickUpVote: () => {
+    window.location.hash = 'vote'
+    dispatch(showUpVoteAction())
+  },
+  onClickDownVote: () => {
+    window.location.hash = 'vote'
+    dispatch(showDownVoteAction())
+  },
 })
 
 export default connect(

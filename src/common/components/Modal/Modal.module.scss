@@ -31,7 +31,7 @@
   .close {
     width: 24px;
     height: 24px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -59,8 +59,8 @@
       max-height: 90%;
     }
 
-    // .close {
-    //   display:flex;
-    // }
+    .close {
+      display: flex;
+    }
   }
 }

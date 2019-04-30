@@ -8,7 +8,9 @@ const RecentlyAdded = props => {
 
   return (
     <>
-      <h1 className={styles.headline}>Recently Added</h1>
+      <h1 id="recently-added" className={styles.headline}>
+        Recently Added
+      </h1>
       <div className={styles.grid}>
         <DappList dapps={dapps} />
       </div>

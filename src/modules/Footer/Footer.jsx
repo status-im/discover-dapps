@@ -21,7 +21,7 @@ const Footer = () => (
         </p>
       </div>
     </a>
-    {/* <div className={styles.footerItem}>
+    <div className={styles.footerItem}>
       <div className={styles.iconWrap}>
         <img src={addDappIcon} alt="Submit a DApp" />
       </div>
@@ -29,7 +29,7 @@ const Footer = () => (
         <h2>Submit a DApp</h2>
         <p>Submit your favourite DApp now! No permission required.</p>
       </div>
-    </div> */}
+    </div>
     <a
       href="https://get.status.im/chat/public/status-core-dapps"
       className={styles.footerItem}

@@ -7,6 +7,7 @@ import Footer from '../Footer'
 import LoadingHome from '../LoadingHome'
 import featured from '../../common/data/featured'
 import styles from './Home.module.scss'
+import DesktopMenu from '../DesktopMenu/DesktopMenu.container'
 
 class Home extends React.Component {
   constructor(props) {
@@ -35,6 +36,7 @@ class Home extends React.Component {
             <div className={styles.header}>
               <h2 className={styles.headline}>Discover</h2>
             </div>
+            <DesktopMenu />
             <FeaturedDapps featured={featured} />
             <Categories />
             <HighestRanked />

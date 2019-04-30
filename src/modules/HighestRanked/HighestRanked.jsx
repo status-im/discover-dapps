@@ -8,7 +8,9 @@ const HighestRanked = props => {
 
   return (
     <>
-      <h1 className={styles.headline}>Highest Ranked</h1>
+      <h1 id="highest-ranked" className={styles.headline}>
+        Highest Ranked
+      </h1>
       <div className={styles.grid}>
         <DappList dapps={dapps} isRanked showActionButtons />
       </div>
