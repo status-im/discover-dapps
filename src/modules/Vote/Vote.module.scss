@@ -43,13 +43,17 @@
   display: inline-flex;
   align-items: center;
   cursor: pointer;
+  outline: none;
+
+  transition-property: color;
+  transition-duration: 0.4s;
 }
 
 .tabs button:first-child {
   margin-right: 32px;
 }
 
-.tabs button.active:after {
+.tabs button:after {
   display: block;
   clear: both;
   content: '';
@@ -58,12 +62,19 @@
   right: 0;
   bottom: 0;
   width: 24px;
-  border-bottom: 2px solid $link-color;
+  border-bottom: 2px solid transparent;
   margin: 0 auto 0 auto;
+
+  transition-property: border-color;
+  transition-duration: 0.4s;
 }
 
 .tabs button.active {
   color: $link-color;
+}
+
+.tabs button.active:after {
+  border-bottom-color: $link-color;
 }
 
 .dapp {

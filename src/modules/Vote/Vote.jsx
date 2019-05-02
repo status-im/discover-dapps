@@ -7,6 +7,7 @@ import CategoriesUtils from '../Categories/Categories.utils'
 import Categories from '../../common/utils/categories'
 import icon from '../../common/assets/images/icon.svg'
 import Modal from '../../common/components/Modal'
+import { DappModel } from '../../common/utils/models'
 
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
@@ -14,46 +15,36 @@ const getCategoryName = category =>
 class Vote extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      isUpvote: true,
-      sntValue: 0,
-    }
-    this.onClickTab = this.onClickTab.bind(this)
     this.handleChange = this.handleChange.bind(this)
-  }
-
-  onClickTab(showUpvote) {
-    return () => {
-      this.setState({ isUpvote: showUpvote })
-    }
   }
 
   handleChange(e) {
     const { value } = e.target
     if (value !== '' && /^[1-9][0-9]*$/.test(value) === false) return
+
     if (parseInt(value, 10) > 1571296) return
 
-    this.setState({ sntValue: value })
+    const { onInputSntValue } = this.props
+    onInputSntValue(value)
   }
 
   render() {
-    const { isUpvote, sntValue } = this.state
-    const { visible, onClickClose } = this.props
+    const {
+      visible,
+      onClickClose,
+      isUpvote,
+      dapp,
+      onClickUpvote,
+      onClickDownvote,
+      sntValue,
+    } = this.props
 
-    // TODO: extract these to props
-
-    const dapp = {
-      name: 'Kyber',
-      url: 'https://web3.kyber.network',
-      description:
-        'On-chain, instant and liquid platform for exchange and payment service',
-      image: '/images/dapps/kyber.png',
-      category: 'EXCHANGES',
-      dateAdded: null,
+    if (dapp === null) {
+      return <Modal visible={false} onClickClose={onClickClose} />
     }
 
-    const currentSNTamount = 23456
-    const categoryPosition = 2
+    const currentSNTamount = dapp.sntValue
+    const catPosition = dapp.categoryPosition
     const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
     const downvoteSNTcost = 3244
 
@@ -68,14 +59,14 @@ class Vote extends Component {
           <button
             className={isUpvote ? styles.active : ''}
             type="button"
-            onClick={this.onClickTab(true)}
+            onClick={onClickUpvote}
           >
             ↑ UPVOTE
           </button>
           <button
             className={!isUpvote ? styles.active : ''}
             type="button"
-            onClick={this.onClickTab(false)}
+            onClick={onClickDownvote}
           >
             ↓ DOWNVOTE
           </button>
@@ -116,11 +107,11 @@ class Vote extends Component {
                 width="24"
                 height="24"
               />
-              {`${getCategoryName(dapp.category)} №${categoryPosition}`}
+              {`${getCategoryName(dapp.category)} №${catPosition}`}
             </span>
             {isUpvote && upvoteSNTcost > currentSNTamount && (
               <span className={styles.greenBadge}>
-                {`№${categoryPosition - 1} ↑`}
+                {`№${catPosition - 1} ↑`}
               </span>
             )}
           </div>
@@ -136,7 +127,7 @@ class Vote extends Component {
               type="text"
               value={sntValue}
               onChange={this.handleChange}
-              style={{ width: `${19 * sntValue.length}px` }}
+              style={{ width: `${19 * Math.max(1, sntValue.length)}px` }}
             />
           </div>
         )}
@@ -161,7 +152,10 @@ class Vote extends Component {
               </a>
             </p>
           )}
-          <button type="submit" disabled={!sntValue}>
+          <button
+            type="submit"
+            disabled={(!sntValue || sntValue === '0') && isUpvote}
+          >
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
         </div>
@@ -170,9 +164,19 @@ class Vote extends Component {
   }
 }
 
+Vote.defaultProps = {
+  dapp: null,
+}
+
 Vote.propTypes = {
+  dapp: PropTypes.shape(DappModel),
+  isUpvote: PropTypes.bool.isRequired,
   visible: PropTypes.bool.isRequired,
+  sntValue: PropTypes.string.isRequired,
   onClickClose: PropTypes.func.isRequired,
+  onClickUpvote: PropTypes.func.isRequired,
+  onClickDownvote: PropTypes.func.isRequired,
+  onInputSntValue: PropTypes.func.isRequired,
 }
 
 export default Vote

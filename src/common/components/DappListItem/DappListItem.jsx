@@ -10,16 +10,23 @@ import downvoteArrowIcon from '../../assets/images/downvote-arrow.svg'
 
 const DappListItem = props => {
   const {
-    name,
-    description,
-    url,
-    image,
+    dapp,
+    onClickUpVote,
+    onClickDownVote,
     isRanked,
     position,
     showActionButtons,
-    onClickUpVote,
-    onClickDownVote,
   } = props
+
+  const { name, description, url, image } = dapp
+
+  const handleUpVote = () => {
+    onClickUpVote(dapp)
+  }
+
+  const handleDownVote = () => {
+    onClickDownVote(dapp)
+  }
 
   return (
     <div className={isRanked ? styles.rankedListItem : styles.listItem}>
@@ -43,13 +50,13 @@ const DappListItem = props => {
           <p className={styles.actionArea}>
             <span className={styles.sntAmount}>
               <img src={sntIcon} alt="SNT" width="16" height="16" />
-              12,345
+              {dapp.sntValue}
             </span>
-            <span className={styles.vote} onClick={onClickUpVote}>
+            <span className={styles.vote} onClick={handleUpVote}>
               <img src={upvoteArrowIcon} alt="" />
               Upvote
             </span>
-            <span className={styles.vote} onClick={onClickDownVote}>
+            <span className={styles.vote} onClick={handleDownVote}>
               <img src={downvoteArrowIcon} alt="" />
               Downvote
             </span>
@@ -65,9 +72,13 @@ DappListItem.defaultProps = {
   showActionButtons: false,
 }
 
-DappListItem.propTypes = Object.assign({}, DappModel, {
+DappListItem.propTypes = {
+  dapp: PropTypes.shape(DappModel).isRequired,
+  isRanked: PropTypes.bool,
+  showActionButtons: PropTypes.bool,
+  position: PropTypes.number.isRequired,
   onClickUpVote: PropTypes.func.isRequired,
   onClickDownVote: PropTypes.func.isRequired,
-})
+}
 
 export default DappListItem

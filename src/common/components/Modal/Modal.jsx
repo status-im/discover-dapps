@@ -32,6 +32,7 @@ Modal.defaultProps = {
   modalClassName: '',
   windowClassName: '',
   contentClassName: '',
+  children: null,
 }
 
 Modal.propTypes = {
@@ -42,7 +43,7 @@ Modal.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
-  ]).isRequired,
+  ]),
   onClickClose: PropTypes.func.isRequired,
 }
 

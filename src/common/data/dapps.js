@@ -8,6 +8,8 @@ const Dapps = [
     description: 'Meet the future of trading',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Bancor',
@@ -16,6 +18,8 @@ const Dapps = [
     description: 'Bancor is a decentralized liquidity network',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Kyber',
@@ -25,6 +29,8 @@ const Dapps = [
     image: '/images/dapps/kyber.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Uniswap',
@@ -34,6 +40,8 @@ const Dapps = [
     image: '/images/dapps/uniswap.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-23',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'DAI by MakerDao',
@@ -42,6 +50,8 @@ const Dapps = [
     image: '/images/dapps/dai.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Augur',
@@ -51,6 +61,8 @@ const Dapps = [
     image: '/images/dapps/augur.svg',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'LocalEthereum',
@@ -59,6 +71,8 @@ const Dapps = [
     image: '/images/dapps/local-ethereum.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Eth2phone',
@@ -67,6 +81,8 @@ const Dapps = [
     image: '/images/dapps/eth2phone.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'DDEX',
@@ -76,6 +92,8 @@ const Dapps = [
     image: '/images/dapps/ddex.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Nuo',
@@ -85,6 +103,8 @@ const Dapps = [
     image: '/images/dapps/nuo.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'EasyTrade',
@@ -93,6 +113,8 @@ const Dapps = [
     image: '/images/dapps/easytrade.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'slow.trade',
@@ -102,6 +124,8 @@ const Dapps = [
     image: '/images/dapps/slowtrade.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Expo Trading',
@@ -110,6 +134,8 @@ const Dapps = [
     image: '/images/dapps/expotrading.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'blockimmo',
@@ -119,6 +145,8 @@ const Dapps = [
     image: '/images/dapps/blockimmo.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoCribs',
@@ -127,6 +155,8 @@ const Dapps = [
     image: '/images/dapps/cryptocribs.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Ethlance',
@@ -136,6 +166,8 @@ const Dapps = [
     image: '/images/dapps/ethlance.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'OpenSea',
@@ -144,6 +176,8 @@ const Dapps = [
     image: '/images/dapps/opensea.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'KnownOrigin',
@@ -152,6 +186,8 @@ const Dapps = [
     image: '/images/dapps/knownorigin.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'dBay',
@@ -160,6 +196,8 @@ const Dapps = [
     image: '/images/dapps/dBay.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-23',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Name Bazaar',
@@ -168,6 +206,8 @@ const Dapps = [
     image: '/images/dapps/name-bazaar.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'The Bounties Network',
@@ -176,6 +216,8 @@ const Dapps = [
     image: '/images/dapps/bounties-network.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Emoon',
@@ -185,6 +227,8 @@ const Dapps = [
     image: '/images/dapps/emoon.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Astro Ledger',
@@ -193,6 +237,8 @@ const Dapps = [
     image: '/images/dapps/astroledger.svg',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'SuperRare',
@@ -202,6 +248,8 @@ const Dapps = [
     image: '/images/dapps/superrare.png',
     category: Categories.MARKETPLACES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoCare',
@@ -211,6 +259,8 @@ const Dapps = [
     image: '/images/dapps/cryptocare.jpg',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoKitties',
@@ -219,6 +269,8 @@ const Dapps = [
     image: '/images/dapps/cryptokitties.png',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Cryptographics',
@@ -228,6 +280,8 @@ const Dapps = [
     image: '/images/dapps/cryptographics.png',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoPunks',
@@ -236,6 +290,8 @@ const Dapps = [
     image: '/images/dapps/cryptopunks.png',
     category: Categories.COLLECTIBLES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Crypto Takeovers',
@@ -244,6 +300,8 @@ const Dapps = [
     image: '/images/dapps/cryptotakeovers.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoFighters',
@@ -252,6 +310,8 @@ const Dapps = [
     image: '/images/dapps/cryptofighters.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Decentraland',
@@ -261,6 +321,8 @@ const Dapps = [
     image: '/images/dapps/decentraland.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Dragonereum',
@@ -269,6 +331,8 @@ const Dapps = [
     image: '/images/dapps/dragonereum.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Etherbots',
@@ -277,6 +341,8 @@ const Dapps = [
     image: '/images/dapps/etherbots.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Etheremon',
@@ -285,6 +351,8 @@ const Dapps = [
     image: '/images/dapps/etheremon.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'CryptoStrikers',
@@ -293,6 +361,8 @@ const Dapps = [
     image: '/images/dapps/cryptostrikers.png',
     category: Categories.GAMES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   // {
   //   name: 'FairHouse',
@@ -301,6 +371,8 @@ const Dapps = [
   //   image: '/images/dapps/fairhouse.png',
   //   category: Categories.GAMES,
   //   dateAdded: '2019-04-11',
+  //   sntValue: 12345,
+  //   categoryPosition: 2,
   // },
   {
     name: 'Cent',
@@ -309,6 +381,8 @@ const Dapps = [
     image: '/images/dapps/cent.png',
     category: Categories.SOCIAL_NETWORKS,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Kickback',
@@ -318,6 +392,8 @@ const Dapps = [
     image: '/images/dapps/kickback.png',
     category: Categories.SOCIAL_NETWORKS,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Peepeth',
@@ -326,6 +402,8 @@ const Dapps = [
     image: '/images/dapps/peepeth.png',
     category: Categories.SOCIAL_NETWORKS,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'livepeer.tv',
@@ -334,6 +412,8 @@ const Dapps = [
     image: '/images/dapps/livepeer.png',
     category: Categories.OTHER,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Aragon',
@@ -342,6 +422,8 @@ const Dapps = [
     image: '/images/dapps/aragon.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Compound Finance',
@@ -351,6 +433,8 @@ const Dapps = [
     image: '/images/dapps/compoundfinance.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'InstaDApp',
@@ -359,6 +443,8 @@ const Dapps = [
     image: '/images/dapps/instadapp.jpg',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Livepeer',
@@ -367,6 +453,8 @@ const Dapps = [
     image: '/images/dapps/livepeer.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'ETHLend',
@@ -375,6 +463,8 @@ const Dapps = [
     image: '/images/dapps/ethlend.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Civitas',
@@ -383,6 +473,8 @@ const Dapps = [
     image: '/images/dapps/civitas.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: '3Box',
@@ -391,6 +483,8 @@ const Dapps = [
     image: '/images/dapps/3Box.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Hexel',
@@ -399,6 +493,8 @@ const Dapps = [
     image: '/images/dapps/hexel.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-11',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'Smartz',
@@ -407,6 +503,8 @@ const Dapps = [
     image: '/images/dapps/smartz.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
   {
     name: 'SNT Voting DApp',
@@ -416,6 +514,8 @@ const Dapps = [
     image: '/images/dapps/snt-voting.png',
     category: Categories.UTILITIES,
     dateAdded: '2019-04-05',
+    sntValue: 12345,
+    categoryPosition: 2,
   },
 ]
 
