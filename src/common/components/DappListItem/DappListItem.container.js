@@ -3,20 +3,19 @@ import DappListItem from './DappListItem'
 import {
   showDownVoteAction,
   showUpVoteAction,
-  switchToUpvoteAction,
-  switchToUpDownvoteAction,
+  fetchVoteRatingAction,
 } from '../../../modules/Vote/Vote.reducer'
 
 const mapDispatchToProps = dispatch => ({
   onClickUpVote: dapp => {
     window.location.hash = 'vote'
-    dispatch(switchToUpvoteAction())
     dispatch(showUpVoteAction(dapp))
+    dispatch(fetchVoteRatingAction(dapp, true, 0))
   },
   onClickDownVote: dapp => {
     window.location.hash = 'vote'
-    dispatch(switchToUpDownvoteAction())
     dispatch(showDownVoteAction(dapp))
+    dispatch(fetchVoteRatingAction(dapp, false, 3244))
   },
 })
 

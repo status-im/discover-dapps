@@ -15,17 +15,35 @@ const getCategoryName = category =>
 class Vote extends Component {
   constructor(props) {
     super(props)
+    this.onClickUpvote = this.onClickUpvote.bind(this)
+    this.onClickDownvote = this.onClickDownvote.bind(this)
     this.handleChange = this.handleChange.bind(this)
+  }
+
+  onClickUpvote() {
+    const { dapp, onClickUpvote, fetchVoteRating } = this.props
+    let { sntValue } = this.props
+    if (sntValue === '') sntValue = 0
+    onClickUpvote()
+    fetchVoteRating(dapp, true, parseInt(sntValue, 10))
+  }
+
+  onClickDownvote() {
+    const { dapp, onClickDownvote, fetchVoteRating } = this.props
+    onClickDownvote()
+    fetchVoteRating(dapp, false, 3244)
   }
 
   handleChange(e) {
     const { value } = e.target
     if (value !== '' && /^[1-9][0-9]*$/.test(value) === false) return
 
-    if (parseInt(value, 10) > 1571296) return
+    const intValue = value === '' ? 0 : parseInt(value, 10)
+    if (intValue > 1571296) return
 
-    const { onInputSntValue } = this.props
+    const { dapp, onInputSntValue, fetchVoteRating } = this.props
     onInputSntValue(value)
+    fetchVoteRating(dapp, true, intValue)
   }
 
   render() {
@@ -34,9 +52,9 @@ class Vote extends Component {
       onClickClose,
       isUpvote,
       dapp,
-      onClickUpvote,
-      onClickDownvote,
       sntValue,
+      afterVoteRating,
+      afterVoteCategoryPosition,
     } = this.props
 
     if (dapp === null) {
@@ -45,7 +63,7 @@ class Vote extends Component {
 
     const currentSNTamount = dapp.sntValue
     const catPosition = dapp.categoryPosition
-    const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
+    // const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
     const downvoteSNTcost = 3244
 
     return (
@@ -59,14 +77,14 @@ class Vote extends Component {
           <button
             className={isUpvote ? styles.active : ''}
             type="button"
-            onClick={onClickUpvote}
+            onClick={this.onClickUpvote}
           >
             ↑ UPVOTE
           </button>
           <button
             className={!isUpvote ? styles.active : ''}
             type="button"
-            onClick={onClickDownvote}
+            onClick={this.onClickDownvote}
           >
             ↓ DOWNVOTE
           </button>
@@ -88,14 +106,14 @@ class Vote extends Component {
               <img src={sntIcon} alt="SNT" width="24" height="24" />
               {currentSNTamount.toLocaleString()}
             </span>
-            {isUpvote && upvoteSNTcost > currentSNTamount && (
+            {isUpvote && afterVoteRating !== null && (
               <span className={styles.greenBadge}>
-                {`${upvoteSNTcost.toLocaleString()} ↑`}
+                {`${afterVoteRating.toLocaleString()} ↑`}
               </span>
             )}
-            {!isUpvote && downvoteSNTcost > 0 && (
+            {!isUpvote && afterVoteRating !== null && (
               <span className={styles.redBadge}>
-                {`${downvoteSNTcost.toLocaleString()} ↓`}
+                {`${afterVoteRating.toLocaleString()} ↓`}
               </span>
             )}
           </div>
@@ -109,9 +127,9 @@ class Vote extends Component {
               />
               {`${getCategoryName(dapp.category)} №${catPosition}`}
             </span>
-            {isUpvote && upvoteSNTcost > currentSNTamount && (
+            {isUpvote && afterVoteCategoryPosition !== null && (
               <span className={styles.greenBadge}>
-                {`№${catPosition - 1} ↑`}
+                {`№${afterVoteCategoryPosition} ↑`}
               </span>
             )}
           </div>
@@ -166,6 +184,8 @@ class Vote extends Component {
 
 Vote.defaultProps = {
   dapp: null,
+  afterVoteRating: null,
+  afterVoteCategoryPosition: null,
 }
 
 Vote.propTypes = {
@@ -173,10 +193,13 @@ Vote.propTypes = {
   isUpvote: PropTypes.bool.isRequired,
   visible: PropTypes.bool.isRequired,
   sntValue: PropTypes.string.isRequired,
+  afterVoteRating: PropTypes.number,
+  afterVoteCategoryPosition: PropTypes.number,
   onClickClose: PropTypes.func.isRequired,
   onClickUpvote: PropTypes.func.isRequired,
   onClickDownvote: PropTypes.func.isRequired,
   onInputSntValue: PropTypes.func.isRequired,
+  fetchVoteRating: PropTypes.func.isRequired,
 }
 
 export default Vote
