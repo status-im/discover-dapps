@@ -1,11 +1,13 @@
+import broadcastContractFn from '../helpers'
+
 import BlockchainService from '../blockchain-service'
 
 import SNTValidator from './snt-validator'
-import SNTToken from '../../../embarkArtifacts/contracts/SNT'
+import SNTToken from '../../../../embarkArtifacts/contracts/SNT'
 
 class SNTService extends BlockchainService {
   constructor(sharedContext) {
-    super(sharedContext, SNTToken.address, SNTValidator)
+    super(sharedContext, SNTToken, SNTValidator)
   }
 
   async allowance(from, to) {
@@ -25,21 +27,22 @@ class SNTService extends BlockchainService {
   }
 
   async approveAndCall(spender, amount, callData) {
-    await super.__unlockServiceAccount(this.service)
+    await super.__unlockServiceAccount()
     await this.validator.validateApproveAndCall(spender, amount)
 
-    await SNTToken.methods
-      .approveAndCall(spender, amount, callData)
-      .send({ from: this.sharedContext.account })
+    return broadcastContractFn(
+      SNTToken.methods.approveAndCall(spender, amount, callData).send,
+      this.sharedContext.account,
+    )
   }
 
   // This is for testing purpose only
   async generateTokens() {
-    await super.__unlockServiceAccount(this.service)
+    await super.__unlockServiceAccount()
 
     await SNTToken.methods
       .generateTokens(this.sharedContext.account, 10000)
-      .send()
+      .send({ from: this.sharedContext.account })
   }
 }
 

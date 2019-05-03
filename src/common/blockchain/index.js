@@ -1,8 +1,13 @@
-import SNTService from './snt-services/snt-service'
-import DiscoverService from './discover-services/discover-service'
+import utils from './utils'
+import SNTService from './sdk/snt-services/snt-service'
+import DiscoverService from './sdk/discover-services/discover-service'
 
-const init = async function() {
+import BlockchainConfig from './sdk/config'
+
+const init = function() {
   try {
+    BlockchainConfig()
+
     const sharedContext = {
       account: '',
     }
@@ -13,10 +18,11 @@ const init = async function() {
     return {
       SNTService: sharedContext.SNTService,
       DiscoverService: sharedContext.DiscoverService,
+      utils,
     }
   } catch (error) {
     throw new Error(error.message)
   }
 }
 
-export default { init }
+export default { init, utils }

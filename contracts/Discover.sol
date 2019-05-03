@@ -237,6 +237,15 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         return (mEBalance.sub(d.effectiveBalance));
     }
 
+
+    /**
+     * @dev Used in UI in order to fetch all dapps
+     * @return dapps count
+     */
+    function getDAppsCount() external view returns(uint) {
+        return dapps.length;
+    }
+
      /**
      * @dev Downvotes always remove 1% of the current ranking.
      * @param _id bytes32 unique identifier. 

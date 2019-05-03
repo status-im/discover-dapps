@@ -1,3 +1,5 @@
+const wallet = require('./development/mnemonic')
+
 module.exports = {
   // default applies to all environments
   default: {
@@ -31,9 +33,8 @@ module.exports = {
 
       accounts: [
         {
-          privateKey:
-            '0xEFA9DB87A755C9D2B96F77BBCB9EF06CBDDFC01DB1A5129CE2649F73E9C2739C',
-          balance: '100 ether',
+          mnemonic: wallet.mnemonic,
+          balance: '1534983463450 ether',
         },
       ],
     },
@@ -72,7 +73,6 @@ module.exports = {
       TestBancorFormula: { deploy: false },
       MiniMeTokenFactory: {},
       SNT: {
-        from: '0x68C864373C6631984B646453138557A81224ACf6',
         instanceOf: 'MiniMeToken',
         args: [
           '$MiniMeTokenFactory',
@@ -85,7 +85,6 @@ module.exports = {
         ],
       },
       Discover: {
-        from: '0x68C864373C6631984B646453138557A81224ACf6',
         args: ['$SNT'],
       },
     },

@@ -1,19 +1,17 @@
+import broadcastContractFn from '../helpers'
+
+import * as ipfsSDK from '../../ipfs'
 import BlockchainService from '../blockchain-service'
 
 import DiscoverValidator from './discover-validator'
-import DiscoverContract from '../../../embarkArtifacts/contracts/Discover'
-
-// TODO: Validators ? - YUP
-// TODO: check for unlocked account: If it is not -> request unlocking - YUP
-// TODO: Make transfer failed an Error object ?
+import DiscoverContract from '../../../../embarkArtifacts/contracts/Discover'
 
 class DiscoverService extends BlockchainService {
   constructor(sharedContext) {
-    super(sharedContext, DiscoverContract.address, DiscoverValidator)
+    super(sharedContext, DiscoverContract, DiscoverValidator)
   }
 
   // TODO: Amount -> string/bigInt/number ?
-  // TODO: Maybe we can get id from a DApp name ?
   // TODO: formatBigNumberToNumber
 
   // View methods
@@ -30,6 +28,16 @@ class DiscoverService extends BlockchainService {
 
     return DiscoverContract.methods.upvoteEffect(id).call()
   }
+
+  // Todo: Should be implemented
+  // async getDApps() {
+  //   const dapps = []
+  //   const dappsCount = await DiscoverContract.methods.getDAppsCount().call()
+
+  //   for (let i = 0; i < dappsCount; i++) {
+  //     const dapp = await DiscoverContract.methods.dapps(i).call()
+  //   }
+  // }
 
   async getDAppById(id) {
     try {
@@ -51,14 +59,22 @@ class DiscoverService extends BlockchainService {
   }
 
   // Transaction methods
-  async createDApp(id, amount, metadata) {
-    await this.validator.validateDAppCreation(id, amount)
+  async createDApp(amount, metadata) {
+    const dappMetadata = JSON.parse(JSON.stringify(metadata))
+    const dappId = global.web3.keccak256(JSON.stringify(dappMetadata))
+
+    await this.validator.validateDAppCreation(dappId, amount)
+
+    dappMetadata.image = await ipfsSDK.uploadImage(dappMetadata.image)
+    const metadataHash = await ipfsSDK.uploadMetadata(
+      JSON.stringify(dappMetadata),
+    )
 
     const callData = DiscoverContract.methods
-      .createDApp(id, amount, metadata)
+      .createDApp(dappId, amount, metadataHash)
       .encodeABI()
 
-    await this.sharedContext.SNTService.approveAndCall(
+    return this.sharedContext.SNTService.approveAndCall(
       this.contract,
       amount,
       callData,
@@ -69,7 +85,7 @@ class DiscoverService extends BlockchainService {
     await this.validator.validateUpVoting(id, amount)
 
     const callData = DiscoverContract.methods.upvote(id, amount).encodeABI()
-    await this.sharedContext.SNTService.approveAndCall(
+    return this.sharedContext.SNTService.approveAndCall(
       this.contract,
       amount,
       callData,
@@ -80,7 +96,7 @@ class DiscoverService extends BlockchainService {
     await this.validator.validateDownVoting(id, amount)
 
     const callData = DiscoverContract.methods.downvote(id, amount).encodeABI()
-    await this.sharedContext.SNTService.approveAndCall(
+    return this.sharedContext.SNTService.approveAndCall(
       this.contract,
       amount,
       callData,
@@ -88,25 +104,32 @@ class DiscoverService extends BlockchainService {
   }
 
   async withdraw(id, amount) {
-    await super.__unlockServiceAccount(this.service)
+    await super.__unlockServiceAccount()
     await this.validator.validateWithdrawing(id, amount)
 
     try {
-      await DiscoverContract.methods
-        .withdraw(id, amount)
-        .send({ from: this.sharedContext.account })
+      return broadcastContractFn(
+        DiscoverContract.methods.withdraw(id, amount).send,
+        this.sharedContext.account,
+      )
     } catch (error) {
-      throw new Error('Transfer on withdraw failed')
+      throw new Error(`Transfer on withdraw failed. Details: ${error.message}`)
     }
   }
 
+  // Todo: Should we upload the metadata to IPFS
   async setMetadata(id, metadata) {
-    await super.__unlockServiceAccount(this.service)
+    await super.__unlockServiceAccount()
     await this.validator.validateMetadataSet(id)
 
-    await DiscoverContract.methods
-      .setMetadata(id, metadata)
-      .send({ from: this.sharedContext.account })
+    try {
+      return broadcastContractFn(
+        DiscoverContract.methods.setMetadata(id, metadata).send,
+        this.sharedContext.account,
+      )
+    } catch (error) {
+      throw new Error(`Uploading metadata failed. Details: ${error.message}`)
+    }
   }
 }
 

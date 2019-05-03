@@ -29,11 +29,6 @@ module.exports = {
     // Below are additional accounts that will count as `nodeAccounts` in the `deployment` section of your contract config
     // Those will not be unlocked in the node itself
     // {
-    //   privateKey:
-    //     '0xEFA9DB87A755C9D2B96F77BBCB9EF06CBDDFC01DB1A5129CE2649F73E9C2739C',
-    //   balance: '100 ether',
-    // },
-    // {
     //   privateKeyFile: 'path/to/file', // Either a keystore or a list of keys, separated by , or ;
     //   password: 'passwordForTheKeystore', // Needed to decrypt the keystore file
     // },
