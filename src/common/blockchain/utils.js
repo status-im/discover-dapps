@@ -1,3 +1,5 @@
+/* global web3 */
+
 const TRANSACTION_STATUSES = {
   Failed: 0,
   Successful: 1,
@@ -6,7 +8,7 @@ const TRANSACTION_STATUSES = {
 
 export default {
   getTxStatus: async txHash => {
-    const txReceipt = await global.web3.eth.getTransactionReceipt(txHash)
+    const txReceipt = await web3.eth.getTransactionReceipt(txHash)
     if (txReceipt) {
       return txReceipt.status
         ? TRANSACTION_STATUSES.Successful

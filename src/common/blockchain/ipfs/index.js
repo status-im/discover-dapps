@@ -1,15 +1,20 @@
-import { base64ToBlob } from './helpers'
+import * as helpers from './helpers'
+import EmbarkJSService from '../services/embark-service/embark-service'
 
-// Todo: EmbarkJS -> setup it in init
-// Todo: Should check for isAvailable
-import EmbarkJS from '../../../embarkArtifacts/embarkjs'
-
-EmbarkJS.Storage.setProvider('ipfs')
+const checkIPFSAvailability = async () => {
+  const isAvailable = await EmbarkJSService.Storage.isAvailable()
+  if (!isAvailable) {
+    throw new Error('IPFS Storage is unavailable')
+  }
+}
 
 export const uploadMetadata = async metadata => {
   try {
-    const hash = await EmbarkJS.Storage.saveText(metadata)
-    return hash
+    await checkIPFSAvailability()
+
+    const hash = await EmbarkJSService.Storage.saveText(metadata)
+    const metadataInBytes = helpers.getBytes32FromIpfsHash(hash)
+    return metadataInBytes
   } catch (error) {
     throw new Error(
       `Uploading DApp metadata to IPFS failed. Details: ${error.message}`,
@@ -17,15 +22,17 @@ export const uploadMetadata = async metadata => {
   }
 }
 
-// Todo: should convert base64 image into binary data in order to upload it on IPFS
 export const uploadImage = async base64Image => {
   try {
+    await checkIPFSAvailability()
+
     const imageFile = [
       {
-        files: [base64ToBlob(base64Image)],
+        files: [helpers.base64ToBlob(base64Image)],
       },
     ]
-    const hash = await EmbarkJS.Storage.uploadFile(imageFile)
+
+    const hash = await EmbarkJSService.Storage.uploadFile(imageFile)
     return hash
   } catch (error) {
     throw new Error(
@@ -34,9 +41,13 @@ export const uploadImage = async base64Image => {
   }
 }
 
-export const retrieveMetadata = async metadataHash => {
+export const retrieveMetadata = async metadataBytes32 => {
   try {
-    const metadata = await EmbarkJS.Storage.get(metadataHash)
+    await checkIPFSAvailability()
+
+    const metadataHash = helpers.getIpfsHashFromBytes32(metadataBytes32)
+    const metadata = await EmbarkJSService.Storage.get(metadataHash)
+
     return metadata
   } catch (error) {
     throw new Error(
@@ -46,5 +57,6 @@ export const retrieveMetadata = async metadataHash => {
 }
 
 export const retrieveImageUrl = async imageHash => {
-  return EmbarkJS.Storage.getUrl(imageHash)
+  await checkIPFSAvailability()
+  return EmbarkJSService.Storage.getUrl(imageHash)
 }

@@ -1,8 +1,8 @@
 import utils from './utils'
-import SNTService from './sdk/snt-services/snt-service'
-import DiscoverService from './sdk/discover-services/discover-service'
+import SNTService from './services/contracts-services/snt-service/snt-service'
+import DiscoverService from './services/contracts-services/discover-service/discover-service'
 
-import BlockchainConfig from './sdk/config'
+import BlockchainConfig from './services/config'
 
 const init = function() {
   try {

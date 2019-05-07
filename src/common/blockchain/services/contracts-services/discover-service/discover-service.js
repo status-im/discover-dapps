@@ -1,32 +1,27 @@
-import broadcastContractFn from '../helpers'
+/* global web3 */
+import { broadcastContractFn } from '../helpers'
 
-import * as ipfsSDK from '../../ipfs'
+import * as ipfsSDK from '../../../ipfs'
 import BlockchainService from '../blockchain-service'
 
 import DiscoverValidator from './discover-validator'
-import DiscoverContract from '../../../../embarkArtifacts/contracts/Discover'
+import DiscoverContract from '../../../../../embarkArtifacts/contracts/Discover'
 
 class DiscoverService extends BlockchainService {
   constructor(sharedContext) {
     super(sharedContext, DiscoverContract, DiscoverValidator)
   }
 
-  // TODO: Amount -> string/bigInt/number ?
-  // TODO: formatBigNumberToNumber
-
   // View methods
   async upVoteEffect(id, amount) {
-    const dapp = await this.getDAppById(id)
-    await this.validator.validateUpVoteEffect(dapp, id, amount)
+    await this.validator.validateUpVoteEffect(id, amount)
 
     return DiscoverContract.methods.upvoteEffect(id, amount).call()
   }
 
   async downVoteCost(id) {
     const dapp = await this.getDAppById(id)
-    await this.validator.validateDownVoteCost(dapp, id)
-
-    return DiscoverContract.methods.upvoteEffect(id).call()
+    return DiscoverContract.methods.downvoteCost(dapp.id).call()
   }
 
   // Todo: Should be implemented
@@ -40,13 +35,31 @@ class DiscoverService extends BlockchainService {
   // }
 
   async getDAppById(id) {
+    let dapp
     try {
       const dappId = await DiscoverContract.methods.id2index(id).call()
-      const dapp = await DiscoverContract.methods.dapps(dappId).call()
+      dapp = await DiscoverContract.methods.dapps(dappId).call()
+    } catch (error) {
+      throw new Error('Searching DApp does not exists')
+    }
+
+    if (dapp.id != id) {
+      throw new Error('Error fetching correct data from contract')
+    }
+
+    return dapp
+  }
+
+  async getDAppDataById(id) {
+    const dapp = await this.getDAppById(id)
+
+    try {
+      dapp.metadata = JSON.parse(await ipfsSDK.retrieveMetadata(dapp.metadata))
+      dapp.metadata.image = await ipfsSDK.retrieveImageUrl(dapp.metadata.image)
 
       return dapp
     } catch (error) {
-      throw new Error('Searching DApp does not exists')
+      throw new Error('Error fetching correct data from IPFS')
     }
   }
 
@@ -61,24 +74,26 @@ class DiscoverService extends BlockchainService {
   // Transaction methods
   async createDApp(amount, metadata) {
     const dappMetadata = JSON.parse(JSON.stringify(metadata))
-    const dappId = global.web3.keccak256(JSON.stringify(dappMetadata))
+    const dappId = web3.utils.keccak256(JSON.stringify(dappMetadata))
 
     await this.validator.validateDAppCreation(dappId, amount)
 
     dappMetadata.image = await ipfsSDK.uploadImage(dappMetadata.image)
-    const metadataHash = await ipfsSDK.uploadMetadata(
+    const uploadedMetadata = await ipfsSDK.uploadMetadata(
       JSON.stringify(dappMetadata),
     )
 
     const callData = DiscoverContract.methods
-      .createDApp(dappId, amount, metadataHash)
+      .createDApp(dappId, amount, uploadedMetadata)
       .encodeABI()
 
-    return this.sharedContext.SNTService.approveAndCall(
+    const createdTx = await this.sharedContext.SNTService.approveAndCall(
       this.contract,
       amount,
       callData,
     )
+
+    return { tx: createdTx, id: dappId }
   }
 
   async upVote(id, amount) {

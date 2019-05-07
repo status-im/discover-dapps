@@ -1,9 +1,9 @@
-import broadcastContractFn from '../helpers'
+import { broadcastContractFn } from '../helpers'
 
 import BlockchainService from '../blockchain-service'
 
 import SNTValidator from './snt-validator'
-import SNTToken from '../../../../embarkArtifacts/contracts/SNT'
+import SNTToken from '../../../../../embarkArtifacts/contracts/SNT'
 
 class SNTService extends BlockchainService {
   constructor(sharedContext) {
