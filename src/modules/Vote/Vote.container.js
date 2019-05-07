@@ -11,10 +11,7 @@ import {
 
 const mapStateToProps = state => state.vote
 const mapDispatchToProps = dispatch => ({
-  onClickClose: () => {
-    window.history.back()
-    dispatch(closeVoteAction())
-  },
+  onClickClose: () => dispatch(closeVoteAction()),
   onClickUpvote: () => dispatch(switchToUpvoteAction()),
   onClickDownvote: () => dispatch(switchToUpDownvoteAction()),
   onInputSntValue: sntValue => dispatch(onInputSntValueAction(sntValue)),

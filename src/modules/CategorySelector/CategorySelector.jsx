@@ -8,12 +8,21 @@ import dropdownArrows from '../../common/assets/images/dropdown-arrows.svg'
 import styles from './CategorySelector.module.scss'
 
 class CategorySelector extends React.Component {
+  static onClickHighestRanked() {
+    window.location.hash = 'highest-ranked'
+  }
+
+  static onClickRecentlyAdded() {
+    window.location.hash = 'recently-added'
+  }
+
   constructor(props) {
     super(props)
     this.state = { open: false }
     this.toggle = this.toggle.bind(this)
     this.updateCategory = this.updateCategory.bind(this)
     this.container = React.createRef()
+    this.onClickSubmit = this.onClickSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -23,6 +32,13 @@ class CategorySelector extends React.Component {
 
   componentWillUnmount() {
     document.removeEventListener('click', this.closeOnBackgroundClick)
+  }
+
+  onClickSubmit(e) {
+    const { onClickSubmit, onClickCloseDesktopMenu } = this.props
+    onClickCloseDesktopMenu()
+    onClickSubmit()
+    e.stopPropagation()
   }
 
   closeOnBackgroundClick(event) {
@@ -42,14 +58,6 @@ class CategorySelector extends React.Component {
   toggle() {
     const { open } = this.state
     this.setState({ open: !open })
-  }
-
-  static onClickHighestRanked() {
-    window.location.hash = 'highest-ranked'
-  }
-
-  static onClickRecentlyAdded() {
-    window.location.hash = 'recently-added'
   }
 
   render() {
@@ -142,6 +150,7 @@ class CategorySelector extends React.Component {
             <button
               className={`${styles.openButton} ${styles.submitDapp}`}
               type="button"
+              onClick={this.onClickSubmit}
             >
               <svg
                 width="20"
@@ -170,7 +179,7 @@ class CategorySelector extends React.Component {
         >
           <div className={styles.closedText}>
             {category && <CategoryIcon category={category} />}
-            {category ? humanise(category) : 'None selected'}
+            {category ? humanise(category) : 'Choose category'}
           </div>
           <img src={dropdownArrows} alt="Toggle category selector" />
         </button>
@@ -186,6 +195,8 @@ CategorySelector.propTypes = {
   className: PropTypes.string,
   showLists: PropTypes.bool,
   showSubmitDApp: PropTypes.bool,
+  onClickSubmit: PropTypes.func,
+  onClickCloseDesktopMenu: PropTypes.func,
 }
 
 CategorySelector.defaultProps = {
@@ -194,6 +205,8 @@ CategorySelector.defaultProps = {
   alwaysOpen: false,
   showLists: false,
   showSubmitDApp: false,
+  onClickSubmit: null,
+  onClickCloseDesktopMenu: null,
 }
 
 export default CategorySelector

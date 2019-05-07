@@ -8,12 +8,10 @@ import {
 
 const mapDispatchToProps = dispatch => ({
   onClickUpVote: dapp => {
-    window.location.hash = 'vote'
     dispatch(showUpVoteAction(dapp))
     dispatch(fetchVoteRatingAction(dapp, true, 0))
   },
   onClickDownVote: dapp => {
-    window.location.hash = 'vote'
     dispatch(showDownVoteAction(dapp))
     dispatch(fetchVoteRatingAction(dapp, false, 3244))
   },

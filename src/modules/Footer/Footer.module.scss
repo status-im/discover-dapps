@@ -14,6 +14,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: calculateRem(24);
+  cursor: pointer;
 
   :last-of-type {
     margin-bottom: 0;

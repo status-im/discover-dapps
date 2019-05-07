@@ -6,6 +6,7 @@ import Filtered from '../Filtered'
 import RecentlyAdded from '../RecentlyAdded'
 import Dapps from '../Dapps'
 import Vote from '../Vote'
+import Submit from '../Submit'
 import Terms from '../Terms/Terms'
 
 class Router extends React.Component {
@@ -25,6 +26,7 @@ class Router extends React.Component {
         <Route path="/terms" component={Terms} />
       </Switch>,
       <Vote key={2} />,
+      <Submit key={3} />,
     ]
   }
 }

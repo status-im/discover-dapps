@@ -9,15 +9,21 @@ const SWITCH_TO_DOWNVOTE = 'SWITCH_TO_DOWNVOTE'
 const ON_INPUT_SNT_VALUE = 'ON_INPUT_SNT_VALUE'
 const UPDATE_AFTER_VOTING_VALUES = 'UPDATE_AFTER_VOTING_VALUES'
 
-export const showUpVoteAction = dapp => ({
-  type: SHOW_UP_VOTE,
-  payload: dapp,
-})
+export const showUpVoteAction = dapp => {
+  window.location.hash = 'vote'
+  return {
+    type: SHOW_UP_VOTE,
+    payload: dapp,
+  }
+}
 
-export const showDownVoteAction = dapp => ({
-  type: SHOW_DOWN_VOTE,
-  payload: dapp,
-})
+export const showDownVoteAction = dapp => {
+  window.location.hash = 'vote'
+  return {
+    type: SHOW_DOWN_VOTE,
+    payload: dapp,
+  }
+}
 
 export const switchToUpvoteAction = () => ({
   type: SWITCH_TO_UPVOTE,
@@ -29,10 +35,13 @@ export const switchToUpDownvoteAction = () => ({
   payload: null,
 })
 
-export const closeVoteAction = () => ({
-  type: CLOSE_VOTE,
-  payload: null,
-})
+export const closeVoteAction = () => {
+  window.history.back()
+  return {
+    type: CLOSE_VOTE,
+    payload: null,
+  }
+}
 
 export const onInputSntValueAction = sntValue => ({
   type: ON_INPUT_SNT_VALUE,
