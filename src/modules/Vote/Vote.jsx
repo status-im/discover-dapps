@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import ReactImageFallback from 'react-image-fallback'
 import styles from './Vote.module.scss'
 import sntIcon from '../../common/assets/images/SNT.svg'
 import CategoriesUtils from '../Categories/Categories.utils'
 import Categories from '../../common/utils/categories'
 import icon from '../../common/assets/images/icon.svg'
+import Modal from '../../common/components/Modal'
+import { DappModel } from '../../common/utils/models'
 
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
@@ -13,58 +15,76 @@ const getCategoryName = category =>
 class Vote extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      isUpvote: true,
-      sntValue: 0,
-    }
-    this.onClickTab = this.onClickTab.bind(this)
+    this.onClickUpvote = this.onClickUpvote.bind(this)
+    this.onClickDownvote = this.onClickDownvote.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
-  onClickTab(showUpvote) {
-    return () => {
-      this.setState({ isUpvote: showUpvote })
-    }
+  onClickUpvote() {
+    const { dapp, onClickUpvote, fetchVoteRating } = this.props
+    let { sntValue } = this.props
+    if (sntValue === '') sntValue = 0
+    onClickUpvote()
+    fetchVoteRating(dapp, true, parseInt(sntValue, 10))
+  }
+
+  onClickDownvote() {
+    const { dapp, onClickDownvote, fetchVoteRating } = this.props
+    onClickDownvote()
+    fetchVoteRating(dapp, false, 3244)
   }
 
   handleChange(e) {
-    this.setState({ sntValue: e.target.value })
+    const { value } = e.target
+    if (value !== '' && /^[1-9][0-9]*$/.test(value) === false) return
+
+    const intValue = value === '' ? 0 : parseInt(value, 10)
+    if (intValue > 1571296) return
+
+    const { dapp, onInputSntValue, fetchVoteRating } = this.props
+    onInputSntValue(value)
+    fetchVoteRating(dapp, true, intValue)
   }
 
   render() {
-    const { isUpvote, sntValue } = this.state
+    const {
+      visible,
+      onClickClose,
+      isUpvote,
+      dapp,
+      sntValue,
+      afterVoteRating,
+      afterVoteCategoryPosition,
+    } = this.props
 
-    // TODO: extract these to props
-
-    const dapp = {
-      name: 'Kyber',
-      url: 'https://web3.kyber.network',
-      description:
-        'On-chain, instant and liquid platform for exchange and payment service',
-      image: '/images/dapps/kyber.png',
-      category: 'EXCHANGES',
-      dateAdded: null,
+    if (dapp === null) {
+      return <Modal visible={false} onClickClose={onClickClose} />
     }
 
-    const currentSNTamount = 23456
-    const categoryPosition = 2
-    const upvoteSNTcost = 12422
+    const currentSNTamount = dapp.sntValue
+    const catPosition = dapp.categoryPosition
+    // const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
     const downvoteSNTcost = 3244
 
     return (
-      <div>
+      <Modal
+        visible={visible && window.location.hash === '#vote'}
+        onClickClose={onClickClose}
+        windowClassName={styles.modalWindow}
+        contentClassName={styles.modalContent}
+      >
         <div className={styles.tabs}>
           <button
             className={isUpvote ? styles.active : ''}
             type="button"
-            onClick={this.onClickTab(true)}
+            onClick={this.onClickUpvote}
           >
             ↑ UPVOTE
           </button>
           <button
             className={!isUpvote ? styles.active : ''}
             type="button"
-            onClick={this.onClickTab(false)}
+            onClick={this.onClickDownvote}
           >
             ↓ DOWNVOTE
           </button>
@@ -81,34 +101,38 @@ class Vote extends Component {
           {dapp.name}
         </div>
         <div className={styles.items}>
-          {isUpvote && upvoteSNTcost > 0 && (
-            <span className={styles.greenBadge}>
-              {`${upvoteSNTcost.toLocaleString()} ↑`}
+          <div className={styles.itemRow}>
+            <span className={styles.item}>
+              <img src={sntIcon} alt="SNT" width="24" height="24" />
+              {currentSNTamount.toLocaleString()}
             </span>
-          )}
-          {!isUpvote && downvoteSNTcost > 0 && (
-            <span className={styles.redBadge}>
-              {`${downvoteSNTcost.toLocaleString()} ↓`}
+            {isUpvote && afterVoteRating !== null && (
+              <span className={styles.greenBadge}>
+                {`${afterVoteRating.toLocaleString()} ↑`}
+              </span>
+            )}
+            {!isUpvote && afterVoteRating !== null && (
+              <span className={styles.redBadge}>
+                {`${afterVoteRating.toLocaleString()} ↓`}
+              </span>
+            )}
+          </div>
+          <div className={styles.itemRow}>
+            <span className={styles.item}>
+              <img
+                src={CategoriesUtils(dapp.category)}
+                alt={getCategoryName(dapp.category)}
+                width="24"
+                height="24"
+              />
+              {`${getCategoryName(dapp.category)} №${catPosition}`}
             </span>
-          )}
-          <span className={styles.item}>
-            <img src={sntIcon} alt="SNT" width="24" height="24" />
-            {currentSNTamount.toLocaleString()}
-          </span>
-          {isUpvote && upvoteSNTcost > 0 && (
-            <span className={styles.greenBadge}>
-              {`№${categoryPosition - 1} ↑`}
-            </span>
-          )}
-          <span className={styles.item}>
-            <img
-              src={CategoriesUtils(dapp.category)}
-              alt={getCategoryName(dapp.category)}
-              width="24"
-              height="24"
-            />
-            {`${getCategoryName(dapp.category)} №${categoryPosition}`}
-          </span>
+            {isUpvote && afterVoteCategoryPosition !== null && (
+              <span className={styles.greenBadge}>
+                {`№${afterVoteCategoryPosition} ↑`}
+              </span>
+            )}
+          </div>
         </div>
         {!isUpvote && (
           <div className={styles.inputArea}>
@@ -116,8 +140,13 @@ class Vote extends Component {
           </div>
         )}
         {isUpvote && (
-          <div className={styles.inputArea}>
-            <input type="text" value={sntValue} onChange={this.handleChange} />
+          <div className={`${styles.inputArea} ${styles.inputAreaBorder}`}>
+            <input
+              type="text"
+              value={sntValue}
+              onChange={this.handleChange}
+              style={{ width: `${19 * Math.max(1, sntValue.length)}px` }}
+            />
           </div>
         )}
 
@@ -141,15 +170,36 @@ class Vote extends Component {
               </a>
             </p>
           )}
-          <button type="submit" disabled={!sntValue}>
+          <button
+            type="submit"
+            disabled={(!sntValue || sntValue === '0') && isUpvote}
+          >
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
         </div>
-      </div>
+      </Modal>
     )
   }
 }
 
-Vote.propTypes = {}
+Vote.defaultProps = {
+  dapp: null,
+  afterVoteRating: null,
+  afterVoteCategoryPosition: null,
+}
+
+Vote.propTypes = {
+  dapp: PropTypes.shape(DappModel),
+  isUpvote: PropTypes.bool.isRequired,
+  visible: PropTypes.bool.isRequired,
+  sntValue: PropTypes.string.isRequired,
+  afterVoteRating: PropTypes.number,
+  afterVoteCategoryPosition: PropTypes.number,
+  onClickClose: PropTypes.func.isRequired,
+  onClickUpvote: PropTypes.func.isRequired,
+  onClickDownvote: PropTypes.func.isRequired,
+  onInputSntValue: PropTypes.func.isRequired,
+  fetchVoteRating: PropTypes.func.isRequired,
+}
 
 export default Vote

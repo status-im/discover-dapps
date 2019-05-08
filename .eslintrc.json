@@ -7,7 +7,12 @@
     "prettier"
   ],
   "rules": {
-    "prettier/prettier": "error",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "func-names": "off",
     "eqeqeq": "off",
     "class-methods-use-this": "off"

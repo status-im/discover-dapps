@@ -1,0 +1,145 @@
+@import '../../common/styles/variables';
+
+.modalWindow {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family: $font;
+}
+
+@media (min-width: $desktop) {
+  .modalWindow {
+    height: auto;
+  }
+}
+
+.title {
+  line-height: 40px;
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 13px;
+  border-bottom: 1px solid #f7f7f7;
+}
+
+.block {
+  padding: 0 16px 16px 16px;
+
+  .labelRow {
+    height: 42px;
+    display: flex;
+    align-items: center;
+
+    span:nth-child(1) {
+      font-size: 15px;
+    }
+
+    span:nth-child(2) {
+      color: #939ba1;
+      font-size: 12px;
+      margin-left: auto;
+    }
+  }
+
+  .input {
+    width: 100%;
+    height: 52px;
+    box-sizing: border-box;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
+    margin: 0;
+    background: #eef2f5;
+  }
+
+  textarea.input {
+    height: 92px;
+    resize: none;
+  }
+
+  .imgCnt {
+    width: 140px;
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 50%;
+    border: 1px dashed #939ba1;
+    margin: 16px auto;
+    background: #eef2f5;
+    cursor: pointer;
+
+    span {
+      color: #939ba1;
+      font-size: 15px;
+    }
+
+    .imgHolder {
+      width: inherit;
+      height: inherit;
+      position: absolute;
+      left: 0;
+      top: 0;
+      border-radius: initial;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+
+  .imgInfo {
+    line-height: 22px;
+    color: #939ba1;
+    font-size: 15px;
+  }
+
+  .categorySelector {
+    position: relative;
+  }
+
+  .categorySelector > div {
+    width: 100%;
+    top: auto;
+    bottom: 0;
+    margin: 0;
+  }
+
+  .categorySelector > button {
+    width: 100%;
+    margin: 0;
+
+    transition-property: background;
+    transition-duration: 0.4s;
+  }
+
+  .categorySelectorEmpty > button {
+    background: #939ba1;
+  }
+}
+
+.blockSubmit {
+  display: flex;
+  flex-direction: column;
+  margin: 40px 0 16px 0;
+
+  .terms {
+    line-height: 22px;
+    color: #939ba1;
+    font-size: 15px;
+  }
+
+  .submitButton {
+    background: $link-color;
+    border-radius: 8px;
+    color: #fff;
+    margin: calculateRem(26) auto 0 auto;
+    border: none;
+    font-family: $font;
+    padding: calculateRem(11) calculateRem(38);
+    font-size: calculateRem(15);
+  }
+
+  .submitButton:disabled,
+  .submitButton[disabled] {
+    background: $text-color;
+  }
+}

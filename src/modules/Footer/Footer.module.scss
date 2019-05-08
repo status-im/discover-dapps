@@ -1,6 +1,8 @@
 @import '../../common//styles/variables';
 
 .footer {
+  display: flex;
+  flex-direction: column;
   background-color: #eef2f5;
   font-family: $font;
   padding: calculateRem(40) calculateRem(16) calculateRem(32) calculateRem(16);
@@ -12,6 +14,7 @@
   display: flex;
   align-items: flex-start;
   margin-bottom: calculateRem(24);
+  cursor: pointer;
 
   :last-of-type {
     margin-bottom: 0;
@@ -42,4 +45,19 @@
   border-radius: 50%;
   margin-top: calculateRem(15);
   margin-right: calculateRem(16);
+}
+
+@media (min-width: $desktop) {
+  .footer {
+    flex-direction: row;
+  }
+
+  .footerItem:not(:first-child) {
+    margin-left: 34px;
+  }
+
+  .footerItem {
+    width: 0;
+    flex: 1 1 auto;
+  }
 }

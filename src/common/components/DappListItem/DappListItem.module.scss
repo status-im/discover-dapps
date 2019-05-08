@@ -4,8 +4,8 @@
   font-family: $font;
   background: $background;
   display: flex;
-  margin: 0 calculateRem(16) calculateRem(11);
   height: calculateRem(145);
+  margin: 0 calculateRem(16) calculateRem(11) calculateRem(16);
   position: relative;
 }
 
@@ -60,8 +60,9 @@
 .sntAmount {
   font-size: calculateRem(12);
   font-weight: 500;
-  width: 80px;
+  // width: 80px;
   display: inline-block;
+  margin-right: calculateRem(12);
 }
 
 .sntAmount img {
@@ -75,8 +76,13 @@
   color: $link-color;
   font-weight: 600;
   text-decoration: none;
-  width: calculateRem(80);
+  // width: calculateRem(80);
   display: inline-block;
+  cursor: pointer;
+}
+
+.vote:not(:last-child) {
+  margin-right: calculateRem(12);
 }
 
 .vote img {
