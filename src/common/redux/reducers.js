@@ -5,6 +5,7 @@ import dapps from '../../modules/Dapps/Dapps.reducer'
 import vote from '../../modules/Vote/Vote.reducer'
 import submit from '../../modules/Submit/Submit.reducer'
 import desktopMenu from '../../modules/DesktopMenu/DesktopMenu.reducer'
+import transactionStatus from '../../modules/TransactionStatus/TransactionStatus.recuder'
 
 export default history =>
   combineReducers({
@@ -14,4 +15,5 @@ export default history =>
     vote,
     submit,
     desktopMenu,
+    transactionStatus,
   })

@@ -13,12 +13,34 @@
   }
 }
 
+.modalContentImgControl {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+@media (min-width: $desktop) {
+  .modalContentImgControl {
+    height: 512px;
+  }
+}
+
+.cntWithImgControl {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+}
+
 .title {
   line-height: 40px;
   text-align: center;
   text-transform: uppercase;
   font-size: 13px;
   border-bottom: 1px solid #f7f7f7;
+}
+
+.withImgControl {
+  display: none;
 }
 
 .block {
@@ -67,7 +89,6 @@
     border: 1px dashed #939ba1;
     margin: 16px auto;
     background: #eef2f5;
-    cursor: pointer;
 
     span {
       color: #939ba1;
@@ -80,9 +101,19 @@
       position: absolute;
       left: 0;
       top: 0;
-      border-radius: initial;
+      border-radius: inherit;
       background-size: cover;
       background-position: center;
+    }
+
+    input.uploader {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+      cursor: pointer;
     }
   }
 
@@ -125,6 +156,11 @@
     line-height: 22px;
     color: #939ba1;
     font-size: 15px;
+
+    a {
+      color: $link-color;
+      text-decoration: none;
+    }
   }
 
   .submitButton {
@@ -141,5 +177,90 @@
   .submitButton:disabled,
   .submitButton[disabled] {
     background: $text-color;
+  }
+}
+
+.imgControl {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  flex: 1 1 auto;
+
+  .imgCanvasCnt {
+    width: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .imgCanvas {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+  }
+
+  .controls {
+    width: 100%;
+    border-top: 1px solid #eef2f5;
+
+    .slider {
+      height: 74px;
+      display: flex;
+      align-items: center;
+
+      * {
+        flex: 1 1 auto;
+      }
+
+      .minZoom {
+        width: 10px;
+        height: 10px;
+        flex: 0 0 auto;
+        border: 1px solid #939ba1;
+        border-radius: 3px;
+        margin: auto 30px auto 15px;
+      }
+
+      .maxZoom {
+        width: 18px;
+        height: 18px;
+        flex: 0 0 auto;
+        border: 1px solid #939ba1;
+        border-radius: 3px;
+        margin: auto 11px auto 26px;
+      }
+    }
+
+    .actionsCnt {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-sizing: border-box;
+      padding: 0 16px;
+
+      .button {
+        height: 44px;
+        border-radius: 8px;
+        border: none;
+        border-radius: 22px;
+        font-family: $font;
+        padding: calculateRem(11) calculateRem(38);
+        font-size: calculateRem(15);
+        cursor: pointer;
+      }
+
+      .cancelButton {
+        color: $link-color;
+        background: #eceffc;
+      }
+
+      .doneButton {
+        color: #fff;
+        background: $link-color;
+      }
+    }
   }
 }
