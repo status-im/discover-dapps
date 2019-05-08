@@ -67,7 +67,7 @@ class DiscoverValidator {
   async validateMetadataSet(id) {
     const dapp = await this.service.getDAppById(id)
 
-    if (dapp.developer != this.service.sharedContext.account) {
+    if (dapp.developer.toLowerCase() != this.service.sharedContext.account) {
       throw new Error('Only the developer can update the metadata')
     }
   }

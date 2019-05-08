@@ -8,13 +8,29 @@ const checkIPFSAvailability = async () => {
   }
 }
 
-export const uploadMetadata = async metadata => {
+const uploadImage = async base64Image => {
+  const imageFile = [
+    {
+      files: [helpers.base64ToBlob(base64Image)],
+    },
+  ]
+
+  return EmbarkJSService.Storage.uploadFile(imageFile)
+}
+
+const uploadMetadata = async metadata => {
+  const hash = await EmbarkJSService.Storage.saveText(metadata)
+  return helpers.getBytes32FromIpfsHash(hash)
+}
+
+export const uploadDAppMetadata = async metadata => {
   try {
     await checkIPFSAvailability()
 
-    const hash = await EmbarkJSService.Storage.saveText(metadata)
-    const metadataInBytes = helpers.getBytes32FromIpfsHash(hash)
-    return metadataInBytes
+    metadata.image = await uploadImage(metadata.image)
+    const uploadedMetadataHash = await uploadMetadata(JSON.stringify(metadata))
+
+    return uploadedMetadataHash
   } catch (error) {
     throw new Error(
       `Uploading DApp metadata to IPFS failed. Details: ${error.message}`,
@@ -22,31 +38,21 @@ export const uploadMetadata = async metadata => {
   }
 }
 
-export const uploadImage = async base64Image => {
-  try {
-    await checkIPFSAvailability()
-
-    const imageFile = [
-      {
-        files: [helpers.base64ToBlob(base64Image)],
-      },
-    ]
-
-    const hash = await EmbarkJSService.Storage.uploadFile(imageFile)
-    return hash
-  } catch (error) {
-    throw new Error(
-      `Uploading DApp image to IPFS failed. Details: ${error.message}`,
-    )
-  }
+const retrieveMetadata = async metadataBytes32 => {
+  const metadataHash = helpers.getIpfsHashFromBytes32(metadataBytes32)
+  return EmbarkJSService.Storage.get(metadataHash)
 }
 
-export const retrieveMetadata = async metadataBytes32 => {
+const retrieveImageUrl = async imageHash => {
+  return EmbarkJSService.Storage.getUrl(imageHash)
+}
+
+export const retrieveDAppMetadataByHash = async metadataBytes32 => {
   try {
     await checkIPFSAvailability()
 
-    const metadataHash = helpers.getIpfsHashFromBytes32(metadataBytes32)
-    const metadata = await EmbarkJSService.Storage.get(metadataHash)
+    const metadata = JSON.parse(await retrieveMetadata(metadataBytes32))
+    metadata.image = await retrieveImageUrl(metadata.image)
 
     return metadata
   } catch (error) {
@@ -54,9 +60,4 @@ export const retrieveMetadata = async metadataBytes32 => {
       `Fetching metadata from IPFS failed. Details: ${error.message}`,
     )
   }
-}
-
-export const retrieveImageUrl = async imageHash => {
-  await checkIPFSAvailability()
-  return EmbarkJSService.Storage.getUrl(imageHash)
 }

@@ -58,8 +58,19 @@ class Example extends React.Component {
     return getResult('downVoteCost', [id])
   }
 
+  async setMetadata(id) {
+    DAPP_DATA.category = 'updated'
+    return getResult('setMetadata', [id, DAPP_DATA])
+  }
+
   async logDiscoverMethods() {
     const createdDApp = await this.createDApp()
+
+    const dappData = await this.getFullDApp(createdDApp.id)
+    console.log(`Created DApp :  ${JSON.stringify(dappData)}`)
+
+    document.getElementById('testImage').src = dappData.metadata.image
+
     const downVote = await this.downVoteCost(createdDApp.id)
     console.log(
       `Downvote TX Hash :  ${await this.downvote(createdDApp.id, downVote.c)}`,
@@ -72,8 +83,15 @@ class Example extends React.Component {
     console.log(
       `DownVoteCost Result :  ${await this.downVoteCost(createdDApp.id)}`,
     )
-    const dappData = await this.getFullDApp(createdDApp.id)
-    document.getElementById('testImage').src = dappData.metadata.image
+
+    console.log(
+      `Set metadata TX Hash :  ${await this.setMetadata(createdDApp.id)}`,
+    )
+    console.log(
+      `Updated DApp :  ${JSON.stringify(
+        await this.getFullDApp(createdDApp.id),
+      )}`,
+    )
   }
 
   render() {

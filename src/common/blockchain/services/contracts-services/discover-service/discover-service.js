@@ -54,9 +54,7 @@ class DiscoverService extends BlockchainService {
     const dapp = await this.getDAppById(id)
 
     try {
-      dapp.metadata = JSON.parse(await ipfsSDK.retrieveMetadata(dapp.metadata))
-      dapp.metadata.image = await ipfsSDK.retrieveImageUrl(dapp.metadata.image)
-
+      dapp.metadata = await ipfsSDK.retrieveDAppMetadataByHash(dapp.metadata)
       return dapp
     } catch (error) {
       throw new Error('Error fetching correct data from IPFS')
@@ -78,10 +76,7 @@ class DiscoverService extends BlockchainService {
 
     await this.validator.validateDAppCreation(dappId, amount)
 
-    dappMetadata.image = await ipfsSDK.uploadImage(dappMetadata.image)
-    const uploadedMetadata = await ipfsSDK.uploadMetadata(
-      JSON.stringify(dappMetadata),
-    )
+    const uploadedMetadata = await ipfsSDK.uploadDAppMetadata(dappMetadata)
 
     const callData = DiscoverContract.methods
       .createDApp(dappId, amount, uploadedMetadata)
@@ -132,14 +127,16 @@ class DiscoverService extends BlockchainService {
     }
   }
 
-  // Todo: Should we upload the metadata to IPFS
   async setMetadata(id, metadata) {
     await super.__unlockServiceAccount()
     await this.validator.validateMetadataSet(id)
 
+    const dappMetadata = JSON.parse(JSON.stringify(metadata))
+    const uploadedMetadata = await ipfsSDK.uploadDAppMetadata(dappMetadata)
+
     try {
       return broadcastContractFn(
-        DiscoverContract.methods.setMetadata(id, metadata).send,
+        DiscoverContract.methods.setMetadata(id, uploadedMetadata).send,
         this.sharedContext.account,
       )
     } catch (error) {
