@@ -13,7 +13,9 @@ import {
   onImgMoveAction,
   onImgDoneAction,
   onImgCancelAction,
+  submitAction,
 } from './Submit.reducer'
+import { onStartProgressAction } from '../TransactionStatus/TransactionStatus.recuder'
 
 const mapStateToProps = state => state.submit
 const mapDispatchToProps = dispatch => ({
@@ -27,6 +29,10 @@ const mapDispatchToProps = dispatch => ({
   onImgMove: (x, y) => dispatch(onImgMoveAction(x, y)),
   onImgCancel: () => dispatch(onImgCancelAction()),
   onImgDone: imgBase64 => dispatch(onImgDoneAction(imgBase64)),
+  onSubmit: dapp => {
+    dispatch(onStartProgressAction(dapp))
+    dispatch(submitAction(dapp))
+  },
 })
 
 export default withRouter(

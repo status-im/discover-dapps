@@ -172,6 +172,7 @@
     font-family: $font;
     padding: calculateRem(11) calculateRem(38);
     font-size: calculateRem(15);
+    cursor: pointer;
   }
 
   .submitButton:disabled,

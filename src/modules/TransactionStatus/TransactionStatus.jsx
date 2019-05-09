@@ -8,6 +8,7 @@ import loadingSpinner from '../../common/assets/images/loading-spinner.svg'
 class TransactionStatus extends React.Component {
   componentDidMount() {
     this.checkPublished()
+    this.checkTransactionHash()
   }
 
   componentDidUpdate() {
@@ -23,14 +24,20 @@ class TransactionStatus extends React.Component {
     }
   }
 
+  checkTransactionHash() {
+    const { dappTransactionHash, statusCheck } = this.props
+    if (dappTransactionHash === '') return
+    statusCheck(dappTransactionHash)
+  }
+
   render() {
-    const { dappName, dappUrl, published, progress } = this.props
+    const { dappName, dappImg, published, progress } = this.props
 
     return (
       <div className={`${styles.cnt} ${dappName !== '' ? styles.active : ''}`}>
         <ReactImageFallback
           className={styles.image}
-          src={dappUrl}
+          src={dappImg}
           fallbackImage={icon}
           alt="App icon"
         />
@@ -53,16 +60,14 @@ class TransactionStatus extends React.Component {
   }
 }
 
-TransactionStatus.defaultProps = {
-  dapp: null,
-}
-
 TransactionStatus.propTypes = {
+  dappTransactionHash: PropTypes.string.isRequired,
   dappName: PropTypes.string.isRequired,
-  dappUrl: PropTypes.string.isRequired,
+  dappImg: PropTypes.string.isRequired,
   progress: PropTypes.bool.isRequired,
   published: PropTypes.bool.isRequired,
   hide: PropTypes.func.isRequired,
+  statusCheck: PropTypes.func.isRequired,
 }
 
 export default TransactionStatus
