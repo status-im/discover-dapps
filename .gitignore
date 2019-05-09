@@ -1,5 +1,6 @@
 .embark
 chains.json
+config/development/mnemonic
 config/livenet/password
 config/production/password
 coverage

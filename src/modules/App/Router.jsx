@@ -10,6 +10,8 @@ import Submit from '../Submit'
 import Terms from '../Terms/Terms'
 import TransactionStatus from '../TransactionStatus'
 
+import Example from '../BlockchainExample'
+
 class Router extends React.Component {
   componentDidMount() {
     const { fetchHighestRanked, fetchRecentlyAdded } = this.props
@@ -25,6 +27,7 @@ class Router extends React.Component {
         <Route path="/all" component={Dapps} />
         <Route path="/recently-added" component={RecentlyAdded} />
         <Route path="/terms" component={Terms} />
+        <Route path="/example" component={Example} />
       </Switch>,
       <Vote key={2} />,
       <Submit key={3} />,
