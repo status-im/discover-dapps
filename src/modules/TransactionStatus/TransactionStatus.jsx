@@ -25,12 +25,9 @@ class TransactionStatus extends React.Component {
   }
 
   checkTransactionHash() {
-    const { dappTransactionHash, onPublishSuccess } = this.props
+    const { dappTransactionHash, statusCheck } = this.props
     if (dappTransactionHash === '') return
-
-    setTimeout(() => {
-      onPublishSuccess()
-    }, 8000)
+    statusCheck(dappTransactionHash)
   }
 
   render() {
@@ -70,7 +67,7 @@ TransactionStatus.propTypes = {
   progress: PropTypes.bool.isRequired,
   published: PropTypes.bool.isRequired,
   hide: PropTypes.func.isRequired,
-  onPublishSuccess: PropTypes.func.isRequired,
+  statusCheck: PropTypes.func.isRequired,
 }
 
 export default TransactionStatus

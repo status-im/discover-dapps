@@ -5,6 +5,18 @@ import {
   onReceiveTransactionHashAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
+//TODO: create here. You can completely delete the following two functions. They must be imported.
+const createDapp = async (name, url, desc, category, img) => {
+  return '0x3513rewrsdfsdf'
+}
+const checkTransactionStatus = async hash => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve()
+    }, 5000)
+  })
+}
+
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
 const CLOSE_SUBMIT = 'CLOSE_SUBMIT'
 const ON_INPUT_NAME = 'ON_INPUT_NAME'
@@ -85,15 +97,26 @@ export const onImgDoneAction = imgBase64 => ({
 })
 
 export const submitAction = dapp => {
-  return (dispatch, getState) => {
+  return async dispatch => {
     dispatch(closeSubmitAction())
+    const hash = await createDapp(
+      dapp.name,
+      dapp.url,
+      dapp.desc,
+      dapp.category,
+      dapp.img,
+    )
+    dispatch(onReceiveTransactionHashAction(hash))
 
-    setTimeout(() => {
-      dispatch(onReceiveTransactionHashAction('hash'))
-    }, 2000)
-    setTimeout(() => {
-      dispatch(onPublishedSuccessAction())
-    }, 10000)
+    await checkTransactionStatus(hash)
+    dispatch(onPublishedSuccessAction())
+  }
+}
+
+export const statusCheckAction = hash => {
+  return async dispatch => {
+    await checkTransactionStatus(hash)
+    dispatch(onPublishedSuccessAction())
   }
 }
 
