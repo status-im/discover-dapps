@@ -1,8 +1,25 @@
-const transactionStatus = {
-  dappName: 'slow.Trade',
-  dappUrl: '/images/dapps/slowtrade.png',
-  progress: false,
-  published: true,
+import {
+  getTransactionData,
+  setTransactionData,
+} from '../../modules/TransactionStatus/TransactionStatus.utilities'
+
+let transactionStatus
+const transactionData = getTransactionData()
+
+if (transactionData !== '') {
+  transactionStatus = JSON.parse(transactionData)
+  if (transactionStatus.dappTransactionHash === '') {
+    transactionStatus.dappName = ''
+    transactionStatus.dappImg = ''
+  }
+} else {
+  transactionStatus = {
+    dappTransactionHash: '',
+    dappName: '',
+    dappImg: '',
+    progress: false,
+    published: false,
+  }
 }
 
 export default transactionStatus

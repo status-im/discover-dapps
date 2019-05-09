@@ -1,5 +1,9 @@
 import submitInitialState from '../../common/data/submit'
 import reducerUtil from '../../common/utils/reducer'
+import {
+  onPublishedSuccessAction,
+  onReceiveTransactionHashAction,
+} from '../TransactionStatus/TransactionStatus.recuder'
 
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
 const CLOSE_SUBMIT = 'CLOSE_SUBMIT'
@@ -79,6 +83,19 @@ export const onImgDoneAction = imgBase64 => ({
   type: ON_IMG_DONE,
   payload: imgBase64,
 })
+
+export const submitAction = dapp => {
+  return (dispatch, getState) => {
+    dispatch(closeSubmitAction())
+
+    setTimeout(() => {
+      dispatch(onReceiveTransactionHashAction('hash'))
+    }, 2000)
+    setTimeout(() => {
+      dispatch(onPublishedSuccessAction())
+    }, 10000)
+  }
+}
 
 const showSubmit = state => {
   return Object.assign({}, state, {

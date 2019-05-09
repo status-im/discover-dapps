@@ -23,6 +23,7 @@ class Submit extends React.Component {
     this.onTouchMove = this.onTouchMove.bind(this)
     this.onEndMove = this.onEndMove.bind(this)
     this.onImgDone = this.onImgDone.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
   }
 
   componentDidUpdate() {
@@ -139,6 +140,19 @@ class Submit extends React.Component {
     onImgDone(imgBase64)
   }
 
+  onSubmit() {
+    const { onSubmit, name, desc, url, img, category } = this.props
+    const dapp = {
+      name,
+      url,
+      img,
+      category,
+      desc,
+    }
+
+    onSubmit(dapp)
+  }
+
   render() {
     const {
       visible,
@@ -152,6 +166,9 @@ class Submit extends React.Component {
       imgControlZoom,
       onImgCancel,
     } = this.props
+
+    const canSubmit =
+      name !== '' && desc !== '' && url !== '' && img !== '' && category !== ''
 
     return (
       <Modal
@@ -240,7 +257,8 @@ class Submit extends React.Component {
               <button
                 className={styles.submitButton}
                 type="submit"
-                disabled={true}
+                disabled={!canSubmit}
+                onClick={this.onSubmit}
               >
                 Continue
               </button>
@@ -322,6 +340,7 @@ Submit.propTypes = {
   onImgMove: PropTypes.func.isRequired,
   onImgCancel: PropTypes.func.isRequired,
   onImgDone: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default Submit
