@@ -24,15 +24,27 @@ class DiscoverService extends BlockchainService {
     return DiscoverContract.methods.downvoteCost(dapp.id).call()
   }
 
-  // Todo: Should be implemented
-  // async getDApps() {
-  //   const dapps = []
-  //   const dappsCount = await DiscoverContract.methods.getDAppsCount().call()
+  async getDAppsCount() {
+    return DiscoverContract.methods.getDAppsCount().call()
+  }
 
-  //   for (let i = 0; i < dappsCount; i++) {
-  //     const dapp = await DiscoverContract.methods.dapps(i).call()
-  //   }
-  // }
+  async getDApps() {
+    const dapps = []
+    const dappsCount = await DiscoverContract.methods.getDAppsCount().call()
+
+    try {
+      for (let i = 0; i < dappsCount; i++) {
+        const dapp = await DiscoverContract.methods.dapps(i).call()
+        dapp.metadata = await ipfsSDK.retrieveDAppMetadataByHash(dapp.metadata)
+
+        dapps.push(dapp)
+      }
+
+      return dapps
+    } catch (error) {
+      throw new Error(`Error fetching dapps. Details: ${error.message}`)
+    }
+  }
 
   async getDAppById(id) {
     let dapp

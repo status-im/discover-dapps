@@ -64,34 +64,35 @@ class Example extends React.Component {
   }
 
   async logDiscoverMethods() {
-    const createdDApp = await this.createDApp()
+    console.log(await SERVICES.DiscoverService.getDApps())
+    // const createdDApp = await this.createDApp()
 
-    const dappData = await this.getFullDApp(createdDApp.id)
-    console.log(`Created DApp :  ${JSON.stringify(dappData)}`)
+    // const dappData = await this.getFullDApp(createdDApp.id)
+    // console.log(`Created DApp :  ${JSON.stringify(dappData)}`)
 
-    document.getElementById('testImage').src = dappData.metadata.image
+    // document.getElementById('testImage').src = dappData.metadata.image
 
-    const downVote = await this.downVoteCost(createdDApp.id)
-    console.log(
-      `Downvote TX Hash :  ${await this.downvote(createdDApp.id, downVote.c)}`,
-    )
-    console.log(`Upvote TX Hash :  ${await this.upvote(createdDApp.id)}`)
-    console.log(`Withdraw TX Hash :  ${await this.withdraw(createdDApp.id)}`)
-    console.log(
-      `UpvoteEffect Result :  ${await this.upVoteEffect(createdDApp.id)}`,
-    )
-    console.log(
-      `DownVoteCost Result :  ${await this.downVoteCost(createdDApp.id)}`,
-    )
+    // const downVote = await this.downVoteCost(createdDApp.id)
+    // console.log(
+    //   `Downvote TX Hash :  ${await this.downvote(createdDApp.id, downVote.c)}`,
+    // )
+    // console.log(`Upvote TX Hash :  ${await this.upvote(createdDApp.id)}`)
+    // console.log(`Withdraw TX Hash :  ${await this.withdraw(createdDApp.id)}`)
+    // console.log(
+    //   `UpvoteEffect Result :  ${await this.upVoteEffect(createdDApp.id)}`,
+    // )
+    // console.log(
+    //   `DownVoteCost Result :  ${await this.downVoteCost(createdDApp.id)}`,
+    // )
 
-    console.log(
-      `Set metadata TX Hash :  ${await this.setMetadata(createdDApp.id)}`,
-    )
-    console.log(
-      `Updated DApp :  ${JSON.stringify(
-        await this.getFullDApp(createdDApp.id),
-      )}`,
-    )
+    // console.log(
+    //   `Set metadata TX Hash :  ${await this.setMetadata(createdDApp.id)}`,
+    // )
+    // console.log(
+    //   `Updated DApp :  ${JSON.stringify(
+    //     await this.getFullDApp(createdDApp.id),
+    //   )}`,
+    // )
   }
 
   render() {

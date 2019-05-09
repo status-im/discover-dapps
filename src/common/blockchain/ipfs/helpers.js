@@ -1,7 +1,7 @@
 import bs58 from 'bs58'
 
 export const base64ToBlob = base64Text => {
-  const byteString = atob(base64Text)
+  const byteString = atob(base64Text.split(',')[1])
 
   const arrayBuffer = new ArrayBuffer(byteString.length)
   const uintArray = new Uint8Array(arrayBuffer)
