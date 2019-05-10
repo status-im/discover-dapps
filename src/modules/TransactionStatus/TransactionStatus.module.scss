@@ -35,10 +35,30 @@
     flex-direction: column;
 
     .name {
+      display: flex;
+      align-items: center;
+      position: relative;
       line-height: 22px;
       font-size: 15px;
       font-weight: 700;
       margin-bottom: 2px;
+
+      .nameItself {
+        width: 0px;
+        flex: 1 1 auto;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        margin-right: 8px;
+      }
+
+      .close {
+        flex: 0 0 auto;
+        font-weight: 300;
+        margin-left: auto;
+        transform: rotate(45deg);
+        cursor: pointer;
+      }
     }
 
     .info {
@@ -59,6 +79,10 @@
         margin-right: 4px;
         // animation:loading_rotate 1s linear infinite;
       }
+    }
+
+    .status.red {
+      color: $red;
     }
   }
 }

@@ -8,7 +8,7 @@ import {
 const HIDE = 'HIDE'
 const ON_START_PROGRESS = 'ON_START_PROGRESS'
 const ON_RECEIVE_TRANSACTION_HASH = 'ON_RECEIVE_TRANSACTION_HASH'
-const ON_PUBLISHED_SUCCESS = 'ON_PUBLISHED_SUCCESS'
+const ON_STATUS_CHECK = 'ON_STATUS_CHECK'
 
 export const hideAction = () => ({
   type: HIDE,
@@ -25,15 +25,23 @@ export const onReceiveTransactionHashAction = hash => ({
   payload: hash,
 })
 
-export const onPublishedSuccessAction = () => ({
-  type: ON_PUBLISHED_SUCCESS,
-  payload: null,
+// status 0/1/2 failed/success/pending
+export const onStatusCheckAction = status => ({
+  type: ON_STATUS_CHECK,
+  payload: parseInt(status, 10),
 })
 
 const hide = state => {
-  return Object.assign({}, state, {
-    dappName: '',
-  })
+  const transactionData = getTransactionData()
+  let dappState
+  if (transactionData !== '') {
+    dappState = JSON.parse(transactionData)
+    dappState.dappName = ''
+    setTransactionData(JSON.stringify(dappState))
+  } else {
+    dappState.dappName = ''
+  }
+  return Object.assign({}, state, dappState)
 }
 
 const onStartProgress = (state, dapp) => {
@@ -43,6 +51,7 @@ const onStartProgress = (state, dapp) => {
     dappImg: dapp.img,
     progress: true,
     published: false,
+    failed: false,
   }
   setTransactionData(JSON.stringify(dappState))
   return Object.assign({}, state, dappState)
@@ -60,24 +69,49 @@ const onReceiveTransactionHash = (state, hash) => {
   })
 }
 
-const onPublishedSuccess = state => {
+const onStatusCheck = (state, status) => {
   const transactionData = getTransactionData()
+  let dappState
   if (transactionData !== '') {
-    const dappState = JSON.parse(transactionData)
-    dappState.dappTransactionHash = ''
+    dappState = JSON.parse(transactionData)
+    switch (status) {
+      case 0:
+        dappState.progress = false
+        dappState.published = false
+        dappState.failed = true
+        dappState.dappTransactionHash = ''
+        break
+      default:
+      case 1:
+        dappState.progress = false
+        dappState.published = true
+        dappState.failed = false
+        dappState.dappTransactionHash = ''
+        break
+      case 2:
+        dappState.progress = true
+        dappState.published = false
+        dappState.failed = false
+        break
+    }
     setTransactionData(JSON.stringify(dappState))
+  } else {
+    dappState = {
+      dappTransactionHash: '',
+      dappName: '',
+      published: false,
+      failed: false,
+      progress: false,
+    }
   }
-  return Object.assign({}, state, {
-    progress: false,
-    published: true,
-  })
+  return Object.assign({}, state, dappState)
 }
 
 const map = {
   [HIDE]: hide,
   [ON_START_PROGRESS]: onStartProgress,
   [ON_RECEIVE_TRANSACTION_HASH]: onReceiveTransactionHash,
-  [ON_PUBLISHED_SUCCESS]: onPublishedSuccess,
+  [ON_STATUS_CHECK]: onStatusCheck,
 }
 
 export default reducerUtil(map, transactionStatusInitialState)

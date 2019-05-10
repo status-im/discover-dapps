@@ -7,22 +7,22 @@ import loadingSpinner from '../../common/assets/images/loading-spinner.svg'
 
 class TransactionStatus extends React.Component {
   componentDidMount() {
-    this.checkPublished()
+    // this.checkPublished()
     this.checkTransactionHash()
   }
 
-  componentDidUpdate() {
-    this.checkPublished()
-  }
+  // componentDidUpdate() {
+  //   this.checkPublished()
+  // }
 
-  checkPublished() {
-    const { published, hide } = this.props
-    if (published) {
-      setTimeout(() => {
-        hide()
-      }, 1000)
-    }
-  }
+  // checkPublished() {
+  //   const { published, hide } = this.props
+  //   if (published) {
+  //     setTimeout(() => {
+  //       hide()
+  //     }, 1000)
+  //   }
+  // }
 
   checkTransactionHash() {
     const { dappTransactionHash, statusCheck } = this.props
@@ -31,7 +31,7 @@ class TransactionStatus extends React.Component {
   }
 
   render() {
-    const { dappName, dappImg, published, progress } = this.props
+    const { dappName, dappImg, published, progress, failed, hide } = this.props
 
     return (
       <div className={`${styles.cnt} ${dappName !== '' ? styles.active : ''}`}>
@@ -42,7 +42,14 @@ class TransactionStatus extends React.Component {
           alt="App icon"
         />
         <div className={styles.data}>
-          <div className={styles.name}>{dappName}</div>
+          <div className={styles.name}>
+            <div className={styles.nameItself}>{dappName}</div>
+            {!progress && (
+              <div className={styles.close} onClick={hide}>
+                +
+              </div>
+            )}
+          </div>
           <div className={styles.info}>
             Status is an open source mobile DApp browser and messenger build for
             #Etherium
@@ -52,6 +59,11 @@ class TransactionStatus extends React.Component {
             <div className={styles.status}>
               <img src={loadingSpinner} />
               Waiting for confirmation of the network...
+            </div>
+          )}
+          {failed && (
+            <div className={`${styles.status} ${styles.red}`}>
+              Transaction failed. Please submit your dapp again.
             </div>
           )}
         </div>
@@ -66,6 +78,7 @@ TransactionStatus.propTypes = {
   dappImg: PropTypes.string.isRequired,
   progress: PropTypes.bool.isRequired,
   published: PropTypes.bool.isRequired,
+  failed: PropTypes.bool.isRequired,
   hide: PropTypes.func.isRequired,
   statusCheck: PropTypes.func.isRequired,
 }

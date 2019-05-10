@@ -1,18 +1,21 @@
 import submitInitialState from '../../common/data/submit'
 import reducerUtil from '../../common/utils/reducer'
 import {
-  onPublishedSuccessAction,
+  onStatusCheckAction,
   onReceiveTransactionHashAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
 //TODO: create here. You can completely delete the following two functions. They must be imported.
 const createDapp = async (name, url, desc, category, img) => {
-  return '0x3513rewrsdfsdf'
+  return {
+    tx: '0x3513rewrsdfsdf',
+    id: 1,
+  }
 }
 const checkTransactionStatus = async hash => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      resolve()
+      resolve(1)
     }, 5000)
   })
 }
@@ -96,27 +99,31 @@ export const onImgDoneAction = imgBase64 => ({
   payload: imgBase64,
 })
 
+export const statusCheckAction = tx => {
+  return async dispatch => {
+    const result = await checkTransactionStatus(tx)
+    dispatch(onStatusCheckAction(result))
+    // progress
+    if (parseInt(result, 10) === 2) {
+      setTimeout(() => {
+        dispatch(statusCheckAction(tx))
+      }, 150000)
+    }
+  }
+}
+
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const hash = await createDapp(
+    const { tx, id } = await createDapp(
       dapp.name,
       dapp.url,
       dapp.desc,
       dapp.category,
       dapp.img,
     )
-    dispatch(onReceiveTransactionHashAction(hash))
-
-    await checkTransactionStatus(hash)
-    dispatch(onPublishedSuccessAction())
-  }
-}
-
-export const statusCheckAction = hash => {
-  return async dispatch => {
-    await checkTransactionStatus(hash)
-    dispatch(onPublishedSuccessAction())
+    dispatch(onReceiveTransactionHashAction(tx))
+    dispatch(statusCheckAction(tx))
   }
 }
 
