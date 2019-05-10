@@ -17,7 +17,7 @@ const ON_ADD_NEW_DAPP = 'ON_ADD_NEW_DAPP'
 const RECENTLY_ADDED_SIZE = 50
 const HIGHEST_RANKED_SIZE = 50
 
-//TODO: get here. You can completely delete the following function. It must be imported.
+// TODO: You can completely delete the following function. It must be imported.
 const getDApps = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {

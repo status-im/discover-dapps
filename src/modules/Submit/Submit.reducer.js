@@ -6,7 +6,7 @@ import {
   checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
-// TODO: create here. You can completely delete the following function. It must be imported.
+// TODO: You can completely delete the following function. It must be imported.
 const createDapp = async (snt, dapp) => {
   return {
     tx: '0x3513rewrsdfsdf',

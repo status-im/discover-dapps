@@ -11,7 +11,7 @@ const ON_START_PROGRESS = 'ON_START_PROGRESS'
 const ON_RECEIVE_TRANSACTION_TX = 'ON_RECEIVE_TRANSACTION_TX'
 const ON_CHANGE_TRANSACTION_STATUS_DATA = 'ON_CHANGE_TRANSACTION_STATUS_DATA'
 
-// TODO: create here. You can completely delete the following two wfunction. They must be imported.
+// TODO: You can completely delete the following two wfunction. They must be imported.
 const checkTransactionStatus = async tx => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
