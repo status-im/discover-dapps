@@ -25,9 +25,9 @@ class TransactionStatus extends React.Component {
   // }
 
   checkTransactionHash() {
-    const { dappTransactionHash, statusCheck } = this.props
-    if (dappTransactionHash === '') return
-    statusCheck(dappTransactionHash)
+    const { dappTx, checkTransactionStatus } = this.props
+    if (dappTx === '') return
+    checkTransactionStatus(dappTx)
   }
 
   render() {
@@ -73,14 +73,14 @@ class TransactionStatus extends React.Component {
 }
 
 TransactionStatus.propTypes = {
-  dappTransactionHash: PropTypes.string.isRequired,
+  dappTx: PropTypes.string.isRequired,
   dappName: PropTypes.string.isRequired,
   dappImg: PropTypes.string.isRequired,
   progress: PropTypes.bool.isRequired,
   published: PropTypes.bool.isRequired,
   failed: PropTypes.bool.isRequired,
   hide: PropTypes.func.isRequired,
-  statusCheck: PropTypes.func.isRequired,
+  checkTransactionStatus: PropTypes.func.isRequired,
 }
 
 export default TransactionStatus

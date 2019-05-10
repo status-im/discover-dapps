@@ -2,22 +2,16 @@ import submitInitialState from '../../common/data/submit'
 import reducerUtil from '../../common/utils/reducer'
 import {
   onStatusCheckAction,
-  onReceiveTransactionHashAction,
+  onReceiveTransactionInfoAction,
+  checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
-//TODO: create here. You can completely delete the following two functions. They must be imported.
-const createDapp = async (name, url, desc, category, img) => {
+// TODO: create here. You can completely delete the following function. It must be imported.
+const createDapp = async (snt, dapp) => {
   return {
     tx: '0x3513rewrsdfsdf',
     id: 1,
   }
-}
-const checkTransactionStatus = async hash => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(1)
-    }, 5000)
-  })
 }
 
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
@@ -99,38 +93,30 @@ export const onImgDoneAction = imgBase64 => ({
   payload: imgBase64,
 })
 
-export const statusCheckAction = tx => {
-  return async dispatch => {
-    const result = await checkTransactionStatus(tx)
-    dispatch(onStatusCheckAction(result))
-    // progress
-    if (parseInt(result, 10) === 2) {
-      setTimeout(() => {
-        dispatch(statusCheckAction(tx))
-      }, 150000)
-    }
-  }
-}
-
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const { tx, id } = await createDapp(
-      dapp.name,
-      dapp.url,
-      dapp.desc,
-      dapp.category,
-      dapp.img,
-    )
-    dispatch(onReceiveTransactionHashAction(tx))
-    dispatch(statusCheckAction(tx))
+    const { tx, id } = await createDapp(1, {
+      name: dapp.name,
+      url: dapp.url,
+      desc: dapp.desc,
+      category: dapp.category,
+      image: dapp.img,
+    })
+    dispatch(onReceiveTransactionInfoAction(id, tx))
+    dispatch(checkTransactionStatusAction(tx))
   }
 }
 
 const showSubmit = state => {
   return Object.assign({}, state, {
     visible: true,
+    id: '',
+    name: '',
+    desc: '',
+    url: '',
     img: '',
+    category: '',
     imgControl: false,
     imgControlZoom: 0,
     imgControlMove: false,
