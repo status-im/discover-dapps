@@ -4,7 +4,6 @@ const vote = {
   isUpvote: false,
   sntValue: '0',
   afterVoteRating: null,
-  afterVoteCategoryPosition: null,
 }
 
 export default vote

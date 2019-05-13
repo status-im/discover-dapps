@@ -1,13 +1,15 @@
 import submitInitialState from '../../common/data/submit'
 import reducerUtil from '../../common/utils/reducer'
 import {
-  onStatusCheckAction,
   onReceiveTransactionInfoAction,
   checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
-// TODO: You can completely delete the following function. It must be imported.
-const createDapp = async (snt, dapp) => {
+// import BlockchainTool from '../../common/blockchain'
+
+//const BlockchainSDK = BlockchainTool.init()
+const BlockchainSDK = { DiscoverService: {} }
+BlockchainSDK.DiscoverService.createDapp = async (snt, dapp) => {
   return {
     tx: '0x3513rewrsdfsdf',
     id: 1,
@@ -96,7 +98,7 @@ export const onImgDoneAction = imgBase64 => ({
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const { tx, id } = await createDapp(1, {
+    const { tx, id } = await BlockchainSDK.DiscoverService.createDApp(1, {
       name: dapp.name,
       url: dapp.url,
       desc: dapp.desc,

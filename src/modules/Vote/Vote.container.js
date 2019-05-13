@@ -9,7 +9,8 @@ import {
   fetchVoteRatingAction,
 } from './Vote.reducer'
 
-const mapStateToProps = state => state.vote
+const mapStateToProps = state =>
+  Object.assign(state.vote, { dapps: state.dapps.dapps })
 const mapDispatchToProps = dispatch => ({
   onClickClose: () => dispatch(closeVoteAction()),
   onClickUpvote: () => dispatch(switchToUpvoteAction()),

@@ -1,6 +1,7 @@
 import hardcodedDapps from '../../common/data/dapps'
 import * as Categories from '../../common/data/categories'
 import reducerUtil from '../../common/utils/reducer'
+//import BlockchainTool from '../../common/blockchain'
 
 const ON_FINISH_FETCH_ALL_DAPPS_ACTION = 'ON_FINISH_FETCH_ALL_DAPPS_ACTION'
 
@@ -17,8 +18,9 @@ const ON_ADD_NEW_DAPP = 'ON_ADD_NEW_DAPP'
 const RECENTLY_ADDED_SIZE = 50
 const HIGHEST_RANKED_SIZE = 50
 
-// TODO: You can completely delete the following function. It must be imported.
-const getDApps = () => {
+//const BlockchainSDK = BlockchainTool.init()
+const BlockchainSDK = { DiscoverService: {} }
+BlockchainSDK.DiscoverService.getDApps = () => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(hardcodedDapps)
@@ -98,10 +100,14 @@ export const onFinishFetchByCategoryAction = (category, dapps) => ({
 const fetchAllDappsInState = async (dispatch, getState) => {
   const stateDapps = getState().dapps
   if (stateDapps.dapps === null) {
-    const dapps = await getDApps()
+    let dapps = await BlockchainSDK.DiscoverService.getDApps()
+    dapps = dapps.map(dapp => {
+      return Object.assign(dapp.metadata, { sntValue: parseInt(dapp.rate, 10) })
+    })
     dapps.sort((a, b) => {
       return b.sntValue - a.sntValue
     })
+
     dispatch(onFinishFetchAllDappsAction(dapps))
     return dapps
   }
@@ -160,11 +166,6 @@ export const fetchAllDappsAction = () => {
 export const fetchByCategoryAction = category => {
   return async (dispatch, getState) => {
     dispatch(onStartFetchByCategoryAction(category))
-    // setTimeout(() => {
-    // const filtered = hardcodedDapps
-    //   .filter(dapp => dapp.category === category)
-    //   .sort(() => Math.random() - 0.5)
-    //   .slice(0, 5)
 
     const dapps = await fetchAllDappsInState(dispatch, getState)
     const filteredByCategory = dapps.filter(dapp => dapp.category === category)
@@ -174,7 +175,6 @@ export const fetchByCategoryAction = category => {
     const dappsCategorySlice = filteredByCategory.slice(from, to)
 
     dispatch(onFinishFetchByCategoryAction(category, dappsCategorySlice))
-    // }, 1000)
   }
 }
 
@@ -272,7 +272,7 @@ const onAddNewDapp = (state, dapp) => {
   state.dappsCategoryMap.forEach((dappState, category_) => {
     dappsCategoryMap.set(category_, dappState)
   })
-  const dappState = dappsCategoryMap.get(dapp.category)
+  const dappState = dappsCategoryMap.get(dapp.metadata.category)
   insertDappIntoSortedArray(dappState.items, dapp, (target, dappItem) => {
     return target.sntValue < dappItem.sntValue
   })

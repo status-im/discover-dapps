@@ -5,31 +5,35 @@ import {
   transactionStatusInitInstance,
 } from './TransactionStatus.utilities'
 import { onAddNewDappAction } from '../Dapps/Dapps.reducer'
+// import BlockchainTool from '../../common/blockchain'
 
 const HIDE = 'HIDE'
 const ON_START_PROGRESS = 'ON_START_PROGRESS'
 const ON_RECEIVE_TRANSACTION_TX = 'ON_RECEIVE_TRANSACTION_TX'
 const ON_CHANGE_TRANSACTION_STATUS_DATA = 'ON_CHANGE_TRANSACTION_STATUS_DATA'
 
-// TODO: You can completely delete the following two wfunction. They must be imported.
-const checkTransactionStatus = async tx => {
+//const BlockchainSDK = BlockchainTool.init()
+const BlockchainSDK = { DiscoverService: {} }
+BlockchainSDK.DiscoverService.getTxStatus = async tx => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       resolve(1)
     }, 5000)
   })
 }
-const getDAppDataById = async id => {
+BlockchainSDK.DiscoverService.getDAppDataById = async id => {
   return new Promise((resolve, reject) => {
     resolve({
-      name: 'Newly added',
-      url: 'https://www.astroledger.org/#/onSale',
-      description: 'Funding space grants with blockchain star naming',
-      image: '/images/dapps/astroledger.svg',
-      category: 'EXCHANGES',
-      dateAdded: '2019-10-10',
-      sntValue: 10002345,
-      categoryPosition: 2,
+      metadata: {
+        name: 'Newly added',
+        url: 'https://www.astroledger.org/#/onSale',
+        description: 'Funding space grants with blockchain star naming',
+        image: '/images/dapps/astroledger.svg',
+        category: 'EXCHANGES',
+        dateAdded: '2019-10-10',
+        categoryPosition: 2,
+      },
+      rate: 10002345,
     })
   })
 }
@@ -57,9 +61,10 @@ export const onChangeTransactionStatusDataAction = transactionStatus => ({
 
 export const checkTransactionStatusAction = tx => {
   return async dispatch => {
-    const status = await checkTransactionStatus(tx)
+    const status = await BlockchainSDK.utils.getTxStatus(tx)
     const statusInt = parseInt(status, 10)
     const transacationStatus = transactionStatusFetchedInstance()
+    let dapp
 
     switch (statusInt) {
       case 0:
@@ -68,15 +73,19 @@ export const checkTransactionStatusAction = tx => {
       default:
       case 1:
         transacationStatus.setPublished(true)
-        dispatch(
-          onAddNewDappAction(await getDAppDataById(transacationStatus.dappId)),
+        dapp = await BlockchainSDK.DiscoverService.getDAppDataById(
+          transacationStatus.dappId,
         )
+        dapp = Object.assign(dapp.metadata, {
+          sntValue: parseInt(dapp.rate, 10),
+        })
+        dispatch(onAddNewDappAction(dapp))
         break
       case 2:
         transacationStatus.setProgress(true)
         setTimeout(() => {
           dispatch(checkTransactionStatusAction(tx))
-        }, 150000)
+        }, 2000)
         break
     }
 

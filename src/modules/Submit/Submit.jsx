@@ -171,7 +171,6 @@ class Submit extends React.Component {
     const canSubmit =
       name !== '' && desc !== '' && url !== '' && img !== '' && category !== ''
 
-    console.log(hasTransaction)
     return (
       <Modal
         visible={visible && window.location.hash === '#submit'}

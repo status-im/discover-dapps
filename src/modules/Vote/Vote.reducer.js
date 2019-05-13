@@ -9,6 +9,15 @@ const SWITCH_TO_DOWNVOTE = 'SWITCH_TO_DOWNVOTE'
 const ON_INPUT_SNT_VALUE = 'ON_INPUT_SNT_VALUE'
 const UPDATE_AFTER_VOTING_VALUES = 'UPDATE_AFTER_VOTING_VALUES'
 
+const BlockchainSDK = { DiscoverService: {} }
+BlockchainSDK.DiscoverService.upVoteEffect = (id, amount) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve(amount)
+    }, 1000)
+  })
+}
+
 export const showUpVoteAction = dapp => {
   window.location.hash = 'vote'
   return {
@@ -48,28 +57,26 @@ export const onInputSntValueAction = sntValue => ({
   payload: sntValue,
 })
 
-export const updateAfterVotingValuesAction = (rating, position) => ({
+export const updateAfterVotingValuesAction = rating => ({
   type: UPDATE_AFTER_VOTING_VALUES,
-  payload: {
-    rating,
-    position,
-  },
+  payload: rating,
 })
 
 export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
-  return (dispatch, getState) => {
-    setTimeout(() => {
-      const state = getState()
-      const voteState = state.vote
-      if (voteState.dapp !== dapp) return
-      if (voteState.isUpvote !== isUpvote) return
-      if (isUpvote === true && voteState.sntValue !== sntValue.toString())
-        return
-      if (sntValue === 0) return
+  return async (dispatch, getState) => {
+    const state = getState()
+    const voteState = state.vote
+    if (voteState.dapp !== dapp) return
+    if (voteState.isUpvote !== isUpvote) return
+    if (isUpvote === true && voteState.sntValue !== sntValue.toString()) return
+    if (sntValue === 0) return
 
-      const rating = dapp.sntValue + (isUpvote ? 1 : -1) * sntValue
-      dispatch(updateAfterVotingValuesAction(rating, isUpvote ? 1 : 3))
-    }, 1000)
+    const rating = await BlockchainSDK.DiscoverService.upVoteEffect(
+      dapp.id,
+      sntValue,
+    )
+    // const rating = dapp.sntValue + (isUpvote ? 1 : -1) * sntValue
+    dispatch(updateAfterVotingValuesAction(rating))
   }
 }
 
@@ -80,7 +87,6 @@ const showUpVote = (state, dapp) => {
     sntValue: '0',
     isUpvote: true,
     afterVoteRating: null,
-    afterVoteCategoryPosition: null,
   })
 }
 
@@ -91,7 +97,6 @@ const showDownVote = (state, dapp) => {
     sntValue: '0',
     isUpvote: false,
     afterVoteRating: null,
-    afterVoteCategoryPosition: null,
   })
 }
 
@@ -106,7 +111,6 @@ const switchToUpvote = state => {
   return Object.assign({}, state, {
     isUpvote: true,
     afterVoteRating: null,
-    afterVoteCategoryPosition: null,
   })
 }
 
@@ -114,7 +118,6 @@ const switchToDownvote = state => {
   return Object.assign({}, state, {
     isUpvote: false,
     afterVoteRating: null,
-    afterVoteCategoryPosition: null,
   })
 }
 
@@ -124,10 +127,9 @@ const onInputSntValue = (state, sntValue) => {
   })
 }
 
-const updateAfterVotingValues = (state, payload) => {
+const updateAfterVotingValues = (state, rating) => {
   return Object.assign({}, state, {
-    afterVoteRating: payload.rating,
-    afterVoteCategoryPosition: payload.position,
+    afterVoteRating: rating,
   })
 }
 
