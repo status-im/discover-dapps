@@ -17,7 +17,10 @@ import {
 } from './Submit.reducer'
 import { onStartProgressAction } from '../TransactionStatus/TransactionStatus.recuder'
 
-const mapStateToProps = state => state.submit
+const mapStateToProps = state =>
+  Object.assign(state.submit, {
+    hasTransaction: state.transactionStatus.progress,
+  })
 const mapDispatchToProps = dispatch => ({
   onClickClose: () => dispatch(closeSubmitAction()),
   onInputName: name => dispatch(onInputNameAction(name)),
