@@ -1,13 +1,13 @@
 import submitInitialState from '../../common/data/submit'
 import reducerUtil from '../../common/utils/reducer'
 import {
-  onPublishedSuccessAction,
-  onReceiveTransactionHashAction,
+  onReceiveTransactionInfoAction,
+  checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
 import BlockchainTool from '../../common/blockchain'
 
-const blockchainSDK = BlockchainTool.init()
+const BlockchainSDK = BlockchainTool.init()
 
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
 const CLOSE_SUBMIT = 'CLOSE_SUBMIT'
@@ -91,31 +91,27 @@ export const onImgDoneAction = imgBase64 => ({
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const createdDapp = await blockchainSDK.DiscoverService.createDApp(1, {
+    const { tx, id } = await BlockchainSDK.DiscoverService.createDApp(1, {
       name: dapp.name,
       url: dapp.url,
       desc: dapp.desc,
       category: dapp.category,
       image: dapp.img,
     })
-    dispatch(onReceiveTransactionHashAction(createdDapp.tx))
-
-    await blockchainSDK.utils.getTxStatus(createdDapp.tx)
-    dispatch(onPublishedSuccessAction())
-  }
-}
-
-export const statusCheckAction = hash => {
-  return async dispatch => {
-    await blockchainSDK.utils.getTxStatus(hash)
-    dispatch(onPublishedSuccessAction())
+    dispatch(onReceiveTransactionInfoAction(id, tx))
+    dispatch(checkTransactionStatusAction(tx))
   }
 }
 
 const showSubmit = state => {
   return Object.assign({}, state, {
     visible: true,
+    id: '',
+    name: '',
+    desc: '',
+    url: '',
     img: '',
+    category: '',
     imgControl: false,
     imgControlZoom: 0,
     imgControlMove: false,

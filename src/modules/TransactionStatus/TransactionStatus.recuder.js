@@ -1,14 +1,18 @@
 import transactionStatusInitialState from '../../common/data/transaction-status'
 import reducerUtil from '../../common/utils/reducer'
 import {
-  setTransactionData,
-  getTransactionData,
+  transactionStatusFetchedInstance,
+  transactionStatusInitInstance,
 } from './TransactionStatus.utilities'
+import { onAddNewDappAction } from '../Dapps/Dapps.reducer'
+import BlockchainTool from '../../common/blockchain'
 
 const HIDE = 'HIDE'
 const ON_START_PROGRESS = 'ON_START_PROGRESS'
-const ON_RECEIVE_TRANSACTION_HASH = 'ON_RECEIVE_TRANSACTION_HASH'
-const ON_PUBLISHED_SUCCESS = 'ON_PUBLISHED_SUCCESS'
+const ON_RECEIVE_TRANSACTION_TX = 'ON_RECEIVE_TRANSACTION_TX'
+const ON_CHANGE_TRANSACTION_STATUS_DATA = 'ON_CHANGE_TRANSACTION_STATUS_DATA'
+
+const BlockchainSDK = BlockchainTool.init()
 
 export const hideAction = () => ({
   type: HIDE,
@@ -20,64 +24,78 @@ export const onStartProgressAction = dapp => ({
   payload: dapp,
 })
 
-export const onReceiveTransactionHashAction = hash => ({
-  type: ON_RECEIVE_TRANSACTION_HASH,
-  payload: hash,
+export const onReceiveTransactionInfoAction = (id, tx) => ({
+  type: ON_RECEIVE_TRANSACTION_TX,
+  payload: { id, tx },
 })
 
-export const onPublishedSuccessAction = () => ({
-  type: ON_PUBLISHED_SUCCESS,
-  payload: null,
+// status 0/1/2 failed/success/pending
+export const onChangeTransactionStatusDataAction = transactionStatus => ({
+  type: ON_CHANGE_TRANSACTION_STATUS_DATA,
+  payload: transactionStatus,
 })
+
+export const checkTransactionStatusAction = tx => {
+  return async dispatch => {
+    const status = await BlockchainSDK.utils.getTxStatus(tx)
+    const statusInt = parseInt(status, 10)
+    const transacationStatus = transactionStatusFetchedInstance()
+
+    switch (statusInt) {
+      case 0:
+        transacationStatus.setFailed(true)
+        break
+      default:
+      case 1:
+        transacationStatus.setPublished(true)
+        dispatch(
+          onAddNewDappAction(
+            await BlockchainSDK.DiscoverService.getDAppDataById(
+              transacationStatus.dappId,
+            ),
+          ),
+        )
+        break
+      case 2:
+        transacationStatus.setProgress(true)
+        setTimeout(() => {
+          dispatch(checkTransactionStatusAction(tx))
+        }, 2000)
+        break
+    }
+
+    dispatch(onChangeTransactionStatusDataAction(transacationStatus))
+  }
+}
 
 const hide = state => {
-  return Object.assign({}, state, {
-    dappName: '',
-  })
+  const transacationStatus = transactionStatusFetchedInstance()
+  transacationStatus.setDappName('')
+  return Object.assign({}, state, transacationStatus)
 }
 
 const onStartProgress = (state, dapp) => {
-  const dappState = {
-    dappTransactionHash: '',
-    dappName: dapp.name,
-    dappImg: dapp.img,
-    progress: true,
-    published: false,
-  }
-  setTransactionData(JSON.stringify(dappState))
-  return Object.assign({}, state, dappState)
+  const transacationStatus = transactionStatusInitInstance(dapp.name, dapp.img)
+  transacationStatus.persistTransactionData()
+  return Object.assign({}, state, transacationStatus)
 }
 
-const onReceiveTransactionHash = (state, hash) => {
-  const transactionData = getTransactionData()
-  if (transactionData !== '') {
-    const dappState = JSON.parse(transactionData)
-    dappState.dappTransactionHash = hash
-    setTransactionData(JSON.stringify(dappState))
-  }
-  return Object.assign({}, state, {
-    dappTransactionHash: hash,
-  })
+const onReceiveTransactionInfo = (state, payload) => {
+  const { id, tx } = payload
+  const transacationStatus = transactionStatusFetchedInstance()
+  transacationStatus.setTransactionInfo(id, tx)
+  return Object.assign({}, state, transacationStatus)
 }
 
-const onPublishedSuccess = state => {
-  const transactionData = getTransactionData()
-  if (transactionData !== '') {
-    const dappState = JSON.parse(transactionData)
-    dappState.dappTransactionHash = ''
-    setTransactionData(JSON.stringify(dappState))
-  }
-  return Object.assign({}, state, {
-    progress: false,
-    published: true,
-  })
+const onChangeTransactionStatusData = (state, transacationStatus) => {
+  return Object.assign({}, state, transacationStatus)
 }
 
 const map = {
   [HIDE]: hide,
   [ON_START_PROGRESS]: onStartProgress,
-  [ON_RECEIVE_TRANSACTION_HASH]: onReceiveTransactionHash,
-  [ON_PUBLISHED_SUCCESS]: onPublishedSuccess,
+  [ON_RECEIVE_TRANSACTION_TX]: onReceiveTransactionInfo,
+  [ON_CHANGE_TRANSACTION_STATUS_DATA]: onChangeTransactionStatusData,
 }
 
 export default reducerUtil(map, transactionStatusInitialState)

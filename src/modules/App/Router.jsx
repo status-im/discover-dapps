@@ -14,9 +14,8 @@ import Example from '../BlockchainExample'
 
 class Router extends React.Component {
   componentDidMount() {
-    const { fetchHighestRanked, fetchRecentlyAdded } = this.props
-    fetchHighestRanked()
-    fetchRecentlyAdded()
+    const { fetchAllDapps } = this.props
+    fetchAllDapps()
   }
 
   render() {
@@ -37,8 +36,7 @@ class Router extends React.Component {
 }
 
 Router.propTypes = {
-  fetchHighestRanked: PropTypes.func.isRequired,
-  fetchRecentlyAdded: PropTypes.func.isRequired,
+  fetchAllDapps: PropTypes.func.isRequired,
 }
 
 export default Router

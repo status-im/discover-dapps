@@ -1,12 +1,14 @@
 import { connect } from 'react-redux'
 import TransactionStatus from './TransactionStatus'
-import { hideAction } from './TransactionStatus.recuder'
-import { statusCheckAction } from '../Submit/Submit.reducer'
+import {
+  hideAction,
+  checkTransactionStatusAction,
+} from './TransactionStatus.recuder'
 
 const mapStateToProps = state => state.transactionStatus
 const mapDispatchToProps = dispatch => ({
   hide: () => dispatch(hideAction()),
-  statusCheck: hash => dispatch(statusCheckAction(hash)),
+  checkTransactionStatus: hash => dispatch(checkTransactionStatusAction(hash)),
 })
 
 export default connect(

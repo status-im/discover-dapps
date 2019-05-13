@@ -39,11 +39,11 @@ module.exports = {
       ],
     },
     // order of connections the dapp should connect to
-    dappConnection: [
-      '$WEB3', // uses pre existing web3 object if available (e.g in Mist)
-      'ws://localhost:8546',
-      'http://localhost:8545',
-    ],
+    // dappConnection: [
+    //   '$WEB3', // uses pre existing web3 object if available (e.g in Mist)
+    //   'ws://localhost:8546',
+    //   'http://localhost:8545',
+    // ],
 
     // Automatically call `ethereum.enable` if true.
     // If false, the following code must run before sending any transaction: `await EmbarkJS.enableEthereum();`
@@ -106,7 +106,15 @@ module.exports = {
 
   // merges with the settings in default
   // used with "embark run testnet"
-  testnet: {},
+  testnet: {
+    deployment: {
+      accounts: [{ mnemonic: wallet.mnemonic }],
+      host: `ropsten.infura.io/v3/`,
+      port: false,
+      type: 'rpc',
+      protocol: 'https',
+    },
+  },
 
   // merges with the settings in default
   // used with "embark run livenet"
