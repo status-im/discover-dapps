@@ -5,9 +5,16 @@ import {
   checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
-import BlockchainTool from '../../common/blockchain'
+// import BlockchainTool from '../../common/blockchain'
 
-const BlockchainSDK = BlockchainTool.init()
+// const BlockchainSDK = BlockchainTool.init()
+const BlockchainSDK = { DiscoverService: {} }
+BlockchainSDK.DiscoverService.createDapp = async (snt, dapp) => {
+  return {
+    tx: '0x3513rewrsdfsdf',
+    id: 1,
+  }
+}
 
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
 const CLOSE_SUBMIT = 'CLOSE_SUBMIT'

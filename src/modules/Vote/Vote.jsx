@@ -9,6 +9,8 @@ import icon from '../../common/assets/images/icon.svg'
 import Modal from '../../common/components/Modal'
 import { DappModel } from '../../common/utils/models'
 
+const DOWNVOTE_COST = 3425
+
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
 
@@ -18,6 +20,7 @@ class Vote extends Component {
     this.onClickUpvote = this.onClickUpvote.bind(this)
     this.onClickDownvote = this.onClickDownvote.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.onClickVote = this.onClickVote.bind(this)
   }
 
   onClickUpvote() {
@@ -31,7 +34,7 @@ class Vote extends Component {
   onClickDownvote() {
     const { dapp, onClickDownvote, fetchVoteRating } = this.props
     onClickDownvote()
-    fetchVoteRating(dapp, false, 3244)
+    // fetchVoteRating(dapp, false, 3244)
   }
 
   handleChange(e) {
@@ -46,25 +49,53 @@ class Vote extends Component {
     fetchVoteRating(dapp, true, intValue)
   }
 
+  onClickVote() {
+    const { dapp, sntValue, isUpvote, upVote, downVote } = this.props
+    if (isUpvote) upVote(dapp, parseInt(sntValue, 10))
+    else downVote(dapp, DOWNVOTE_COST)
+  }
+
   render() {
     const {
       visible,
       onClickClose,
       isUpvote,
       dapp,
+      dapps,
       sntValue,
       afterVoteRating,
-      afterVoteCategoryPosition,
     } = this.props
 
     if (dapp === null) {
       return <Modal visible={false} onClickClose={onClickClose} />
     }
 
-    const currentSNTamount = dapp.sntValue
-    const catPosition = dapp.categoryPosition
+    //const catPosition = dapp.categoryPosition
     // const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
-    const downvoteSNTcost = 3244
+    const currentSNTamount = dapp.sntValue
+    const downvoteSNTcost = DOWNVOTE_COST
+    const dappsByCategory = dapps.filter(
+      dapp_ => dapp_.category === dapp.category,
+    )
+
+    let catPosition = dappsByCategory.length
+    for (let i = 0; i < dappsByCategory.length; ++i) {
+      if (dapp === dappsByCategory[i]) {
+        catPosition = i + 1
+        break
+      }
+    }
+
+    let afterVoteCategoryPosition = null
+    if (afterVoteRating !== null) {
+      afterVoteCategoryPosition = 1
+      for (let i = 0; i < dappsByCategory.length; ++i) {
+        if (dappsByCategory[i] === dapp) continue
+
+        if (dappsByCategory[i].sntValue < afterVoteRating) break
+        afterVoteCategoryPosition++
+      }
+    }
 
     return (
       <Modal
@@ -111,11 +142,11 @@ class Vote extends Component {
                 {`${afterVoteRating.toLocaleString()} ↑`}
               </span>
             )}
-            {!isUpvote && afterVoteRating !== null && (
+            {/* {!isUpvote && afterVoteRating !== null && (
               <span className={styles.redBadge}>
                 {`${afterVoteRating.toLocaleString()} ↓`}
               </span>
-            )}
+            )} */}
           </div>
           <div className={styles.itemRow}>
             <span className={styles.item}>
@@ -127,11 +158,18 @@ class Vote extends Component {
               />
               {`${getCategoryName(dapp.category)} №${catPosition}`}
             </span>
-            {isUpvote && afterVoteCategoryPosition !== null && (
-              <span className={styles.greenBadge}>
-                {`№${afterVoteCategoryPosition} ↑`}
+            {isUpvote &&
+              afterVoteCategoryPosition !== null &&
+              afterVoteCategoryPosition !== catPosition && (
+                <span className={styles.greenBadge}>
+                  {`№${afterVoteCategoryPosition} ↑`}
+                </span>
+              )}
+            {/* {!isUpvote && afterVoteCategoryPosition !== null &&  afterVoteCategoryPosition !== catPosition (
+              <span className={styles.redBadge}>
+                {`№${afterVoteCategoryPosition} ↓`}
               </span>
-            )}
+            )} */}
           </div>
         </div>
         {!isUpvote && (
@@ -173,6 +211,7 @@ class Vote extends Component {
           <button
             type="submit"
             disabled={(!sntValue || sntValue === '0') && isUpvote}
+            onClick={this.onClickVote}
           >
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
@@ -185,7 +224,6 @@ class Vote extends Component {
 Vote.defaultProps = {
   dapp: null,
   afterVoteRating: null,
-  afterVoteCategoryPosition: null,
 }
 
 Vote.propTypes = {
@@ -194,12 +232,13 @@ Vote.propTypes = {
   visible: PropTypes.bool.isRequired,
   sntValue: PropTypes.string.isRequired,
   afterVoteRating: PropTypes.number,
-  afterVoteCategoryPosition: PropTypes.number,
   onClickClose: PropTypes.func.isRequired,
   onClickUpvote: PropTypes.func.isRequired,
   onClickDownvote: PropTypes.func.isRequired,
   onInputSntValue: PropTypes.func.isRequired,
   fetchVoteRating: PropTypes.func.isRequired,
+  upVote: PropTypes.func.isRequired,
+  downVote: PropTypes.func.isRequired,
 }
 
 export default Vote

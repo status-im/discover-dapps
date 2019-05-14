@@ -8,14 +8,6 @@ import dropdownArrows from '../../common/assets/images/dropdown-arrows.svg'
 import styles from './CategorySelector.module.scss'
 
 class CategorySelector extends React.Component {
-  static onClickHighestRanked() {
-    window.location.hash = 'highest-ranked'
-  }
-
-  static onClickRecentlyAdded() {
-    window.location.hash = 'recently-added'
-  }
-
   constructor(props) {
     super(props)
     this.state = { open: false }
@@ -23,6 +15,8 @@ class CategorySelector extends React.Component {
     this.updateCategory = this.updateCategory.bind(this)
     this.container = React.createRef()
     this.onClickSubmit = this.onClickSubmit.bind(this)
+    this.onClickHighestRanked = this.onClickHighestRanked.bind(this)
+    this.onClickRecentlyAdded = this.onClickRecentlyAdded.bind(this)
   }
 
   componentDidMount() {
@@ -47,6 +41,20 @@ class CategorySelector extends React.Component {
     }
 
     this.setState({ open: false })
+  }
+
+  onClickHighestRanked(e) {
+    const { onClickCloseDesktopMenu } = this.props
+    onClickCloseDesktopMenu()
+    e.stopPropagation()
+    window.location.hash = 'highest-ranked'
+  }
+
+  onClickRecentlyAdded(e) {
+    const { onClickCloseDesktopMenu } = this.props
+    onClickCloseDesktopMenu()
+    e.stopPropagation()
+    window.location.hash = 'recently-added'
   }
 
   updateCategory(event) {
@@ -106,7 +114,7 @@ class CategorySelector extends React.Component {
               <button
                 className={styles.openButton}
                 type="button"
-                onClick={CategorySelector.onClickHighestRanked}
+                onClick={this.onClickHighestRanked}
               >
                 <svg
                   width="18"
@@ -125,7 +133,7 @@ class CategorySelector extends React.Component {
               <button
                 className={styles.openButton}
                 type="button"
-                onClick={CategorySelector.onClickRecentlyAdded}
+                onClick={this.onClickRecentlyAdded}
               >
                 <svg
                   width="18"

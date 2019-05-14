@@ -7,9 +7,12 @@ import {
   switchToUpDownvoteAction,
   onInputSntValueAction,
   fetchVoteRatingAction,
+  upVoteAction,
+  downVoteAction,
 } from './Vote.reducer'
 
-const mapStateToProps = state => state.vote
+const mapStateToProps = state =>
+  Object.assign(state.vote, { dapps: state.dapps.dapps })
 const mapDispatchToProps = dispatch => ({
   onClickClose: () => dispatch(closeVoteAction()),
   onClickUpvote: () => dispatch(switchToUpvoteAction()),
@@ -18,6 +21,8 @@ const mapDispatchToProps = dispatch => ({
   fetchVoteRating: (dapp, isUpvote, sntValue) => {
     dispatch(fetchVoteRatingAction(dapp, isUpvote, sntValue))
   },
+  upVote: (dapp, amount) => dispatch(upVoteAction(dapp, amount)),
+  downVote: (dapp, amount) => dispatch(downVoteAction(dapp, amount)),
 })
 
 export default withRouter(
