@@ -17,6 +17,20 @@ BlockchainSDK.DiscoverService.upVoteEffect = (id, amount) => {
     }, 1000)
   })
 }
+BlockchainSDK.DiscoverService.upVote = (id, amount) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('0xfae78787fa79')
+    }, 1000)
+  })
+}
+BlockchainSDK.DiscoverService.downVote = (id, amount) => {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('0xfae78787fa79')
+    }, 1000)
+  })
+}
 
 export const showUpVoteAction = dapp => {
   window.location.hash = 'vote'
@@ -77,6 +91,22 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
     )
     // const rating = dapp.sntValue + (isUpvote ? 1 : -1) * sntValue
     dispatch(updateAfterVotingValuesAction(rating))
+  }
+}
+
+export const upVoteAction = (dapp, amount) => {
+  return async dispatch => {
+    dispatch(closeVoteAction())
+    const tx = await BlockchainSDK.DiscoverService.upVote(dapp.id, amount)
+    console.log('upvote', tx)
+  }
+}
+
+export const downVoteAction = (dapp, amount) => {
+  return async dispatch => {
+    dispatch(closeVoteAction())
+    const tx = await BlockchainSDK.DiscoverService.downVote(dapp.id, amount)
+    console.log('downvote', tx)
   }
 }
 

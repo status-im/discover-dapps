@@ -9,6 +9,8 @@ import icon from '../../common/assets/images/icon.svg'
 import Modal from '../../common/components/Modal'
 import { DappModel } from '../../common/utils/models'
 
+const DOWNVOTE_COST = 3425
+
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
 
@@ -18,6 +20,7 @@ class Vote extends Component {
     this.onClickUpvote = this.onClickUpvote.bind(this)
     this.onClickDownvote = this.onClickDownvote.bind(this)
     this.handleChange = this.handleChange.bind(this)
+    this.onClickVote = this.onClickVote.bind(this)
   }
 
   onClickUpvote() {
@@ -46,6 +49,12 @@ class Vote extends Component {
     fetchVoteRating(dapp, true, intValue)
   }
 
+  onClickVote() {
+    const { dapp, sntValue, isUpvote, upVote, downVote } = this.props
+    if (isUpvote) upVote(dapp, parseInt(sntValue, 10))
+    else downVote(dapp, DOWNVOTE_COST)
+  }
+
   render() {
     const {
       visible,
@@ -64,7 +73,7 @@ class Vote extends Component {
     //const catPosition = dapp.categoryPosition
     // const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
     const currentSNTamount = dapp.sntValue
-    const downvoteSNTcost = 3244
+    const downvoteSNTcost = DOWNVOTE_COST
     const dappsByCategory = dapps.filter(
       dapp_ => dapp_.category === dapp.category,
     )
@@ -202,6 +211,7 @@ class Vote extends Component {
           <button
             type="submit"
             disabled={(!sntValue || sntValue === '0') && isUpvote}
+            onClick={this.onClickVote}
           >
             {isUpvote ? 'Upvote' : 'Downvote'}
           </button>
@@ -227,6 +237,8 @@ Vote.propTypes = {
   onClickDownvote: PropTypes.func.isRequired,
   onInputSntValue: PropTypes.func.isRequired,
   fetchVoteRating: PropTypes.func.isRequired,
+  upVote: PropTypes.func.isRequired,
+  downVote: PropTypes.func.isRequired,
 }
 
 export default Vote
