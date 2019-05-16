@@ -165,6 +165,17 @@ const Dapps = [
   },
   {
     metadata: {
+      name: 'Bidali',
+      url: 'https://commerce.bidali.com/dapp',
+      description: 'Buy from top brands with crypto',
+      image: '/images/dapps/bidali.png',
+      category: Categories.MARKETPLACES,
+      dateAdded: '2019-05-01',
+    },
+    rate: 10246,
+  },
+  {
+    metadata: {
       name: 'blockimmo',
       url: 'https://blockimmo.ch',
       description:
