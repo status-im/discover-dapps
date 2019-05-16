@@ -29,6 +29,10 @@
   margin-bottom: calculateRem(12);
 }
 
+.openHeader.spacing {
+  margin-top: 31px;
+}
+
 .openButton {
   display: block;
   background: $background;
@@ -52,6 +56,10 @@
     margin-right: calculateRem(19);
     fill: $headline-color;
   }
+}
+
+.openButton.submitDapp {
+  margin-top: 24px;
 }
 
 .selected {

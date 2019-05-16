@@ -9,7 +9,7 @@ const DappList = props => {
     dapps &&
     dapps.map((dapp, i) => (
       <DappListItem
-        {...dapp}
+        dapp={dapp}
         key={dapp.name}
         isRanked={isRanked}
         position={i + 1}

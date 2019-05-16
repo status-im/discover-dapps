@@ -4,6 +4,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: unset;
+  position: relative;
   margin: 0 calculateRem(10) calculateRem(30) calculateRem(10);
   overflow-x: scroll;
   overflow-y: hidden;
