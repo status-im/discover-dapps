@@ -111,15 +111,17 @@ export const updateAfterVotingValuesAction = rating => ({
 export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
   return async (dispatch, getState) => {
     let rating
-    try {
-      rating = await BlockchainSDK.DiscoverService.upVoteEffect(
-        dapp.id,
-        sntValue,
-      )
-    } catch (e) {
-      return
-    }
-    rating = parseInt(rating, 10)
+    if (isUpvote === true) {
+      try {
+        rating = await BlockchainSDK.DiscoverService.upVoteEffect(
+          dapp.id,
+          sntValue,
+        )
+        rating = parseInt(rating, 10)
+      } catch (e) {
+        return
+      }
+    } else rating = parseInt(dapp.sntValue * 0.99, 10)
 
     const state = getState()
     const voteState = state.vote

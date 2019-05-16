@@ -18,6 +18,12 @@
   position: relative;
 }
 
+.column {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
 .header {
   color: $headline-color;
   font-size: calculateRem(15);
@@ -41,6 +47,7 @@
   font-size: calculateRem(12);
   color: $link-color;
   text-decoration: none;
+  margin-bottom: 12px;
 }
 
 .description {
@@ -60,9 +67,14 @@
 }
 
 .position {
+  flex: 0 0 auto;
   margin-top: calculateRem(20);
   margin-right: calculateRem(16);
   font-size: calculateRem(13);
+}
+
+.imgWrapper {
+  flex: 0 0 auto;
 }
 
 .sntAmount {
@@ -99,6 +111,19 @@
 }
 
 .actionArea {
-  bottom: 0;
-  position: absolute;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: auto;
+
+  .voteTriggers {
+    display: inherit;
+    align-items: inherit;
+  }
+}
+
+.actionArea > * {
+  margin-bottom: calculateRem(8);
 }

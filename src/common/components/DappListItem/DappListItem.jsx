@@ -33,7 +33,10 @@ const DappListItem = props => {
   return (
     <div className={isRanked ? styles.rankedListItem : styles.listItem}>
       {isRanked && <div className={styles.position}>{position}</div>}
-      <div onClick={() => onToggleProfileModal(name)}>
+      <div
+        className={styles.imgWrapper}
+        onClick={() => onToggleProfileModal(name)}
+      >
         <ReactImageFallback
           className={styles.image}
           src={image}
@@ -41,7 +44,7 @@ const DappListItem = props => {
           alt="App icon"
         />
       </div>
-      <div>
+      <div className={styles.column}>
         <div onClick={() => onToggleProfileModal(name)}>
           <h2 className={styles.header}>{name}</h2>
           <p
@@ -56,20 +59,22 @@ const DappListItem = props => {
           &nbsp;&rarr;
         </a>
         {showActionButtons && (
-          <p className={styles.actionArea}>
+          <div className={styles.actionArea}>
             <span className={styles.sntAmount}>
               <img src={sntIcon} alt="SNT" width="16" height="16" />
               {dapp.sntValue}
             </span>
-            <span className={styles.vote} onClick={handleUpVote}>
-              <img src={upvoteArrowIcon} alt="" />
-              Upvote
-            </span>
-            <span className={styles.vote} onClick={handleDownVote}>
-              <img src={downvoteArrowIcon} alt="" />
-              Downvote
-            </span>
-          </p>
+            <div className={styles.voteTriggers}>
+              <span className={styles.vote} onClick={handleUpVote}>
+                <img src={upvoteArrowIcon} alt="" />
+                Upvote
+              </span>
+              <span className={styles.vote} onClick={handleDownVote}>
+                <img src={downvoteArrowIcon} alt="" />
+                Downvote
+              </span>
+            </div>
+          </div>
         )}
       </div>
     </div>
