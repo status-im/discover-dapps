@@ -44,7 +44,12 @@ const DappListItem = props => {
       <div>
         <div onClick={() => onToggleProfileModal(name)}>
           <h2 className={styles.header}>{name}</h2>
-          <p className={styles.description}>{description}</p>
+          <p
+            className={styles.description}
+            style={{ WebkitBoxOrient: 'vertical' }}
+          >
+            {description}
+          </p>
         </div>
         <a className={styles.url} href={url}>
           {url}

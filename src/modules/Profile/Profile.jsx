@@ -108,6 +108,7 @@ class Profile extends Component {
     const { innerWidth } = window
     const { dapp_name } = this.props.match.params
 
+    // in order to access dapps list please use this.props.dapps.dapps. Also have in mind that this list might be null at the beginning
     this.props.dapps.find(dapp => {
       if (dapp.name.toLowerCase() === dapp_name.toLowerCase()) {
         if (innerWidth >= 1024) {

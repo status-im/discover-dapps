@@ -183,7 +183,7 @@ class Vote extends Component {
               type="text"
               value={sntValue}
               onChange={this.handleChange}
-              style={{ width: `${19 * Math.max(1, sntValue.length)}px` }}
+              style={{ width: `${21 * Math.max(1, sntValue.length)}px` }}
             />
           </div>
         )}

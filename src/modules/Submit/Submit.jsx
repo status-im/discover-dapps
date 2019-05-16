@@ -165,7 +165,7 @@ class Submit extends React.Component {
       imgControl,
       imgControlZoom,
       onImgCancel,
-      hasTransaction,
+      onClickTerms,
     } = this.props
 
     const canSubmit =
@@ -182,99 +182,90 @@ class Submit extends React.Component {
           {imgControl ? 'Position and size your image' : 'Submit a Ðapp'}
         </div>
         <div className={imgControl ? styles.cntWithImgControl : ''}>
-          {hasTransaction && (
-            <div className={styles.hasTransaction}>
-              There is an active transaction. Please wait for it to finish and
-              then you could be able to create your Ðapp
+          <div className={imgControl ? styles.withImgControl : ''}>
+            <div className={styles.block}>
+              <div className={styles.labelRow}>
+                <span>Name of your Ðapp</span>
+              </div>
+              <input
+                className={styles.input}
+                placeholder="Name"
+                value={name}
+                onChange={this.onInputName}
+              />
             </div>
-          )}
-          {!hasTransaction && (
-            <div className={imgControl ? styles.withImgControl : ''}>
-              <div className={styles.block}>
-                <div className={styles.labelRow}>
-                  <span>Name of your Ðapp</span>
-                </div>
+            <div className={styles.block}>
+              <div className={styles.labelRow}>
+                <span>A short description</span>
+                <span>{desc.length}/140</span>
+              </div>
+              <textarea
+                className={styles.input}
+                placeholder="Max 140 characters"
+                value={desc}
+                onChange={this.onInputDesc}
+              />
+            </div>
+            <div className={styles.block}>
+              <div className={styles.labelRow}>
+                <span>URL</span>
+              </div>
+              <input
+                className={styles.input}
+                placeholder="https://your.dapp.cool"
+                value={url}
+                onChange={this.onInputUrl}
+              />
+            </div>
+            <div className={styles.block}>
+              <div className={styles.labelRow}>
+                <span>Upload the logo or icon of your Ðapp</span>
+              </div>
+              <div className={styles.imgCnt}>
+                <span>Choose image</span>
+                <div
+                  className={styles.imgHolder}
+                  style={{ backgroundImage: `url(${img})` }}
+                />
                 <input
-                  className={styles.input}
-                  placeholder="Name"
-                  value={name}
-                  onChange={this.onInputName}
+                  className={styles.uploader}
+                  type="file"
+                  onChange={this.onChangeImage}
+                  accept=".jpg, .png"
                 />
               </div>
-              <div className={styles.block}>
-                <div className={styles.labelRow}>
-                  <span>A short description</span>
-                  <span>{desc.length}/140</span>
-                </div>
-                <textarea
-                  className={styles.input}
-                  placeholder="Max 140 characters"
-                  value={desc}
-                  onChange={this.onInputDesc}
-                />
-              </div>
-              <div className={styles.block}>
-                <div className={styles.labelRow}>
-                  <span>URL</span>
-                </div>
-                <input
-                  className={styles.input}
-                  placeholder="https://your.dapp.cool"
-                  value={url}
-                  onChange={this.onInputUrl}
-                />
-              </div>
-              <div className={styles.block}>
-                <div className={styles.labelRow}>
-                  <span>Upload the logo or icon of your Ðapp</span>
-                </div>
-                <div className={styles.imgCnt}>
-                  <span>Choose image</span>
-                  <div
-                    className={styles.imgHolder}
-                    style={{ backgroundImage: `url(${img})` }}
-                  />
-                  <input
-                    className={styles.uploader}
-                    type="file"
-                    onChange={this.onChangeImage}
-                    accept=".jpg, .png"
-                  />
-                </div>
-                <div className={styles.imgInfo}>
-                  The image should be a square 1:1 ratio JPG or PNG file,
-                  minimum size is 160 × 160 pixels. The image will be placed in
-                  a circle
-                </div>
-              </div>
-              <div className={styles.block}>
-                <div className={styles.labelRow}>
-                  <span>Category</span>
-                </div>
-                <CategorySelector
-                  category={category === '' ? null : category}
-                  className={`${styles.categorySelector} ${
-                    category === '' ? styles.categorySelectorEmpty : ''
-                  }`}
-                />
-              </div>
-              <div className={`${styles.block} ${styles.blockSubmit}`}>
-                <div className={styles.terms}>
-                  By continuing you agree to our
-                  <a href="#">Terms and Conditions.</a>
-                </div>
-                <button
-                  className={styles.submitButton}
-                  type="submit"
-                  disabled={!canSubmit}
-                  onClick={this.onSubmit}
-                >
-                  Continue
-                </button>
+              <div className={styles.imgInfo}>
+                The image should be a square 1:1 ratio JPG or PNG file, minimum
+                size is 160 × 160 pixels. The image will be placed in a circle
               </div>
             </div>
-          )}
-          {!hasTransaction && imgControl && (
+            <div className={styles.block}>
+              <div className={styles.labelRow}>
+                <span>Category</span>
+              </div>
+              <CategorySelector
+                category={category === '' ? null : category}
+                className={`${styles.categorySelector} ${
+                  category === '' ? styles.categorySelectorEmpty : ''
+                }`}
+              />
+            </div>
+            <div className={`${styles.block} ${styles.blockSubmit}`}>
+              <div className={styles.terms}>
+                By continuing you agree to our
+                <a onClick={onClickTerms}> Terms and Conditions.</a>
+              </div>
+              <button
+                className={styles.submitButton}
+                type="submit"
+                disabled={!canSubmit}
+                onClick={this.onSubmit}
+              >
+                Continue
+              </button>
+            </div>
+          </div>
+          {imgControl && (
             <div className={styles.imgControl}>
               <div
                 className={styles.imgCanvasCnt}
@@ -351,7 +342,7 @@ Submit.propTypes = {
   onImgCancel: PropTypes.func.isRequired,
   onImgDone: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  hasTransaction: PropTypes.bool.isRequired,
+  onClickTerms: PropTypes.func.isRequired,
 }
 
 export default Submit

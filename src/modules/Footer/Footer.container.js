@@ -1,9 +1,9 @@
 import { connect } from 'react-redux'
 import Footer from './Footer'
-import { showSubmitAction } from '../Submit/Submit.reducer'
+import { showHowToSubmitAction } from '../HowToSubmit/HowToSubmit.reducer'
 
 const mapDispatchToProps = dispatch => ({
-  onClickSubmit: () => dispatch(showSubmitAction()),
+  onClickSubmit: () => dispatch(showHowToSubmitAction()),
 })
 
 export default connect(

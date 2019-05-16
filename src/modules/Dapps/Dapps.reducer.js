@@ -1,19 +1,21 @@
 import hardcodedDapps from '../../common/data/dapps'
 import * as Categories from '../../common/data/categories'
 import reducerUtil from '../../common/utils/reducer'
+import { showAlertAction } from '../Alert/Alert.reducer'
 //import BlockchainTool from '../../common/blockchain'
 
-const ON_FINISH_FETCH_ALL_DAPPS_ACTION = 'ON_FINISH_FETCH_ALL_DAPPS_ACTION'
+const ON_FINISH_FETCH_ALL_DAPPS_ACTION =
+  'DAPPS_ON_FINISH_FETCH_ALL_DAPPS_ACTION'
 
-const ON_START_FETCH_HIGHEST_RANKED = 'ON_START_FETCH_HIGHEST_RANKED'
-const ON_FINISH_FETCH_HIGHEST_RANKED = 'ON_FINISH_FETCH_HIGHEST_RANKED'
-const ON_START_FETCH_RECENTLY_ADDED = 'ON_START_FETCH_RECENTLY_ADDED'
-const ON_FINISH_FETCH_RECENTLY_ADDED = 'ON_FINISH_FETCH_RECENTLY_ADDED'
+const ON_START_FETCH_HIGHEST_RANKED = 'DAPPS_ON_START_FETCH_HIGHEST_RANKED'
+const ON_FINISH_FETCH_HIGHEST_RANKED = 'DAPPS_ON_FINISH_FETCH_HIGHEST_RANKED'
+const ON_START_FETCH_RECENTLY_ADDED = 'DAPPS_ON_START_FETCH_RECENTLY_ADDED'
+const ON_FINISH_FETCH_RECENTLY_ADDED = 'DAPPS_ON_FINISH_FETCH_RECENTLY_ADDED'
 
-const ON_START_FETCH_BY_CATEGORY = 'ON_START_FETCH_BY_CATEGORY'
-const ON_FINISH_FETCH_BY_CATEGORY = 'ON_FINISH_FETCH_BY_CATEGORY'
+const ON_START_FETCH_BY_CATEGORY = 'DAPPS_ON_START_FETCH_BY_CATEGORY'
+const ON_FINISH_FETCH_BY_CATEGORY = 'DAPPS_ON_FINISH_FETCH_BY_CATEGORY'
 
-const ON_ADD_NEW_DAPP = 'ON_ADD_NEW_DAPP'
+const ON_UPDATE_DAPP_DATA = 'DAPPS_ON_UPDATE_DAPP_DATA'
 
 const RECENTLY_ADDED_SIZE = 50
 const HIGHEST_RANKED_SIZE = 50
@@ -100,16 +102,23 @@ export const onFinishFetchByCategoryAction = (category, dapps) => ({
 const fetchAllDappsInState = async (dispatch, getState) => {
   const stateDapps = getState().dapps
   if (stateDapps.dapps === null) {
-    let dapps = await BlockchainSDK.DiscoverService.getDApps()
-    dapps = dapps.map(dapp => {
-      return Object.assign(dapp.metadata, { sntValue: parseInt(dapp.rate, 10) })
-    })
-    dapps.sort((a, b) => {
-      return b.sntValue - a.sntValue
-    })
+    try {
+      let dapps = await BlockchainSDK.DiscoverService.getDApps()
+      dapps = dapps.map(dapp => {
+        return Object.assign(dapp.metadata, {
+          sntValue: parseInt(dapp.rate, 10),
+        })
+      })
+      dapps.sort((a, b) => {
+        return b.sntValue - a.sntValue
+      })
 
-    dispatch(onFinishFetchAllDappsAction(dapps))
-    return dapps
+      dispatch(onFinishFetchAllDappsAction(dapps))
+      return dapps
+    } catch (e) {
+      dispatch(showAlertAction(e.message))
+      return []
+    }
   }
   return stateDapps.dapps
 }
@@ -178,8 +187,8 @@ export const fetchByCategoryAction = category => {
   }
 }
 
-export const onAddNewDappAction = dapp => ({
-  type: ON_ADD_NEW_DAPP,
+export const onUpdateDappDataAction = dapp => ({
+  type: ON_UPDATE_DAPP_DATA,
   payload: dapp,
 })
 
@@ -249,33 +258,44 @@ const insertDappIntoSortedArray = (source, dapp, cmp) => {
   }
 }
 
-const onAddNewDapp = (state, dapp) => {
+const onUpdateDappData = (state, dapp) => {
   const dappsCategoryMap = new Map()
   const { dapps } = state
   let { highestRanked, recentlyAdded } = state
+  let update = false
 
-  insertDappIntoSortedArray(dapps, dapp, (target, dappItem) => {
-    return target.sntValue < dappItem.sntValue
-  })
-  insertDappIntoSortedArray(highestRanked, dapp, (target, dappItem) => {
-    return target.sntValue < dappItem.sntValue
-  })
-  highestRanked = state.highestRanked.splice(0, HIGHEST_RANKED_SIZE)
-  insertDappIntoSortedArray(recentlyAdded, dapp, (target, dappItem) => {
-    return (
-      new Date().getTime(target.dateAdded) <
-      new Date(dappItem.dateAdded).getTime()
-    )
-  })
-  recentlyAdded = recentlyAdded.splice(0, RECENTLY_ADDED_SIZE)
+  for (let i = 0; i < dapps.length; i += 1) {
+    if (dapps[i].id === dapp.id) {
+      Object.assign(dapps[i], dapp) // update object in dapps list. All other lists actually contains pointer to this options so it is updated everywhere (dapps, highestRanked, recentlyAdded and dappCategoryState)
+      update = true
+      break
+    }
+  }
 
-  state.dappsCategoryMap.forEach((dappState, category_) => {
-    dappsCategoryMap.set(category_, dappState)
-  })
-  const dappState = dappsCategoryMap.get(dapp.metadata.category)
-  insertDappIntoSortedArray(dappState.items, dapp, (target, dappItem) => {
-    return target.sntValue < dappItem.sntValue
-  })
+  if (update === false) {
+    insertDappIntoSortedArray(dapps, dapp, (target, dappItem) => {
+      return target.sntValue < dappItem.sntValue
+    })
+    insertDappIntoSortedArray(highestRanked, dapp, (target, dappItem) => {
+      return target.sntValue < dappItem.sntValue
+    })
+    highestRanked = state.highestRanked.splice(0, HIGHEST_RANKED_SIZE)
+    insertDappIntoSortedArray(recentlyAdded, dapp, (target, dappItem) => {
+      return (
+        new Date().getTime(target.dateAdded) <
+        new Date(dappItem.dateAdded).getTime()
+      )
+    })
+    recentlyAdded = recentlyAdded.splice(0, RECENTLY_ADDED_SIZE)
+
+    state.dappsCategoryMap.forEach((dappState, category_) => {
+      dappsCategoryMap.set(category_, dappState)
+    })
+    const dappState = dappsCategoryMap.get(dapp.category)
+    insertDappIntoSortedArray(dappState.items, dapp, (target, dappItem) => {
+      return target.sntValue < dappItem.sntValue
+    })
+  }
 
   return Object.assign({}, state, {
     dapps,
@@ -293,7 +313,7 @@ const map = {
   [ON_FINISH_FETCH_RECENTLY_ADDED]: onFinishFetchRecentlyAdded,
   [ON_START_FETCH_BY_CATEGORY]: onStartFetchByCategory,
   [ON_FINISH_FETCH_BY_CATEGORY]: onFinishFetchByCategory,
-  [ON_ADD_NEW_DAPP]: onAddNewDapp,
+  [ON_UPDATE_DAPP_DATA]: onUpdateDappData,
 }
 
 const dappsCategoryMap = new Map()

@@ -32,6 +32,14 @@
   padding: 16px;
   border: 1px solid #f7f7f7;
   border-radius: 16px;
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .frameContent {
@@ -42,6 +50,14 @@
 
   transition-duration: 0.4s;
   transition-property: max-height;
+
+  p:first-child {
+    margin-top: 0;
+  }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .readMoreCnt {

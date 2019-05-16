@@ -52,6 +52,11 @@
   max-height: calculateRem(40);
   overflow-y: hidden;
   cursor: pointer;
+
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .position {
