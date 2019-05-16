@@ -41,7 +41,12 @@ const DappListItem = props => {
       </div>
       <div>
         <h2 className={styles.header}>{name}</h2>
-        <p className={styles.description}>{description}</p>
+        <p
+          className={styles.description}
+          style={{ WebkitBoxOrient: 'vertical' }}
+        >
+          {description}
+        </p>
         <a className={styles.url} href={url}>
           {url}
           &nbsp;&rarr;

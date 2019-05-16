@@ -9,6 +9,8 @@ import Vote from '../Vote'
 import Submit from '../Submit'
 import Terms from '../Terms/Terms'
 import TransactionStatus from '../TransactionStatus'
+import Alert from '../Alert'
+import HowToSubmit from '../HowToSubmit'
 
 class Router extends React.Component {
   componentDidMount() {
@@ -27,7 +29,9 @@ class Router extends React.Component {
       </Switch>,
       <Vote key={2} />,
       <Submit key={3} />,
-      <TransactionStatus key={4} />,
+      <HowToSubmit key={4} />,
+      <TransactionStatus key={5} />,
+      <Alert key={6} />,
     ]
   }
 }

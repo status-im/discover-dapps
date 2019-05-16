@@ -6,6 +6,8 @@ import vote from '../../modules/Vote/Vote.reducer'
 import submit from '../../modules/Submit/Submit.reducer'
 import desktopMenu from '../../modules/DesktopMenu/DesktopMenu.reducer'
 import transactionStatus from '../../modules/TransactionStatus/TransactionStatus.recuder'
+import alert from '../../modules/Alert/Alert.reducer'
+import howToSubmit from '../../modules/HowToSubmit/HowToSubmit.reducer'
 
 export default history =>
   combineReducers({
@@ -16,4 +18,6 @@ export default history =>
     submit,
     desktopMenu,
     transactionStatus,
+    alert,
+    howToSubmit,
   })

@@ -10,12 +10,14 @@ const FeatureDapps = props => {
       <div className={styles.grid}>
         {props.featured.map((dapp, index) => (
           <a className={styles.dapp} key={index} href={dapp.url}>
-            <ReactImageFallback
-              src={dapp.banner}
-              className={styles.banner}
-              alt={`${dapp.name} banner`}
-              fallbackImage={fallbackBanner}
-            />
+            <div className={styles.bannerWrapper}>
+              <ReactImageFallback
+                src={dapp.banner}
+                className={styles.banner}
+                alt={`${dapp.name} banner`}
+                fallbackImage={fallbackBanner}
+              />
+            </div>
             <div className={styles.dapp_details}>
               <ReactImageFallback
                 className={styles.dapp_details__image}
