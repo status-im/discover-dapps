@@ -92,9 +92,8 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @param _id bytes32 unique identifier.
      * @param _amount uint, included for approveAndCallFallBack
      */
-    function downvote(bytes32 _id, uint _amount) external {
+    function downvote(bytes32 _id) external {
         (,,uint c) = downvoteCost(_id);
-        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         _downvote(msg.sender, _id, c);
     }
     
@@ -339,22 +338,20 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         emit Upvote(_id, d.effectiveBalance);
     }
 
-    function _downvote(address _from, bytes32 _id, uint _amount) internal { 
+    function _downvote(address _from, bytes32 _id) internal { 
         uint dappIdx = id2index[_id];
         Data storage d = dapps[dappIdx];
         require(d.id == _id, "Error fetching correct data");
         
         (uint b, uint vR, uint c) = downvoteCost(_id);
-
-        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         
-        d.available = d.available.sub(_amount);
+        d.available = d.available.sub(c);
         d.votesCast = d.votesCast.add(vR);
         d.effectiveBalance = d.effectiveBalance.sub(b);
 
-        require(SNT.allowance(_from, address(this)) >= _amount, "Not enough SNT allowance");
-        require(SNT.transferFrom(_from, address(this), _amount), "Transfer failed");
-        require(SNT.transfer(d.developer, _amount), "Transfer failed");
+        require(SNT.allowance(_from, address(this)) >= c, "Not enough SNT allowance");
+        require(SNT.transferFrom(_from, address(this), c), "Transfer failed");
+        require(SNT.transfer(d.developer, c), "Transfer failed");
         
         emit Downvote(_id, d.effectiveBalance);
     }
