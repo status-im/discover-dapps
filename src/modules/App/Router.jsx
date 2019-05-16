@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom'
 import Home from '../Home'
 import Filtered from '../Filtered'
 import RecentlyAdded from '../RecentlyAdded'
+import Profile from '../Profile'
 import Dapps from '../Dapps'
 import Vote from '../Vote'
 import Submit from '../Submit'
@@ -24,6 +25,7 @@ class Router extends React.Component {
         <Route path="/all" component={Dapps} />
         <Route path="/recently-added" component={RecentlyAdded} />
         <Route path="/terms" component={Terms} />
+        <Route path="/:dapp_name" component={Profile} />
       </Switch>,
       <Vote key={2} />,
       <Submit key={3} />,

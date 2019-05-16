@@ -25,6 +25,7 @@
   margin-bottom: calculateRem(2);
   margin-top: calculateRem(12);
   font-weight: 500;
+  cursor: pointer;
 }
 
 .image {
@@ -33,6 +34,7 @@
   margin-top: calculateRem(15);
   margin-right: calculateRem(16);
   border-radius: 50%;
+  cursor: pointer;
 }
 
 .url {
@@ -49,6 +51,7 @@
   margin-top: 0;
   max-height: calculateRem(40);
   overflow-y: hidden;
+  cursor: pointer;
 }
 
 .position {
