@@ -162,14 +162,6 @@ const Dapps = [
     dateAdded: '2019-04-11',
   },
   {
-    name: 'dBay',
-    url: 'https://dbay.ai',
-    description: 'Buy from all your favorite DApps in one place',
-    image: '/images/dapps/dBay.png',
-    category: Categories.MARKETPLACES,
-    dateAdded: '2019-04-23',
-  },
-  {
     name: 'Name Bazaar',
     url: 'https://namebazaar.io',
     description: 'ENS name marketplace',
@@ -243,14 +235,6 @@ const Dapps = [
     description: '10,000 unique collectible punks',
     image: '/images/dapps/cryptopunks.png',
     category: Categories.COLLECTIBLES,
-    dateAdded: '2019-04-05',
-  },
-  {
-    name: 'Crypto Takeovers',
-    url: 'https://cryptotakeovers.com/',
-    description: 'Predict and conquer the world. Make a crypto fortune',
-    image: '/images/dapps/cryptotakeovers.png',
-    category: Categories.GAMES,
     dateAdded: '2019-04-05',
   },
   {
