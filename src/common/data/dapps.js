@@ -203,6 +203,18 @@ const Dapps = [
   },
   {
     metadata: {
+      name: 'Origin Protocol',
+      url: 'https://dapp.originprotocol.com',
+      description: 'True peer-to-peer commerce',
+      image: '/images/dapps/originprotocol.png',
+      category: Categories.MARKETPLACES,
+      dateAdded: '2019-05-17',
+      categoryPosition: 2,
+    },
+    rate: 12345,
+  },
+  {
+    metadata: {
       name: 'OpenSea',
       url: 'https://opensea.io',
       description: 'The largest decentralized marketplace for cryptogoods',
