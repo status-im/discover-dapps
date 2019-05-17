@@ -3,28 +3,44 @@ import reducerUtil from '../../common/utils/reducer'
 import {
   onReceiveTransactionInfoAction,
   checkTransactionStatusAction,
+  onStartProgressAction,
+  hideAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
+import { showAlertAction } from '../Alert/Alert.reducer'
 
 import BlockchainSDK from '../../common/blockchain'
 
-const SHOW_SUBMIT = 'SHOW_SUBMIT'
-const CLOSE_SUBMIT = 'CLOSE_SUBMIT'
-const ON_INPUT_NAME = 'ON_INPUT_NAME'
-const ON_INPUT_DESC = 'ON_INPUT_DESC'
-const ON_INPUT_URL = 'ON_INPUT_URL'
-const ON_SELECT_CATEGORY = 'ON_SELECT_CATEGORY'
-const ON_IMG_READ = 'ON_IMG_READ'
-const ON_IMG_ZOOM = 'ON_IMG_ZOOM'
-const ON_IMG_MOVE_CONTROL = 'ON_IMG_MOVE_CONTROL'
-const ON_IMG_MOVE = 'ON_IMG_MOVE'
-const ON_IMG_CANCEL = 'ON_IMG_CANCEL'
-const ON_IMG_DONE = 'ON_IMG_DONE'
+const SHOW_SUBMIT_AFTER_CHECK = 'SUBMIT_SHOW_SUBMIT_AFTER_CHECK'
+const CLOSE_SUBMIT = 'SUBMIT_CLOSE_SUBMIT'
+const ON_INPUT_NAME = 'SUBMIT_ON_INPUT_NAME'
+const ON_INPUT_DESC = 'SUBMIT_ON_INPUT_DESC'
+const ON_INPUT_URL = 'SUBMIT_ON_INPUT_URL'
+const ON_SELECT_CATEGORY = 'SUBMIT_ON_SELECT_CATEGORY'
+const ON_IMG_READ = 'SUBMIT_ON_IMG_READ'
+const ON_IMG_ZOOM = 'SUBMIT_ON_IMG_ZOOM'
+const ON_IMG_MOVE_CONTROL = 'SUBMIT_ON_IMG_MOVE_CONTROL'
+const ON_IMG_MOVE = 'SUBMIT_ON_IMG_MOVE'
+const ON_IMG_CANCEL = 'SUBMIT_ON_IMG_CANCEL'
+const ON_IMG_DONE = 'SUBMIT_ON_IMG_DONE'
 
-export const showSubmitAction = () => {
+export const showSubmitActionAfterCheck = () => {
   window.location.hash = 'submit'
   return {
-    type: SHOW_SUBMIT,
+    type: SHOW_SUBMIT_AFTER_CHECK,
     payload: null,
+  }
+}
+
+export const showSubmitAction = () => {
+  return (dispatch, getState) => {
+    const state = getState()
+    if (state.transactionStatus.progress) {
+      dispatch(
+        showAlertAction(
+          'There is an active transaction. Please wait for it to finish and then you could be able to create your Ðapp',
+        ),
+      )
+    } else dispatch(showSubmitActionAfterCheck())
   }
 }
 
@@ -89,20 +105,32 @@ export const onImgDoneAction = imgBase64 => ({
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const blockchain = await BlockchainSDK.getInstance()
-    const { tx, id } = await blockchain.DiscoverService.createDApp(1, {
-      name: dapp.name,
-      url: dapp.url,
-      desc: dapp.desc,
-      category: dapp.category,
-      image: dapp.img,
-    })
-    dispatch(onReceiveTransactionInfoAction(id, tx))
-    dispatch(checkTransactionStatusAction(tx))
+    dispatch(
+      onStartProgressAction(
+        dapp.name,
+        dapp.img,
+        'Status is an open source mobile DApp browser and messenger build for #Etherium',
+      ),
+    )
+    try {
+      const blockchain = await BlockchainSDK.getInstance()
+      const { tx, id } = await blockchain.DiscoverService.createDApp(1, {
+        name: dapp.name,
+        url: dapp.url,
+        desc: dapp.desc,
+        category: dapp.category,
+        image: dapp.img,
+      })
+      dispatch(onReceiveTransactionInfoAction(id, tx))
+      dispatch(checkTransactionStatusAction(tx))
+    } catch (e) {
+      dispatch(hideAction())
+      dispatch(showAlertAction(e.message))
+    }
   }
 }
 
-const showSubmit = state => {
+const showSubmitAfterCheck = state => {
   return Object.assign({}, state, {
     visible: true,
     id: '',
@@ -194,7 +222,7 @@ const onImgDone = (state, imgBase64) => {
 }
 
 const map = {
-  [SHOW_SUBMIT]: showSubmit,
+  [SHOW_SUBMIT_AFTER_CHECK]: showSubmitAfterCheck,
   [CLOSE_SUBMIT]: closeSubmit,
   [ON_INPUT_NAME]: onInputName,
   [ON_INPUT_DESC]: onInputDesc,

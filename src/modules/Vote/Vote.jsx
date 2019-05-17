@@ -34,7 +34,7 @@ class Vote extends Component {
   onClickDownvote() {
     const { dapp, onClickDownvote, fetchVoteRating } = this.props
     onClickDownvote()
-    // fetchVoteRating(dapp, false, 3244)
+    fetchVoteRating(dapp, false, DOWNVOTE_COST)
   }
 
   handleChange(e) {
@@ -91,7 +91,6 @@ class Vote extends Component {
       afterVoteCategoryPosition = 1
       for (let i = 0; i < dappsByCategory.length; ++i) {
         if (dappsByCategory[i] === dapp) continue
-
         if (dappsByCategory[i].sntValue < afterVoteRating) break
         afterVoteCategoryPosition++
       }
@@ -142,11 +141,11 @@ class Vote extends Component {
                 {`${afterVoteRating.toLocaleString()} ↑`}
               </span>
             )}
-            {/* {!isUpvote && afterVoteRating !== null && (
+            {!isUpvote && afterVoteRating !== null && (
               <span className={styles.redBadge}>
                 {`${afterVoteRating.toLocaleString()} ↓`}
               </span>
-            )} */}
+            )}
           </div>
           <div className={styles.itemRow}>
             <span className={styles.item}>
@@ -165,11 +164,13 @@ class Vote extends Component {
                   {`№${afterVoteCategoryPosition} ↑`}
                 </span>
               )}
-            {/* {!isUpvote && afterVoteCategoryPosition !== null &&  afterVoteCategoryPosition !== catPosition (
-              <span className={styles.redBadge}>
-                {`№${afterVoteCategoryPosition} ↓`}
-              </span>
-            )} */}
+            {!isUpvote &&
+              afterVoteCategoryPosition !== null &&
+              afterVoteCategoryPosition !== catPosition && (
+                <span className={styles.redBadge}>
+                  {`№${afterVoteCategoryPosition} ↓`}
+                </span>
+              )}
           </div>
         </div>
         {!isUpvote && (
@@ -183,7 +184,7 @@ class Vote extends Component {
               type="text"
               value={sntValue}
               onChange={this.handleChange}
-              style={{ width: `${19 * Math.max(1, sntValue.length)}px` }}
+              style={{ width: `${21 * Math.max(1, sntValue.length)}px` }}
             />
           </div>
         )}

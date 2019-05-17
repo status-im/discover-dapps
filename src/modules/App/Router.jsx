@@ -4,11 +4,14 @@ import { Route, Switch } from 'react-router-dom'
 import Home from '../Home'
 import Filtered from '../Filtered'
 import RecentlyAdded from '../RecentlyAdded'
+import Profile from '../Profile'
 import Dapps from '../Dapps'
 import Vote from '../Vote'
 import Submit from '../Submit'
 import Terms from '../Terms/Terms'
 import TransactionStatus from '../TransactionStatus'
+import Alert from '../Alert'
+import HowToSubmit from '../HowToSubmit'
 
 import Example from '../BlockchainExample'
 
@@ -26,11 +29,13 @@ class Router extends React.Component {
         <Route path="/all" component={Dapps} />
         <Route path="/recently-added" component={RecentlyAdded} />
         <Route path="/terms" component={Terms} />
-        <Route path="/example" component={Example} />
+        <Route path="/:dapp_name" component={Profile} />
       </Switch>,
       <Vote key={2} />,
       <Submit key={3} />,
-      <TransactionStatus key={4} />,
+      <HowToSubmit key={4} />,
+      <TransactionStatus key={5} />,
+      <Alert key={6} />,
     ]
   }
 }

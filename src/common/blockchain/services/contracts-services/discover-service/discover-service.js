@@ -36,14 +36,14 @@ class DiscoverService extends BlockchainService {
 
   async getDApps() {
     const dapps = []
-    const dappsCount = await DiscoverContract.methods
-      .getDAppsCount()
-      .call({ from: this.sharedContext.account })
+    const dappsCount = await this.getDAppsCount()
+
     try {
       for (let i = 0; i < dappsCount; i++) {
         const dapp = await DiscoverContract.methods
           .dapps(i)
           .call({ from: this.sharedContext.account })
+
         dapp.metadata = await ipfsSDK.retrieveDAppMetadataByHash(dapp.metadata)
         dapps.push(dapp)
       }

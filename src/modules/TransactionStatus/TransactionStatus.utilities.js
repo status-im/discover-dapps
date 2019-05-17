@@ -4,6 +4,7 @@ class TransactionStatus {
   constructor() {
     this.dappId = ''
     this.dappTx = ''
+    this.txDesc = ''
     this.dappName = ''
     this.dappImg = ''
     this.progress = false
@@ -54,11 +55,12 @@ const getTransactionData = () => {
   return localStorage.getItem(COOKIE_NAME)
 }
 
-export const transactionStatusInitInstance = (name, img) => {
+export const transactionStatusInitInstance = (name, img, desc) => {
   const model = new TransactionStatus()
   model.dappName = name
   model.dappImg = img
   model.progress = true
+  model.txDesc = desc
   return model
 }
 

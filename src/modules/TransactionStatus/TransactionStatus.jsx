@@ -7,22 +7,8 @@ import loadingSpinner from '../../common/assets/images/loading-spinner.svg'
 
 class TransactionStatus extends React.Component {
   componentDidMount() {
-    // this.checkPublished()
     this.checkTransactionHash()
   }
-
-  // componentDidUpdate() {
-  //   this.checkPublished()
-  // }
-
-  // checkPublished() {
-  //   const { published, hide } = this.props
-  //   if (published) {
-  //     setTimeout(() => {
-  //       hide()
-  //     }, 1000)
-  //   }
-  // }
 
   checkTransactionHash() {
     const { dappTx, checkTransactionStatus } = this.props
@@ -31,7 +17,15 @@ class TransactionStatus extends React.Component {
   }
 
   render() {
-    const { dappName, dappImg, published, progress, failed, hide } = this.props
+    const {
+      dappName,
+      dappImg,
+      txDesc,
+      published,
+      progress,
+      failed,
+      hide,
+    } = this.props
 
     return (
       <div className={`${styles.cnt} ${dappName !== '' ? styles.active : ''}`}>
@@ -50,10 +44,7 @@ class TransactionStatus extends React.Component {
               </div>
             )}
           </div>
-          <div className={styles.info}>
-            Status is an open source mobile DApp browser and messenger build for
-            #Etherium
-          </div>
+          <div className={styles.info}>{txDesc}</div>
           {published && <div className={styles.status}>✓ Published</div>}
           {progress && (
             <div className={styles.status}>
@@ -76,6 +67,7 @@ TransactionStatus.propTypes = {
   dappTx: PropTypes.string.isRequired,
   dappName: PropTypes.string.isRequired,
   dappImg: PropTypes.string.isRequired,
+  txDesc: PropTypes.string.isRequired,
   progress: PropTypes.bool.isRequired,
   published: PropTypes.bool.isRequired,
   failed: PropTypes.bool.isRequired,

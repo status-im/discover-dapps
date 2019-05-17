@@ -2,27 +2,60 @@ import voteInitialState from '../../common/data/vote'
 import reducerUtil from '../../common/utils/reducer'
 import BlockchainSDK from '../../common/blockchain'
 
-const SHOW_UP_VOTE = 'SHOW_UP_VOTE'
-const SHOW_DOWN_VOTE = 'SHOW_DOWN_VOTE'
-const CLOSE_VOTE = 'CLOSE_VOTE'
-const SWITCH_TO_UPVOTE = 'SWITCH_TO_UPVOTE'
-const SWITCH_TO_DOWNVOTE = 'SWITCH_TO_DOWNVOTE'
-const ON_INPUT_SNT_VALUE = 'ON_INPUT_SNT_VALUE'
-const UPDATE_AFTER_VOTING_VALUES = 'UPDATE_AFTER_VOTING_VALUES'
+import { showAlertAction } from '../Alert/Alert.reducer'
+import {
+  onStartProgressAction,
+  onReceiveTransactionInfoAction,
+  checkTransactionStatusAction,
+} from '../TransactionStatus/TransactionStatus.recuder'
 
-export const showUpVoteAction = dapp => {
+const SHOW_UP_VOTE_AFTER_CHECK = 'VOTE_SHOW_UP_VOTE_AFTER_CHECK'
+const SHOW_DOWN_VOTE_AFTER_CHEECK = 'VOTE_SHOW_DOWN_VOTE_AFTER_CHEECK'
+const CLOSE_VOTE = 'VOTE_CLOSE_VOTE'
+const SWITCH_TO_UPVOTE = 'VOTE_SWITCH_TO_UPVOTE'
+const SWITCH_TO_DOWNVOTE = 'VOTE_SWITCH_TO_DOWNVOTE'
+const ON_INPUT_SNT_VALUE = 'VOTE_ON_INPUT_SNT_VALUE'
+const UPDATE_AFTER_VOTING_VALUES = 'VOTE_UPDATE_AFTER_VOTING_VALUES'
+
+export const showUpVoteActionAfterCheck = dapp => {
   window.location.hash = 'vote'
   return {
-    type: SHOW_UP_VOTE,
+    type: SHOW_UP_VOTE_AFTER_CHECK,
     payload: dapp,
   }
 }
 
-export const showDownVoteAction = dapp => {
+export const showDownVoteActionAfterCheck = dapp => {
   window.location.hash = 'vote'
   return {
-    type: SHOW_DOWN_VOTE,
+    type: SHOW_DOWN_VOTE_AFTER_CHEECK,
     payload: dapp,
+  }
+}
+
+export const showUpVoteAction = dapp => {
+  return (dispatch, getState) => {
+    const state = getState()
+    if (state.transactionStatus.progress) {
+      dispatch(
+        showAlertAction(
+          'There is an active transaction. Please wait for it to finish and then you could be able to vote',
+        ),
+      )
+    } else dispatch(showUpVoteActionAfterCheck(dapp))
+  }
+}
+
+export const showDownVoteAction = dapp => {
+  return (dispatch, getState) => {
+    const state = getState()
+    if (state.transactionStatus.progress) {
+      dispatch(
+        showAlertAction(
+          'There is an active transaction. Please wait for it to finish and then you could be able to vote',
+        ),
+      )
+    } else dispatch(showDownVoteActionAfterCheck(dapp))
   }
 }
 
@@ -56,6 +89,20 @@ export const updateAfterVotingValuesAction = rating => ({
 
 export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
   return async (dispatch, getState) => {
+    let rating
+    if (isUpvote === true) {
+      try {
+        const blockchain = await BlockchainSDK.getInstance()
+        rating = await blockchain.DiscoverService.upVoteEffect(
+          dapp.id,
+          sntValue,
+        )
+        rating = parseInt(rating, 10)
+      } catch (e) {
+        return
+      }
+    } else rating = parseInt(dapp.sntValue * 0.99, 10)
+
     const state = getState()
     const voteState = state.vote
     if (voteState.dapp !== dapp) return
@@ -63,11 +110,6 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
     if (isUpvote === true && voteState.sntValue !== sntValue.toString()) return
     if (sntValue === 0) return
 
-    const blockchain = await BlockchainSDK.getInstance()
-    const rating = await blockchain.DiscoverService.upVoteEffect(
-      dapp.id,
-      sntValue,
-    )
     // const rating = dapp.sntValue + (isUpvote ? 1 : -1) * sntValue
     dispatch(updateAfterVotingValuesAction(rating))
   }
@@ -76,21 +118,42 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
 export const upVoteAction = (dapp, amount) => {
   return async dispatch => {
     dispatch(closeVoteAction())
-    const blockchain = await BlockchainSDK.getInstance()
-    const tx = await blockchain.DiscoverService.upVote(dapp.id, amount)
-    console.log('upvote', tx)
+    dispatch(
+      onStartProgressAction(dapp.name, dapp.image, `↑ Upvote by ${amount} SNT`),
+    )
+    try {
+      const blockchain = await BlockchainSDK.getInstance()
+      const tx = await blockchain.DiscoverService.upVote(dapp.id, amount)
+      dispatch(onReceiveTransactionInfoAction(dapp.id, tx))
+      dispatch(checkTransactionStatusAction(tx))
+    } catch (e) {
+      dispatch(showAlertAction('There was an error, please try again'))
+    }
   }
 }
 
 export const downVoteAction = (dapp, amount) => {
   return async dispatch => {
     dispatch(closeVoteAction())
-    const tx = await BlockchainSDK.DiscoverService.downVote(dapp.id, amount)
-    console.log('downvote', tx)
+    dispatch(
+      onStartProgressAction(
+        dapp.name,
+        dapp.image,
+        `↓ Downvote by ${amount} SNT`,
+      ),
+    )
+    try {
+      const blockchain = await BlockchainSDK.getInstance()
+      const tx = await blockchain.DiscoverService.downVote(dapp.id, amount)
+      dispatch(onReceiveTransactionInfoAction(dapp.id, tx))
+      dispatch(checkTransactionStatusAction(tx))
+    } catch (e) {
+      dispatch(showAlertAction('There was an error, please try again'))
+    }
   }
 }
 
-const showUpVote = (state, dapp) => {
+const showUpVoteAfterCheck = (state, dapp) => {
   return Object.assign({}, state, {
     visible: true,
     dapp,
@@ -100,7 +163,7 @@ const showUpVote = (state, dapp) => {
   })
 }
 
-const showDownVote = (state, dapp) => {
+const showDownVoteAfterCheck = (state, dapp) => {
   return Object.assign({}, state, {
     visible: true,
     dapp,
@@ -144,8 +207,8 @@ const updateAfterVotingValues = (state, rating) => {
 }
 
 const map = {
-  [SHOW_UP_VOTE]: showUpVote,
-  [SHOW_DOWN_VOTE]: showDownVote,
+  [SHOW_UP_VOTE_AFTER_CHECK]: showUpVoteAfterCheck,
+  [SHOW_DOWN_VOTE_AFTER_CHEECK]: showDownVoteAfterCheck,
   [CLOSE_VOTE]: closeVote,
   [SWITCH_TO_UPVOTE]: switchToUpvote,
   [SWITCH_TO_DOWNVOTE]: switchToDownvote,

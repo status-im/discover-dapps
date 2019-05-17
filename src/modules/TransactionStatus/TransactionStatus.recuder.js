@@ -4,22 +4,24 @@ import {
   transactionStatusFetchedInstance,
   transactionStatusInitInstance,
 } from './TransactionStatus.utilities'
-import { onAddNewDappAction } from '../Dapps/Dapps.reducer'
+import { onUpdateDappDataAction } from '../Dapps/Dapps.reducer'
+import { showAlertAction } from '../Alert/Alert.reducer'
 import BlockchainSDK from '../../common/blockchain'
 
-const HIDE = 'HIDE'
-const ON_START_PROGRESS = 'ON_START_PROGRESS'
-const ON_RECEIVE_TRANSACTION_TX = 'ON_RECEIVE_TRANSACTION_TX'
-const ON_CHANGE_TRANSACTION_STATUS_DATA = 'ON_CHANGE_TRANSACTION_STATUS_DATA'
+const HIDE = 'TXS_HIDE'
+const ON_START_PROGRESS = 'TXS_ON_START_PROGRESS'
+const ON_RECEIVE_TRANSACTION_TX = 'TXS_ON_RECEIVE_TRANSACTION_TX'
+const ON_CHANGE_TRANSACTION_STATUS_DATA =
+  'TXS_ON_CHANGE_TRANSACTION_STATUS_DATA'
 
 export const hideAction = () => ({
   type: HIDE,
   payload: null,
 })
 
-export const onStartProgressAction = dapp => ({
+export const onStartProgressAction = (dappName, dappImg, desc) => ({
   type: ON_START_PROGRESS,
-  payload: dapp,
+  payload: { dappName, dappImg, desc },
 })
 
 export const onReceiveTransactionInfoAction = (id, tx) => ({
@@ -35,7 +37,12 @@ export const onChangeTransactionStatusDataAction = transactionStatus => ({
 
 export const checkTransactionStatusAction = tx => {
   return async dispatch => {
-    const status = await BlockchainSDK.utils.getTxStatus(tx)
+    let status = 2
+    try {
+      status = await BlockchainSDK.utils.getTxStatus(tx)
+    } catch (e) {
+      // if can't read current status from network assume it is still waiting
+    }
     const statusInt = parseInt(status, 10)
     const transacationStatus = transactionStatusFetchedInstance()
     let dapp
@@ -47,15 +54,23 @@ export const checkTransactionStatusAction = tx => {
       default:
       case 1:
         transacationStatus.setPublished(true)
-        const blockchain = await BlockchainSDK.getInstance()
-        dapp = await blockchain.DiscoverService.getDAppDataById(
-          transacationStatus.dappId,
-        )
-        dapp = Object.assign(dapp.metadata, {
-          id: dapp.id,
-          sntValue: parseInt(dapp.effectiveBalance, 10),
-        })
-        dispatch(onAddNewDappAction(dapp))
+        try {
+          const blockchain = await BlockchainSDK.getInstance()
+          dapp = await blockchain.DiscoverService.getDAppDataById(
+            transacationStatus.dappId,
+          )
+          dapp = Object.assign(dapp.metadata, {
+            id: dapp.id,
+            sntValue: parseInt(dapp.effectiveBalance, 10),
+          })
+          dispatch(onUpdateDappDataAction(dapp))
+        } catch (e) {
+          dispatch(
+            showAlertAction(e.message, 'OK', '', () => {
+              window.location.reload()
+            }),
+          )
+        }
         break
       case 2:
         transacationStatus.setProgress(true)
@@ -72,11 +87,17 @@ export const checkTransactionStatusAction = tx => {
 const hide = state => {
   const transacationStatus = transactionStatusFetchedInstance()
   transacationStatus.setDappName('')
+  transacationStatus.setProgress(false)
   return Object.assign({}, state, transacationStatus)
 }
 
-const onStartProgress = (state, dapp) => {
-  const transacationStatus = transactionStatusInitInstance(dapp.name, dapp.img)
+const onStartProgress = (state, payload) => {
+  const { dappName, dappImg, desc } = payload
+  const transacationStatus = transactionStatusInitInstance(
+    dappName,
+    dappImg,
+    desc,
+  )
   transacationStatus.persistTransactionData()
   return Object.assign({}, state, transacationStatus)
 }

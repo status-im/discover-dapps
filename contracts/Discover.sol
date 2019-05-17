@@ -42,7 +42,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
     
     Data[] public dapps;
     mapping(bytes32 => uint) public id2index;
-    mapping(bytes32 => bool) public existingIDs;
+    mapping(bytes32 => bool) existingIDs;
     
     event DAppCreated(bytes32 indexed id, uint newEffectiveBalance);
     event Upvote(bytes32 indexed id, uint newEffectiveBalance);
@@ -93,7 +93,9 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @param _amount uint, included for approveAndCallFallBack
      */
     function downvote(bytes32 _id, uint _amount) external {
-        _downvote(msg.sender, _id, _amount);
+        (,,uint c) = downvoteCost(_id);
+        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
+        _downvote(msg.sender, _id, c);
     }
     
     /**
@@ -233,15 +235,6 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         uint mEBalance = mBalance.sub(mEffect);
         
         return (mEBalance.sub(d.effectiveBalance));
-    }
-
-
-    /**
-     * @dev Used in UI in order to fetch all dapps
-     * @return dapps count
-     */
-    function getDAppsCount() external view returns(uint) {
-        return dapps.length;
     }
 
      /**
@@ -389,5 +382,4 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
             metadata := mload(add(_data, 100))
         }
     }
-
 }

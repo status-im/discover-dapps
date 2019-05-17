@@ -74,19 +74,24 @@ module.exports = {
       MiniMeTokenFactory: {},
       SNT: {
         instanceOf: 'MiniMeToken',
-        args: [
-          '$MiniMeTokenFactory',
-          '0x0000000000000000000000000000000000000000',
-          0,
-          'TestMiniMeToken',
-          18,
-          'SNT',
-          true,
-        ],
+        address: '0x2764b5da3696E3613Ef9864E9B4613f9fA478E75',
       },
-      Discover: {
-        args: ['$SNT'],
-      },
+      Discover: { address: '0x9591a20b9B601651eDF1072A1Dda994C0B1a5bBf' },
+      // SNT: {
+      //   instanceOf: 'MiniMeToken',
+      //   args: [
+      //     '$MiniMeTokenFactory',
+      //     '0x0000000000000000000000000000000000000000',
+      //     0,
+      //     'TestMiniMeToken',
+      //     18,
+      //     'SNT',
+      //     true,
+      //   ],
+      // },
+      // Discover: {
+      //   args: ['$SNT'],
+      // },
     },
   },
 
@@ -114,6 +119,9 @@ module.exports = {
       type: 'rpc',
       protocol: 'https',
     },
+    dappConnection: [
+      'https://ropsten.infura.io/v3/8675214b97b44e96b70d05326c61fd6a',
+    ],
   },
 
   // merges with the settings in default
