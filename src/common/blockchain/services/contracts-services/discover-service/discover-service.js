@@ -16,30 +16,37 @@ class DiscoverService extends BlockchainService {
   async upVoteEffect(id, amount) {
     await this.validator.validateUpVoteEffect(id, amount)
 
-    return DiscoverContract.methods.upvoteEffect(id, amount).call()
+    return DiscoverContract.methods
+      .upvoteEffect(id, amount)
+      .call({ from: this.sharedContext.account })
   }
 
   async downVoteCost(id) {
     const dapp = await this.getDAppById(id)
-    return DiscoverContract.methods.downvoteCost(dapp.id).call()
+    return DiscoverContract.methods
+      .downvoteCost(dapp.id)
+      .call({ from: this.sharedContext.account })
   }
 
   async getDAppsCount() {
-    return DiscoverContract.methods.getDAppsCount().call()
+    return DiscoverContract.methods
+      .getDAppsCount()
+      .call({ from: this.sharedContext.account })
   }
 
   async getDApps() {
     const dapps = []
-    const dappsCount = await DiscoverContract.methods.getDAppsCount().call()
-
+    const dappsCount = await DiscoverContract.methods
+      .getDAppsCount()
+      .call({ from: this.sharedContext.account })
     try {
       for (let i = 0; i < dappsCount; i++) {
-        const dapp = await DiscoverContract.methods.dapps(i).call()
+        const dapp = await DiscoverContract.methods
+          .dapps(i)
+          .call({ from: this.sharedContext.account })
         dapp.metadata = await ipfsSDK.retrieveDAppMetadataByHash(dapp.metadata)
-
         dapps.push(dapp)
       }
-
       return dapps
     } catch (error) {
       throw new Error(`Error fetching dapps. Details: ${error.message}`)
@@ -49,8 +56,12 @@ class DiscoverService extends BlockchainService {
   async getDAppById(id) {
     let dapp
     try {
-      const dappId = await DiscoverContract.methods.id2index(id).call()
-      dapp = await DiscoverContract.methods.dapps(dappId).call()
+      const dappId = await DiscoverContract.methods
+        .id2index(id)
+        .call({ from: this.sharedContext.account })
+      dapp = await DiscoverContract.methods
+        .dapps(dappId)
+        .call({ from: this.sharedContext.account })
     } catch (error) {
       throw new Error('Searching DApp does not exists')
     }
@@ -74,11 +85,15 @@ class DiscoverService extends BlockchainService {
   }
 
   async safeMax() {
-    return DiscoverContract.methods.safeMax().call()
+    return DiscoverContract.methods
+      .safeMax()
+      .call({ from: this.sharedContext.account })
   }
 
   async isDAppExists(id) {
-    return DiscoverContract.methods.existingIDs(id).call()
+    return DiscoverContract.methods
+      .existingIDs(id)
+      .call({ from: this.sharedContext.account })
   }
 
   // Transaction methods
@@ -114,10 +129,13 @@ class DiscoverService extends BlockchainService {
     )
   }
 
-  async downVote(id, amount) {
-    await this.validator.validateDownVoting(id, amount)
+  async downVote(id) {
+    const dapp = await this.getDAppById(id)
+    const amount = (await this.downVoteCost(dapp.id)).c
 
-    const callData = DiscoverContract.methods.downvote(id, amount).encodeABI()
+    const callData = DiscoverContract.methods
+      .downvote(dapp.id, amount)
+      .encodeABI()
     return this.sharedContext.SNTService.approveAndCall(
       this.contract,
       amount,

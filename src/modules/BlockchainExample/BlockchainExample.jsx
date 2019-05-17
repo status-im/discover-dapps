@@ -3,7 +3,7 @@ import exampleImage from './dapp.image'
 
 import BlockchainSDK from '../../common/blockchain'
 
-const SERVICES = BlockchainSDK.init()
+let SERVICES = ''
 
 const DAPP_DATA = {
   name: 'Test1',
@@ -35,7 +35,7 @@ class Example extends React.Component {
 
   async createDApp() {
     await SERVICES.SNTService.generateTokens()
-    return SERVICES.DiscoverService.createDApp(10000, DAPP_DATA)
+    // return SERVICES.DiscoverService.createDApp(10000, DAPP_DATA)
   }
 
   async upvote(id) {
@@ -64,8 +64,9 @@ class Example extends React.Component {
   }
 
   async logDiscoverMethods() {
-    console.log(await SERVICES.DiscoverService.getDApps())
-    // const createdDApp = await this.createDApp()
+    SERVICES = await BlockchainSDK.getInstance()
+    // console.log(await SERVICES.DiscoverService.getDApps())
+    const createdDApp = await this.createDApp()
 
     // const dappData = await this.getFullDApp(createdDApp.id)
     // console.log(`Created DApp :  ${JSON.stringify(dappData)}`)

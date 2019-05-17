@@ -5,16 +5,7 @@ import {
   checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
 
-// import BlockchainTool from '../../common/blockchain'
-
-// const BlockchainSDK = BlockchainTool.init()
-const BlockchainSDK = { DiscoverService: {} }
-BlockchainSDK.DiscoverService.createDapp = async (snt, dapp) => {
-  return {
-    tx: '0x3513rewrsdfsdf',
-    id: 1,
-  }
-}
+import BlockchainSDK from '../../common/blockchain'
 
 const SHOW_SUBMIT = 'SHOW_SUBMIT'
 const CLOSE_SUBMIT = 'CLOSE_SUBMIT'
@@ -98,7 +89,8 @@ export const onImgDoneAction = imgBase64 => ({
 export const submitAction = dapp => {
   return async dispatch => {
     dispatch(closeSubmitAction())
-    const { tx, id } = await BlockchainSDK.DiscoverService.createDApp(1, {
+    const blockchain = await BlockchainSDK.getInstance()
+    const { tx, id } = await blockchain.DiscoverService.createDApp(1, {
       name: dapp.name,
       url: dapp.url,
       desc: dapp.desc,

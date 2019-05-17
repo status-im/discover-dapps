@@ -109,7 +109,7 @@ module.exports = {
   testnet: {
     deployment: {
       accounts: [{ mnemonic: wallet.mnemonic }],
-      host: `ropsten.infura.io/v3/`,
+      host: `ropsten.infura.io/v3/8675214b97b44e96b70d05326c61fd6a`,
       port: false,
       type: 'rpc',
       protocol: 'https',

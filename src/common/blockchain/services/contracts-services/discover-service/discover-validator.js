@@ -41,15 +41,6 @@ class DiscoverValidator {
     }
   }
 
-  async validateDownVoting(id, amount) {
-    const dapp = await this.service.getDAppById(id)
-
-    const downVoteCost = await this.service.downVoteCost(dapp.id)
-    if (downVoteCost.c != amount) {
-      throw new Error('Incorrect amount: valid if effect on ranking is 1%')
-    }
-  }
-
   async validateWithdrawing(id, amount) {
     const dapp = await this.service.getDAppById(id)
 

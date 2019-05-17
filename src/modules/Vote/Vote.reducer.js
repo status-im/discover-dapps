@@ -1,5 +1,6 @@
 import voteInitialState from '../../common/data/vote'
 import reducerUtil from '../../common/utils/reducer'
+import BlockchainSDK from '../../common/blockchain'
 
 const SHOW_UP_VOTE = 'SHOW_UP_VOTE'
 const SHOW_DOWN_VOTE = 'SHOW_DOWN_VOTE'
@@ -8,29 +9,6 @@ const SWITCH_TO_UPVOTE = 'SWITCH_TO_UPVOTE'
 const SWITCH_TO_DOWNVOTE = 'SWITCH_TO_DOWNVOTE'
 const ON_INPUT_SNT_VALUE = 'ON_INPUT_SNT_VALUE'
 const UPDATE_AFTER_VOTING_VALUES = 'UPDATE_AFTER_VOTING_VALUES'
-
-const BlockchainSDK = { DiscoverService: {} }
-BlockchainSDK.DiscoverService.upVoteEffect = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(amount)
-    }, 1000)
-  })
-}
-BlockchainSDK.DiscoverService.upVote = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('0xfae78787fa79')
-    }, 1000)
-  })
-}
-BlockchainSDK.DiscoverService.downVote = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('0xfae78787fa79')
-    }, 1000)
-  })
-}
 
 export const showUpVoteAction = dapp => {
   window.location.hash = 'vote'
@@ -85,7 +63,8 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
     if (isUpvote === true && voteState.sntValue !== sntValue.toString()) return
     if (sntValue === 0) return
 
-    const rating = await BlockchainSDK.DiscoverService.upVoteEffect(
+    const blockchain = await BlockchainSDK.getInstance()
+    const rating = await blockchain.DiscoverService.upVoteEffect(
       dapp.id,
       sntValue,
     )
@@ -97,7 +76,8 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
 export const upVoteAction = (dapp, amount) => {
   return async dispatch => {
     dispatch(closeVoteAction())
-    const tx = await BlockchainSDK.DiscoverService.upVote(dapp.id, amount)
+    const blockchain = await BlockchainSDK.getInstance()
+    const tx = await blockchain.DiscoverService.upVote(dapp.id, amount)
     console.log('upvote', tx)
   }
 }

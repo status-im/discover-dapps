@@ -1,32 +1,32 @@
 /* global web3 */
 
-import EmbarkJSService from '../embark-service/embark-service'
+import EmbarkJS from '../../../../embarkArtifacts/embarkjs'
+
+const getAccount = async () => {
+  try {
+    const account = (await EmbarkJS.Blockchain.Providers.web3.getAccounts())[0]
+    return account || (await EmbarkJS.enableEthereum())[0]
+  } catch (error) {
+    throw new Error(
+      'Could not unlock an account. Consider installing Status on your mobile or Metamask extension',
+    )
+  }
+}
 
 class BlockchainService {
   constructor(sharedContext, contract, Validator) {
     this.contract = contract.address
-    contract.setProvider(web3.currentProvider)
 
     this.sharedContext = sharedContext
     this.validator = new Validator(this)
   }
 
   async __unlockServiceAccount() {
-    // const accounts = await EmbarkJS.Blockchain.Providers.web3.getAccounts()
-    // // if (accounts.length > 0) {
-    // this.sharedContext.account = accounts[0]
-    // } else {
-    // const provider = global.web3.currentProvider
-    // Check for undefined
-    // console.log(await global.web3.eth.getAccounts())
-    const accounts = await EmbarkJSService.enableEthereum()
-    if (accounts) {
-      this.sharedContext.account = accounts[0]
+    if (web3 && EmbarkJS.Blockchain.Providers.web3) {
+      this.sharedContext.account = await getAccount()
+    } else {
+      throw new Error('web3 is missing')
     }
-    // global.web3.setProvider(provider)
-    // }
-
-    // throw new Error('Could not unlock an account or web3 is missing')
   }
 }
 

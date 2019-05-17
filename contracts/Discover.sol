@@ -93,9 +93,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @param _amount uint, included for approveAndCallFallBack
      */
     function downvote(bytes32 _id, uint _amount) external {
-        (,,uint c) = downvoteCost(_id);
-        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
-        _downvote(msg.sender, _id, c);
+        _downvote(msg.sender, _id, _amount);
     }
     
     /**
