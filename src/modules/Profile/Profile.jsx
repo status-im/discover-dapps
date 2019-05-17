@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ReactImageFallback from 'react-image-fallback'
+import { push } from 'connected-react-router'
 import Modal from '../../common/components/Modal'
 import styles from './Profile.module.scss'
 import icon from '../../common/assets/images/icon.svg'
 import chat from '../../common/assets/images/chat.svg'
-import { push } from 'connected-react-router'
 
 const DesktopScreen = props => {
   return <Modal visible={props.visible}>{props.children}</Modal>
@@ -53,11 +53,9 @@ const ProfileContent = ({
             alt="App icon"
           />
           <img src={chat} className={styles.chat_icon} alt="Chat" />
-          <a
-            href="#"
-            target="_blank"
-            className={styles.chat_link}
-          >{`Open ${name} chat`}</a>
+          <a href="#" target="_blank" className={styles.chat_link}>
+            {`Open ${name} chat`}
+          </a>
         </div>
         <div className={styles.url}>
           <span className={styles.heading}>URL</span>
@@ -100,39 +98,48 @@ class Profile extends Component {
     this.state = {
       screenSize: 0,
       visible: true,
-      dapp: {},
     }
   }
 
   componentDidMount() {
     const { innerWidth } = window
-    const { dapp_name } = this.props.match.params
+    const { match, openModal } = this.props
+    const { params } = match
+    const { dapp_name } = params
+    if (innerWidth >= 1024) {
+      openModal(dapp_name)
+    }
 
-    // in order to access dapps list please use this.props.dapps.dapps. Also have in mind that this list might be null at the beginning
-    this.props.dapps.find(dapp => {
-      if (dapp.name.toLowerCase() === dapp_name.toLowerCase()) {
-        if (innerWidth >= 1024) {
-          this.props.openModal(dapp.name)
-        }
-        this.setState({
-          screenSize: innerWidth,
-          visible: true,
-          dapp,
-        })
-      }
+    this.setState({
+      screenSize: innerWidth,
+      visible: true,
     })
   }
 
   render() {
-    return this.state.screenSize >= 1024 ? (
-      <DesktopScreen visible={this.state.visible}>
-        <ProfileContent {...this.state.dapp} />
-      </DesktopScreen>
-    ) : (
-      <MobileScreen {...this.props}>
-        <ProfileContent {...this.state.dapp} />
-      </MobileScreen>
-    )
+    const { match, dapps } = this.props
+    const { params } = match
+    const { dapp_name } = params
+
+    const { screenSize, visible } = this.state
+    if (
+      dapps.highestRankedFetched === true &&
+      dapps.recentlyAddedFetched === true
+    ) {
+      const dapp = dapps.dapps.find(item =>
+        item.name.toLowerCase() === dapp_name.toLowerCase() ? item : '',
+      )
+      return screenSize >= 1024 ? (
+        <DesktopScreen visible={visible}>
+          <ProfileContent {...dapp} />
+        </DesktopScreen>
+      ) : (
+        <MobileScreen {...this.props}>
+          <ProfileContent {...dapp} />
+        </MobileScreen>
+      )
+    }
+    return null
   }
 }
 Profile.propTypes = {
