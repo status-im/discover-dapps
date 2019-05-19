@@ -13,8 +13,6 @@ import TransactionStatus from '../TransactionStatus'
 import Alert from '../Alert'
 import HowToSubmit from '../HowToSubmit'
 
-import Example from '../BlockchainExample'
-
 class Router extends React.Component {
   componentDidMount() {
     const { fetchAllDapps } = this.props
