@@ -13,11 +13,10 @@ export const toggleProfileModalAction = dapp => {
       type: MOBILE_NAVIGATE,
       payload: dapp,
     }
-  } else {
-    return {
-      type: DESKTOP_NAVIGATE,
-      payload: dapp,
-    }
+  }
+  return {
+    type: DESKTOP_NAVIGATE,
+    payload: dapp,
   }
 }
 
