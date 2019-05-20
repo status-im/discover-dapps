@@ -4,8 +4,10 @@ import EmbarkJS from '../../../../embarkArtifacts/embarkjs'
 
 const getAccount = async () => {
   try {
-    const account = (await EmbarkJS.Blockchain.Providers.web3.getAccounts())[0]
-    return account || (await EmbarkJS.enableEthereum())[0]
+    const account = (await EmbarkJS.enableEthereum())[0]
+    return (
+      account || (await EmbarkJS.Blockchain.Providers.web3.getAccounts())[0]
+    )
   } catch (error) {
     throw new Error(
       'Could not unlock an account. Consider installing Status on your mobile or Metamask extension',
