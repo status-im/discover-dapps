@@ -93,9 +93,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @param _amount uint, included for approveAndCallFallBack
      */
     function downvote(bytes32 _id, uint _amount) external {
-        (,,uint c) = downvoteCost(_id);
-        require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
-        _downvote(msg.sender, _id, c);
+        _downvote(msg.sender, _id, _amount);
     }
     
     /**
@@ -105,9 +103,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @param _amount of tokens to withdraw from DApp's overall balance.
      */
     function withdraw(bytes32 _id, uint _amount) external { 
-        uint dappIdx = id2index[_id];
-        Data storage d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
+        Data storage d = _getDAppById(_id);
         
         require(msg.sender == d.developer, "Only the developer can withdraw SNT staked on this data");
         require(_amount <= d.available, "You can only withdraw a percentage of the SNT staked, less what you have already received");
@@ -153,6 +149,14 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         d.metadata = _metadata;
         emit MetadataUpdated(_id);
     }
+
+    /**	
+     * @dev Used in UI in order to fetch all dapps	
+     * @return dapps count	
+     */	
+    function getDAppsCount() external view returns(uint) {	
+        return dapps.length;	
+    }	
 
     /**
      * @notice Support for "approveAndCall".  
@@ -203,9 +207,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @return effect of donation on DApp's effectiveBalance 
      */
     function upvoteEffect(bytes32 _id, uint _amount) external view returns(uint effect) { 
-        uint dappIdx = id2index[_id];
-        Data memory d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
+        Data memory d = _getDAppById(_id);
         require(d.balance.add(_amount) <= safeMax, "You cannot upvote by this much, try with a lower amount");
 
         // Special case - no downvotes yet cast
@@ -243,16 +245,8 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
      * @return balance_down_by, votes_required, cost
      */
     function downvoteCost(bytes32 _id) public view returns(uint b, uint vR, uint c) { 
-        uint dappIdx = id2index[_id];
-        Data memory d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        
-        uint balanceDownBy = (d.effectiveBalance.div(100));
-        uint votesRequired = (balanceDownBy.mul(d.votesMinted).mul(d.rate)).div(d.available);
-        uint votesAvailable = d.votesMinted.sub(d.votesCast).sub(votesRequired);
-        uint temp = (d.available.div(votesAvailable)).mul(votesRequired);
-        uint cost = temp.div(decimals);
-        return (balanceDownBy, votesRequired, cost);
+        Data memory d = _getDAppById(_id);
+        return _downvoteCost(d);
     }
 
     function _createDApp(
@@ -306,9 +300,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
     function _upvote(address _from, bytes32 _id, uint _amount) internal { 
         require(_amount > 0, "You must send some SNT in order to upvote");
         
-        uint dappIdx = id2index[_id];
-        Data storage d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
+        Data storage d = _getDAppById(_id);
         
         require(d.balance.add(_amount) <= safeMax, "You cannot upvote by this much, try with a lower amount");
         
@@ -340,11 +332,8 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
     }
 
     function _downvote(address _from, bytes32 _id, uint _amount) internal { 
-        uint dappIdx = id2index[_id];
-        Data storage d = dapps[dappIdx];
-        require(d.id == _id, "Error fetching correct data");
-        
-        (uint b, uint vR, uint c) = downvoteCost(_id);
+        Data storage d = _getDAppById(_id);
+        (uint b, uint vR, uint c) = _downvoteCost(d);
 
         require(_amount == c, "Incorrect amount: valid iff effect on ranking is 1%");
         
@@ -358,8 +347,30 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
         
         emit Downvote(_id, d.effectiveBalance);
     }
+
+    function _downvoteCost(Data memory d) internal view returns(uint b, uint vR, uint c) { 
+        uint balanceDownBy = (d.effectiveBalance.div(100));
+        uint votesRequired = (balanceDownBy.mul(d.votesMinted).mul(d.rate)).div(d.available);
+        uint votesAvailable = d.votesMinted.sub(d.votesCast).sub(votesRequired);
+        uint temp = (d.available.div(votesAvailable)).mul(votesRequired);
+        uint cost = temp.div(decimals);
+        return (balanceDownBy, votesRequired, cost);
+    }
+
+    /**	
+     * @dev Used internally in order to get a dapp while checking if it exists	
+     * @return existing dapp
+     */	
+    function _getDAppById(bytes32 _id) internal view returns(Data storage d) {	
+        uint dappIdx = id2index[_id];
+        Data memory d = dapps[dappIdx];
+        require(d.id == _id, "Error fetching correct data");
+
+        return dapps[dappIdx];
+    }	
+
       
-    /**
+     /**
      * @dev Decodes abi encoded data with selector for "functionName(bytes32,uint256)".
      * @param _data Abi encoded data.
      * @return Decoded registry call.
