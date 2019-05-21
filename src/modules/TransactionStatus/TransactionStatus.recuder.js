@@ -3,6 +3,7 @@ import reducerUtil from '../../common/utils/reducer'
 import {
   transactionStatusFetchedInstance,
   transactionStatusInitInstance,
+  TYPE_NONE,
 } from './TransactionStatus.utilities'
 import { onUpdateDappDataAction } from '../Dapps/Dapps.reducer'
 import { showAlertAction } from '../Alert/Alert.reducer'
@@ -46,9 +47,9 @@ export const hideAction = () => ({
   payload: null,
 })
 
-export const onStartProgressAction = (dappName, dappImg, desc) => ({
+export const onStartProgressAction = (dappName, dappImg, desc, type) => ({
   type: ON_START_PROGRESS,
-  payload: { dappName, dappImg, desc },
+  payload: { dappName, dappImg, desc, type },
 })
 
 export const onReceiveTransactionInfoAction = (id, tx) => ({
@@ -114,15 +115,17 @@ const hide = state => {
   const transacationStatus = transactionStatusFetchedInstance()
   transacationStatus.setDappName('')
   transacationStatus.setProgress(false)
+  transacationStatus.setType(TYPE_NONE)
   return Object.assign({}, state, transacationStatus)
 }
 
 const onStartProgress = (state, payload) => {
-  const { dappName, dappImg, desc } = payload
+  const { dappName, dappImg, desc, type } = payload
   const transacationStatus = transactionStatusInitInstance(
     dappName,
     dappImg,
     desc,
+    type,
   )
   transacationStatus.persistTransactionData()
   return Object.assign({}, state, transacationStatus)

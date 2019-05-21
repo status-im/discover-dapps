@@ -1,5 +1,10 @@
 const COOKIE_NAME = 'TRANSACTION_STATUS_COOKIE'
 
+export const TYPE_NONE = 0
+export const TYPE_SUBMIT = 1
+export const TYPE_UPVOTE = 2
+export const TYPE_DOWNVOTE = 3
+
 class TransactionStatus {
   constructor() {
     this.dappId = ''
@@ -7,6 +12,7 @@ class TransactionStatus {
     this.txDesc = ''
     this.dappName = ''
     this.dappImg = ''
+    this.type = TYPE_NONE
     this.progress = false
     this.published = false
     this.failed = false
@@ -49,18 +55,24 @@ class TransactionStatus {
     this.failed = failed
     this.persistTransactionData()
   }
+
+  setType(type) {
+    this.type = type
+    this.persistTransactionData()
+  }
 }
 
 const getTransactionData = () => {
   return localStorage.getItem(COOKIE_NAME)
 }
 
-export const transactionStatusInitInstance = (name, img, desc) => {
+export const transactionStatusInitInstance = (name, img, desc, type) => {
   const model = new TransactionStatus()
   model.dappName = name
   model.dappImg = img
   model.progress = true
   model.txDesc = desc
+  model.type = type
   return model
 }
 

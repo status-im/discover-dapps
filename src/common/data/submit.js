@@ -1,5 +1,6 @@
 const submit = {
-  visible: false,
+  visible_submit: false,
+  visible_rating: false,
   id: '',
   name: '',
   desc: '',
@@ -11,6 +12,7 @@ const submit = {
   imgControlMove: false,
   imgControlX: 0,
   imgControlY: 0,
+  sntValue: '0',
 }
 
 export default submit

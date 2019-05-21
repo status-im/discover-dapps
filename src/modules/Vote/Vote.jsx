@@ -174,7 +174,7 @@ class Vote extends Component {
           </div>
         </div>
         {!isUpvote && (
-          <div className={styles.inputArea}>
+          <div className={styles.inputArea} style={{ opacity: 0 }}>
             <span>{downvoteSNTcost}</span>
           </div>
         )}

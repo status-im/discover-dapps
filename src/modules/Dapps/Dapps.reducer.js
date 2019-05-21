@@ -2,6 +2,7 @@ import hardcodedDapps from '../../common/data/dapps'
 import * as Categories from '../../common/data/categories'
 import reducerUtil from '../../common/utils/reducer'
 import { showAlertAction } from '../Alert/Alert.reducer'
+import { TYPE_SUBMIT } from '../TransactionStatus/TransactionStatus.utilities'
 //import BlockchainTool from '../../common/blockchain'
 
 const ON_FINISH_FETCH_ALL_DAPPS_ACTION =
@@ -100,7 +101,9 @@ export const onFinishFetchByCategoryAction = (category, dapps) => ({
 })
 
 const fetchAllDappsInState = async (dispatch, getState) => {
-  const stateDapps = getState().dapps
+  const state = getState()
+  const { transactionStatus } = state
+  const stateDapps = state.dapps
   if (stateDapps.dapps === null) {
     try {
       let dapps = await BlockchainSDK.DiscoverService.getDApps()
@@ -112,6 +115,14 @@ const fetchAllDappsInState = async (dispatch, getState) => {
       dapps.sort((a, b) => {
         return b.sntValue - a.sntValue
       })
+      if (transactionStatus.type === TYPE_SUBMIT) {
+        for (let i = 0; i < dapps.length; i += 1) {
+          if (dapps[i].id === transactionStatus.dappId) {
+            dapps.splice(i, 1)
+            break
+          }
+        }
+      }
 
       dispatch(onFinishFetchAllDappsAction(dapps))
       return dapps

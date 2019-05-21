@@ -6,6 +6,10 @@ import {
   onReceiveTransactionInfoAction,
   checkTransactionStatusAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
+import {
+  TYPE_UPVOTE,
+  TYPE_DOWNVOTE,
+} from '../TransactionStatus/TransactionStatus.utilities'
 
 const SHOW_UP_VOTE_AFTER_CHECK = 'VOTE_SHOW_UP_VOTE_AFTER_CHECK'
 const SHOW_DOWN_VOTE_AFTER_CHEECK = 'VOTE_SHOW_DOWN_VOTE_AFTER_CHEECK'
@@ -138,7 +142,12 @@ export const upVoteAction = (dapp, amount) => {
   return async dispatch => {
     dispatch(closeVoteAction())
     dispatch(
-      onStartProgressAction(dapp.name, dapp.image, `↑ Upvote by ${amount} SNT`),
+      onStartProgressAction(
+        dapp.name,
+        dapp.image,
+        `↑ Upvote by ${amount} SNT`,
+        TYPE_UPVOTE,
+      ),
     )
     try {
       const tx = await BlockchainSDK.DiscoverService.upVote(dapp.id, amount)
@@ -158,6 +167,7 @@ export const downVoteAction = (dapp, amount) => {
         dapp.name,
         dapp.image,
         `↓ Downvote by ${amount} SNT`,
+        TYPE_DOWNVOTE,
       ),
     )
     try {
