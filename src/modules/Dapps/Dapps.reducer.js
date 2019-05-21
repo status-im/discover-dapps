@@ -48,10 +48,12 @@ class DappsState {
       }
     }
 
-    // this.items.sort((a, b) => {
-    //   return new Date(b.dateAdded).getTime() - new Date(a.dateAdded).getTime()
-    // })
     this.hasMore = addedItems !== 0
+  }
+
+  cloneWeakItems() {
+    this.items = [...this.items]
+    return this
   }
 }
 
@@ -146,36 +148,6 @@ export const fetchAllDappsAction = () => {
   }
 }
 
-// export const fetchHighestRankedAction = () => {
-//   return dispatch => {
-//     dispatch(onStartFetchHighestRankedAction())
-//     setTimeout(() => {
-//       const result = hardcodedDapps
-//         .sort((a, b) => {
-//           return b.sntValue - a.sntValue
-//         })
-//         .slice(0, 50)
-//       dispatch(onFinishFetchHighestRankedAction(result))
-//     }, 100)
-//   }
-// }
-
-// export const fetchRecentlyAddedAction = () => {
-//   return dispatch => {
-//     dispatch(onStartFetchRecentlyAddedAction())
-//     setTimeout(() => {
-//       const result = hardcodedDapps
-//         .sort((a, b) => {
-//           return (
-//             new Date().getTime(b.dateAdded) - new Date(a.dateAdded).getTime()
-//           )
-//         })
-//         .slice(0, 20)
-//       dispatch(onFinishFetchRecentlyAddedAction(result))
-//     }, 100)
-//   }
-// }
-
 export const fetchByCategoryAction = category => {
   return async (dispatch, getState) => {
     dispatch(onStartFetchByCategoryAction(category))
@@ -229,7 +201,7 @@ const onFinishFetchRecentlyAdded = (state, payload) => {
 const onStartFetchByCategory = (state, payload) => {
   const dappsCategoryMap = new Map()
   state.dappsCategoryMap.forEach((dappState, category) => {
-    dappsCategoryMap.set(category, dappState)
+    dappsCategoryMap.set(category, dappState.cloneWeakItems())
     if (category === payload) dappState.setFetched(true)
   })
   return Object.assign({}, state, {
@@ -269,7 +241,7 @@ const onUpdateDappData = (state, dapp) => {
   let update = false
 
   state.dappsCategoryMap.forEach((dappState, category_) => {
-    dappsCategoryMap.set(category_, dappState)
+    dappsCategoryMap.set(category_, dappState.cloneWeakItems())
   })
 
   for (let i = 0; i < dapps.length; i += 1) {
@@ -301,7 +273,6 @@ const onUpdateDappData = (state, dapp) => {
       return target.sntValue < dappItem.sntValue
     })
   } else {
-    // update hightestRanked, recentlyAdded, dappsCategoryMap
     for (let i = 0; i < highestRanked.length; i += 1) {
       if (highestRanked[i].id === dapp.id) {
         highestRanked[i] = dapp

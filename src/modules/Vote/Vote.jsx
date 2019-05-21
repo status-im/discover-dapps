@@ -140,7 +140,7 @@ class Vote extends Component {
             )}
             {!isUpvote && afterVoteRating !== null && (
               <span className={styles.redBadge}>
-                {`${(dapp.sntValue + afterVoteRating).toLocaleString()} ↓`}
+                {`${(dapp.sntValue - afterVoteRating).toLocaleString()} ↓`}
               </span>
             )}
           </div>
