@@ -9,20 +9,7 @@ import {
 import { TYPE_SUBMIT } from '../TransactionStatus/TransactionStatus.utilities'
 import { showAlertAction } from '../Alert/Alert.reducer'
 
-// import BlockchainTool from '../../common/blockchain'
-
-//const BlockchainSDK = BlockchainTool.init()
-const BlockchainSDK = { DiscoverService: {} }
-BlockchainSDK.DiscoverService.createDapp = async (snt, dapp) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        tx: '0x3513rewrsdfsdf',
-        id: 1,
-      })
-    }, 1000)
-  })
-}
+import BlockchainSDK from '../../common/blockchain'
 
 const SHOW_SUBMIT_AFTER_CHECK = 'SUBMIT_SHOW_SUBMIT_AFTER_CHECK'
 const CLOSE_SUBMIT = 'SUBMIT_CLOSE_SUBMIT'
@@ -119,7 +106,7 @@ export const onImgDoneAction = imgBase64 => ({
   payload: imgBase64,
 })
 
-export const submitAction = dapp => {
+export const submitAction = (dapp, sntValue) => {
   return async dispatch => {
     dispatch(closeSubmitAction())
     dispatch(
@@ -131,7 +118,8 @@ export const submitAction = dapp => {
       ),
     )
     try {
-      const { tx, id } = await BlockchainSDK.DiscoverService.createDapp(1, {
+      const blockchain = await BlockchainSDK.getInstance()
+      const { tx, id } = await blockchain.DiscoverService.createDApp(sntValue, {
         name: dapp.name,
         url: dapp.url,
         desc: dapp.desc,

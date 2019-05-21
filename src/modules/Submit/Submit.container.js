@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => ({
   onImgMove: (x, y) => dispatch(onImgMoveAction(x, y)),
   onImgCancel: () => dispatch(onImgCancelAction()),
   onImgDone: imgBase64 => dispatch(onImgDoneAction(imgBase64)),
-  onSubmit: dapp => dispatch(submitAction(dapp)),
+  onSubmit: (dapp, sntValue) => dispatch(submitAction(dapp, sntValue)),
   onClickTerms: () => dispatch(push('/terms')),
   switchToRating: () => dispatch(switchToRatingAction()),
   onInputSntValue: sntValue => dispatch(onInputSntValueAction(sntValue)),

@@ -1,0 +1,15 @@
+module.exports = {
+  ApproveAndCallFallBack: require('./ApproveAndCallFallBack').default,
+  Controlled: require('./Controlled').default,
+  ERC20Token: require('./ERC20Token').default,
+  TokenFactory: require('./TokenFactory').default,
+  TokenController: require('./TokenController').default,
+  SafeMath: require('./SafeMath').default,
+  MiniMeTokenInterface: require('./MiniMeTokenInterface').default,
+  BancorFormula: require('./BancorFormula').default,
+  TestBancorFormula: require('./TestBancorFormula').default,
+  SNT: require('./SNT').default,
+  MiniMeToken: require('./MiniMeToken').default,
+  MiniMeTokenFactory: require('./MiniMeTokenFactory').default,
+  Discover: require('./Discover').default,
+}

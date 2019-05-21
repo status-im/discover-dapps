@@ -16,7 +16,7 @@ config({
   },
   contracts: {
     "MiniMeToken": { "deploy": false },
-    "MiniMeTokenFactory": { },
+    "MiniMeTokenFactory": {},
     "SNT": {
       "instanceOf": "MiniMeToken",
       "args": [
@@ -30,9 +30,9 @@ config({
       ]
     },
     "Discover": {
-      args: [ "$SNT" ]
+      args: ["$SNT"]
     },
-    "TestBancorFormula": { }
+    "TestBancorFormula": {}
   }
 }, (_err, web3_accounts) => {
   accounts = web3_accounts
@@ -57,10 +57,10 @@ contract("Discover", function () {
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.createDApp(id, amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
 
-    let receipt = await Discover.methods.dapps(0).call();   
+    let receipt = await Discover.methods.dapps(0).call();
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -76,13 +76,13 @@ contract("Discover", function () {
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    let rate = Math.round(decimals - (amount * decimals/max));
+    let rate = Math.round(decimals - (amount * decimals / max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
     let available = amount * rate;
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
-    let votes_minted = Math.round((available/decimals) ** (decimals/rate));
+    let votes_minted = Math.round((available / decimals) ** (decimals / rate));
     assert.strictEqual(votes_minted, parseInt(receipt.votesMinted, 10));
 
     assert.strictEqual(0, parseInt(receipt.votesCast, 10));
@@ -95,10 +95,10 @@ contract("Discover", function () {
     let metadata = 'QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue';
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.createDApp(id,amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id, amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -114,17 +114,17 @@ contract("Discover", function () {
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
 
-    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id, amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
 
-    const encodedCall0 = Discover.methods.createDApp(id,amount0,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall0 = Discover.methods.createDApp(id, amount0, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount0, encodedCall0).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount0, encodedCall0).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -134,7 +134,7 @@ contract("Discover", function () {
   it("should update the metadata correctly", async function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
-    await Discover.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[0] });
+    await Discover.methods.setMetadata(id, TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[0] });
     let receipt = await Discover.methods.dapps(0).call();
     assert.strictEqual(TestUtils.getBytes32FromIpfsHash(metadata), receipt.metadata);
   })
@@ -144,7 +144,7 @@ contract("Discover", function () {
     let metadata_actual = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFeu";
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBDDeu";
     try {
-      await Discover.methods.setMetadata(id,TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[1] });
+      await Discover.methods.setMetadata(id, TestUtils.getBytes32FromIpfsHash(metadata)).send({ from: accounts[1] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -160,14 +160,14 @@ contract("Discover", function () {
     let initial = await Discover.methods.dapps(0).call();
     let before = await SNT.methods.balanceOf(Discover.options.address).call();
     // This is the special case where no downvotes have yet been cast
-    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
+    let up_effect = await Discover.methods.upvoteEffect(id, amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
 
     let receipt = await Discover.methods.dapps(0).call();
-    
+
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -184,13 +184,13 @@ contract("Discover", function () {
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    let rate = Math.round(decimals - (upvotedBalance * decimals/max));
+    let rate = Math.round(decimals - (upvotedBalance * decimals / max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
     let available = upvotedBalance * rate;
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
-    let votes_minted = Math.round((available/decimals) ** (decimals/rate));
+    let votes_minted = Math.round((available / decimals) ** (decimals / rate));
     assert.strictEqual(votes_minted, parseInt(receipt.votesMinted, 10));
 
     // Only true for upvotes made when there are no downvotes
@@ -206,9 +206,9 @@ contract("Discover", function () {
     let amount = 0;
 
     await SNT.methods.generateTokens(accounts[0], 10000).send();
-    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
+    const encodedCall = Discover.methods.upvote(id, amount).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -221,9 +221,9 @@ contract("Discover", function () {
     let amount = parseInt(initial, 10);
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
+    const encodedCall = Discover.methods.upvote(id, amount).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -240,9 +240,9 @@ contract("Discover", function () {
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
-    
+    const encodedCall = Discover.methods.downvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[1] });
+
     let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
@@ -278,9 +278,9 @@ contract("Discover", function () {
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
-    
+    const encodedCall = Discover.methods.downvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[1] });
+
     let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
@@ -313,17 +313,17 @@ contract("Discover", function () {
 
     await SNT.methods.generateTokens(accounts[1], amount_above + amount_below).send();
 
-    const encodedCall = Discover.methods.downvote(id,amount_above).encodeABI();
+    const encodedCall = Discover.methods.downvote(id, amount_above).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount_above, encodedCall).send({from: accounts[1]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount_above, encodedCall).send({ from: accounts[1] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
     }
 
-    const encodedCall1 = Discover.methods.downvote(id,amount_below).encodeABI();
+    const encodedCall1 = Discover.methods.downvote(id, amount_below).encodeABI();
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount_below, encodedCall1).send({from: accounts[1]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount_below, encodedCall1).send({ from: accounts[1] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -336,13 +336,13 @@ contract("Discover", function () {
 
     let initial = await Discover.methods.dapps(0).call();
     let before = await SNT.methods.balanceOf(Discover.options.address).call();
-    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
+    let up_effect = await Discover.methods.upvoteEffect(id, amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
 
-    let receipt = await Discover.methods.dapps(0).call();  
+    let receipt = await Discover.methods.dapps(0).call();
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -359,7 +359,7 @@ contract("Discover", function () {
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    let rate = Math.round(decimals - (upvotedBalance * decimals/max));
+    let rate = Math.round(decimals - (upvotedBalance * decimals / max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
     let available = upvotedBalance * rate;
@@ -371,7 +371,7 @@ contract("Discover", function () {
     // and confirm that `upvote` still calculates the effective_balance correctly
     let votes_cast = parseInt(receipt.votesCast, 10);
 
-    let e_balance = Math.round(upvotedBalance - ((votes_cast*rate/decimals)*(available/decimals/votes_minted)));
+    let e_balance = Math.round(upvotedBalance - ((votes_cast * rate / decimals) * (available / decimals / votes_minted)));
     assert.strictEqual(e_balance, parseInt(receipt.effectiveBalance, 10));
 
     // The effective_balance should also match upvoteEffect + initial.effectiveBalance
@@ -384,22 +384,22 @@ contract("Discover", function () {
     let amount = 10;
 
     let receipt = await Discover.methods.dapps(0).call();
-    let effect = await Discover.methods.upvoteEffect(id,amount).call();
+    let effect = await Discover.methods.upvoteEffect(id, amount).call();
 
     // Mock receiving the SNT
     let mBalance = parseInt(receipt.balance, 10) + amount
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    
-    let mRate = Math.round(decimals - (mBalance * decimals/max));
+
+    let mRate = Math.round(decimals - (mBalance * decimals / max));
     let mAvailable = mBalance * mRate;
-    let mVMinted = Math.round((mAvailable/decimals) ** (decimals/mRate));
+    let mVMinted = Math.round((mAvailable / decimals) ** (decimals / mRate));
 
     // Votes have been cast by this stage, so we need to check how many there are
     // and confirm that `upvoteEffect` mocks the effect correctly
     let votes_cast = parseInt(receipt.votesCast, 10);
-    let mEBalance = Math.round(mBalance - ((votes_cast*mRate/decimals)*(mAvailable/decimals/mVMinted)));
+    let mEBalance = Math.round(mBalance - ((votes_cast * mRate / decimals) * (mAvailable / decimals / mVMinted)));
     let effect_calc = mEBalance - receipt.effectiveBalance;
 
     // Confirm that what is returned is (mEBalance - d.effective_balance)
@@ -411,7 +411,7 @@ contract("Discover", function () {
     let initial = await Discover.methods.max().call();
     let amount = parseInt(initial, 10);
     try {
-      await Discover.methods.upvoteEffect(id,amount).call();
+      await Discover.methods.upvoteEffect(id, amount).call();
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -425,7 +425,7 @@ contract("Discover", function () {
     let initial = await Discover.methods.dapps(0).call();
     let before = await SNT.methods.balanceOf(Discover.options.address).call();
     let before_dev = await SNT.methods.balanceOf(accounts[0]).call();
-    let receipt_obj = await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
+    let receipt_obj = await Discover.methods.withdraw(id, amount).send({ from: accounts[0] });
     let receipt = receipt_obj.events.Withdraw.returnValues;
 
     assert.strictEqual(id, receipt.id);
@@ -434,7 +434,7 @@ contract("Discover", function () {
     let after = await SNT.methods.balanceOf(Discover.options.address).call();
     let after_dev = await SNT.methods.balanceOf(accounts[0]).call();
     let difference = parseInt(before, 10) - parseInt(after, 10);
-    let difference_dev =  parseInt(after_dev, 10) - parseInt(before_dev, 10);
+    let difference_dev = parseInt(after_dev, 10) - parseInt(before_dev, 10);
 
     assert.strictEqual(difference, amount)
     assert.strictEqual(difference_dev, amount)
@@ -444,12 +444,12 @@ contract("Discover", function () {
     let decimals = await Discover.methods.decimals().call();
 
     let balance = parseInt(initial.balance, 10) - amount
-    let rate = Math.round(decimals - (balance * decimals/max));
+    let rate = Math.round(decimals - (balance * decimals / max));
     let available = Math.round(balance * rate);
-    let v_minted = Math.round((available/decimals) ** (decimals/rate));
+    let v_minted = Math.round((available / decimals) ** (decimals / rate));
     let v_cast = parseInt(initial.votesCast, 10);
-    let e_balance = Math.ceil(balance - ((v_cast*rate/decimals)*(available/decimals/v_minted)));
-    
+    let e_balance = Math.ceil(balance - ((v_cast * rate / decimals) * (available / decimals / v_minted)));
+
     let effective_balance = parseInt(receipt.newEffectiveBalance, 10);
 
     // We begin to run into precision limitations in the BancorFormula here.
@@ -471,7 +471,7 @@ contract("Discover", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 150000;
     try {
-      await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
+      await Discover.methods.withdraw(id, amount).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -483,7 +483,7 @@ contract("Discover", function () {
     let receipt = await Discover.methods.dapps(0).call();
     let amount = parseInt(receipt.available, 10) + 1;
     try {
-      await Discover.methods.withdraw(id,amount).send({from: accounts[0]});
+      await Discover.methods.withdraw(id, amount).send({ from: accounts[0] });
       assert.fail('should have reverted before');
     } catch (error) {
       TestUtils.assertJump(error);
@@ -494,7 +494,7 @@ contract("Discover", function () {
     let id = "0x7465737400000000000000000000000000000000000000000000000000000000";
     let amount = 1000;
     try {
-      await Discover.methods.withdraw(id,amount).send({from: accounts[1]});
+      await Discover.methods.withdraw(id, amount).send({ from: accounts[1] });
     } catch (error) {
       TestUtils.assertJump(error);
     }
@@ -510,9 +510,9 @@ contract("Discover", function () {
     let bal_before = await SNT.methods.balanceOf(developer).call();
 
     await SNT.methods.generateTokens(accounts[1], amount).send();
-    const encodedCall = Discover.methods.downvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[1]});
-    
+    const encodedCall = Discover.methods.downvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[1] });
+
     let receipt = await Discover.methods.dapps(0).call();
 
     assert.strictEqual(developer, receipt.developer);
@@ -544,13 +544,13 @@ contract("Discover", function () {
 
     let initial = await Discover.methods.dapps(0).call();
     let before = await SNT.methods.balanceOf(Discover.options.address).call();
-    let up_effect = await Discover.methods.upvoteEffect(id,amount).call();
+    let up_effect = await Discover.methods.upvoteEffect(id, amount).call();
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.upvote(id,amount).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.upvote(id, amount).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
 
-    let receipt = await Discover.methods.dapps(0).call();  
+    let receipt = await Discover.methods.dapps(0).call();
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -567,7 +567,7 @@ contract("Discover", function () {
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    let rate = Math.round(decimals - (upvotedBalance * decimals/max));
+    let rate = Math.round(decimals - (upvotedBalance * decimals / max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
     let available = upvotedBalance * rate;
@@ -579,7 +579,7 @@ contract("Discover", function () {
     // and confirm that `upvote` still calculates the effective_balance correctly
     let votes_cast = parseInt(receipt.votesCast, 10);
 
-    let e_balance = Math.ceil(upvotedBalance - ((votes_cast*rate/decimals)*(available/decimals/votes_minted)));
+    let e_balance = Math.ceil(upvotedBalance - ((votes_cast * rate / decimals) * (available / decimals / votes_minted)));
     assert.strictEqual(e_balance, parseInt(receipt.effectiveBalance, 10));
 
     // The effective_balance should also match upvoteEffect + initial.effectiveBalance
@@ -594,10 +594,10 @@ contract("Discover", function () {
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
-    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+    const encodedCall = Discover.methods.createDApp(id, amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
 
-    let receipt = await Discover.methods.dapps(1).call();   
+    let receipt = await Discover.methods.dapps(1).call();
     let developer = accounts[0];
 
     assert.strictEqual(developer, receipt.developer);
@@ -608,14 +608,14 @@ contract("Discover", function () {
 
     let max = await Discover.methods.max().call();
     let decimals = await Discover.methods.decimals().call();
-    let rate = Math.ceil(decimals - (amount * decimals/max));
+    let rate = Math.ceil(decimals - (amount * decimals / max));
     assert.strictEqual(rate, parseInt(receipt.rate, 10));
 
     let available = amount * rate;
     assert.strictEqual(available, parseInt(receipt.available, 10));
 
     // It's checking that votesMinted doesn't overflow which we're really interested in here
-    let votes_minted = Math.round((available/decimals) ** (decimals/rate));
+    let votes_minted = Math.round((available / decimals) ** (decimals / rate));
     let returned = parseInt(receipt.votesMinted, 10);
 
     // Is going to be less than due to rounding inaccuracies at higher exponents
@@ -629,15 +629,15 @@ contract("Discover", function () {
     let max = await Discover.methods.max().call();
     // Choose a safeMax 1% higher than is currently set
     let safe = await Discover.methods.safeMax().call();
-    let percent = (safe/max * 100) + 1;
+    let percent = (safe / max * 100) + 1;
     let amount = parseInt(max, 10) * percent;
     let metadata = "QmSmv5e5DYc2otwWcpUzuqmt389s3HHx651TbxDvKBFFue";
 
     await SNT.methods.generateTokens(accounts[0], amount).send();
-    const encodedCall = Discover.methods.createDApp(id,amount,TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
+    const encodedCall = Discover.methods.createDApp(id, amount, TestUtils.getBytes32FromIpfsHash(metadata)).encodeABI();
 
     try {
-      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({from: accounts[0]});
+      await SNT.methods.approveAndCall(Discover.options.address, amount, encodedCall).send({ from: accounts[0] });
     } catch (error) {
       TestUtils.assertJump(error);
     }

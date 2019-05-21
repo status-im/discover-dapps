@@ -1,5 +1,7 @@
 import voteInitialState from '../../common/data/vote'
 import reducerUtil from '../../common/utils/reducer'
+import BlockchainSDK from '../../common/blockchain'
+
 import { showAlertAction } from '../Alert/Alert.reducer'
 import {
   onStartProgressAction,
@@ -17,30 +19,8 @@ const CLOSE_VOTE = 'VOTE_CLOSE_VOTE'
 const SWITCH_TO_UPVOTE = 'VOTE_SWITCH_TO_UPVOTE'
 const SWITCH_TO_DOWNVOTE = 'VOTE_SWITCH_TO_DOWNVOTE'
 const ON_INPUT_SNT_VALUE = 'VOTE_ON_INPUT_SNT_VALUE'
-const UPDATE_AFTER_VOTING_VALUES = 'VOTE_UPDATE_AFTER_VOTING_VALUES'
-
-const BlockchainSDK = { DiscoverService: {} }
-BlockchainSDK.DiscoverService.upVoteEffect = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(amount)
-    }, parseInt(Math.random() * 1000, 10))
-  })
-}
-BlockchainSDK.DiscoverService.upVote = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('0xfae78787fa79')
-    }, 1000)
-  })
-}
-BlockchainSDK.DiscoverService.downVote = (id, amount) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('0xfae78787fa79')
-    }, 1000)
-  })
-}
+const UPDATE_AFTER_UP_VOTING_VALUES = 'VOTE_UPDATE_AFTER_UP_VOTING_VALUES'
+const UPDATE_AFTER_DOWN_VOTING_VALUES = 'VOTE_UPDATE_AFTER_DOWN_VOTING_VALUES'
 
 export const showUpVoteActionAfterCheck = dapp => {
   window.location.hash = 'vote'
@@ -107,17 +87,24 @@ export const onInputSntValueAction = sntValue => ({
   payload: sntValue,
 })
 
-export const updateAfterVotingValuesAction = rating => ({
-  type: UPDATE_AFTER_VOTING_VALUES,
+export const updateAfterUpVotingValuesAction = rating => ({
+  type: UPDATE_AFTER_UP_VOTING_VALUES,
   payload: rating,
+})
+
+export const updateAfterDownVotingValuesAction = (rating, sntValue) => ({
+  type: UPDATE_AFTER_DOWN_VOTING_VALUES,
+  payload: { rating, sntValue },
 })
 
 export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
   return async (dispatch, getState) => {
     let rating
+    let downVoteSntValue = 0
     if (isUpvote === true) {
       try {
-        rating = await BlockchainSDK.DiscoverService.upVoteEffect(
+        const blockchain = await BlockchainSDK.getInstance()
+        rating = await blockchain.DiscoverService.upVoteEffect(
           dapp.id,
           sntValue,
         )
@@ -125,16 +112,32 @@ export const fetchVoteRatingAction = (dapp, isUpvote, sntValue) => {
       } catch (e) {
         return
       }
-    } else rating = parseInt(dapp.sntValue * 0.99, 10)
+    } else {
+      // rating = parseInt(dapp.sntValue * 0.99, 10)
+      try {
+        const blockchain = await BlockchainSDK.getInstance()
+        const downVoteEffect = await blockchain.DiscoverService.downVoteCost(
+          dapp.id,
+        )
+        // balanceDownBy, votesRequired, cost
+        rating = parseInt(downVoteEffect.vR, 10)
+        downVoteSntValue = downVoteEffect.c
+      } catch (e) {
+        return
+      }
+    }
 
     const state = getState()
     const voteState = state.vote
     if (voteState.dapp !== dapp) return
     if (voteState.isUpvote !== isUpvote) return
-    if (isUpvote === true && voteState.sntValue !== sntValue.toString()) return
-    if (sntValue === 0) return
-    // const rating = dapp.sntValue + (isUpvote ? 1 : -1) * sntValue
-    dispatch(updateAfterVotingValuesAction(rating))
+    if (isUpvote) {
+      if (voteState.sntValue !== sntValue.toString()) return
+      if (sntValue === 0) return
+      dispatch(updateAfterUpVotingValuesAction(rating))
+    } else {
+      dispatch(updateAfterDownVotingValuesAction(rating, downVoteSntValue))
+    }
   }
 }
 
@@ -150,32 +153,36 @@ export const upVoteAction = (dapp, amount) => {
       ),
     )
     try {
-      const tx = await BlockchainSDK.DiscoverService.upVote(dapp.id, amount)
+      const blockchain = await BlockchainSDK.getInstance()
+      const tx = await blockchain.DiscoverService.upVote(dapp.id, amount)
       dispatch(onReceiveTransactionInfoAction(dapp.id, tx))
       dispatch(checkTransactionStatusAction(tx))
     } catch (e) {
-      dispatch(showAlertAction('There was an error, please try again'))
+      dispatch(showAlertAction(e.message))
     }
   }
 }
 
 export const downVoteAction = (dapp, amount) => {
   return async dispatch => {
+    const msg = amount !== '0' ? ` by ${amount} SNT` : ''
+
     dispatch(closeVoteAction())
     dispatch(
       onStartProgressAction(
         dapp.name,
         dapp.image,
-        `↓ Downvote by ${amount} SNT`,
+        `↓ Downvote${msg}`,
         TYPE_DOWNVOTE,
       ),
     )
     try {
-      const tx = await BlockchainSDK.DiscoverService.downVote(dapp.id, amount)
+      const blockchain = await BlockchainSDK.getInstance()
+      const tx = await blockchain.DiscoverService.downVote(dapp.id)
       dispatch(onReceiveTransactionInfoAction(dapp.id, tx))
       dispatch(checkTransactionStatusAction(tx))
     } catch (e) {
-      dispatch(showAlertAction('There was an error, please try again'))
+      dispatch(showAlertAction(e.message))
     }
   }
 }
@@ -210,6 +217,7 @@ const closeVote = state => {
 const switchToUpvote = state => {
   return Object.assign({}, state, {
     isUpvote: true,
+    sntValue: '0',
     afterVoteRating: null,
   })
 }
@@ -217,6 +225,7 @@ const switchToUpvote = state => {
 const switchToDownvote = state => {
   return Object.assign({}, state, {
     isUpvote: false,
+    sntValue: '0',
     afterVoteRating: null,
   })
 }
@@ -227,9 +236,17 @@ const onInputSntValue = (state, sntValue) => {
   })
 }
 
-const updateAfterVotingValues = (state, rating) => {
+const updateAfterUpVotingValues = (state, rating) => {
   return Object.assign({}, state, {
     afterVoteRating: rating,
+  })
+}
+
+const updateAfterDownVotingValues = (state, payload) => {
+  const { rating, sntValue } = payload
+  return Object.assign({}, state, {
+    afterVoteRating: rating,
+    sntValue,
   })
 }
 
@@ -240,7 +257,8 @@ const map = {
   [SWITCH_TO_UPVOTE]: switchToUpvote,
   [SWITCH_TO_DOWNVOTE]: switchToDownvote,
   [ON_INPUT_SNT_VALUE]: onInputSntValue,
-  [UPDATE_AFTER_VOTING_VALUES]: updateAfterVotingValues,
+  [UPDATE_AFTER_UP_VOTING_VALUES]: updateAfterUpVotingValues,
+  [UPDATE_AFTER_DOWN_VOTING_VALUES]: updateAfterDownVotingValues,
 }
 
 export default reducerUtil(map, voteInitialState)

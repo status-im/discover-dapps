@@ -150,7 +150,7 @@ class Submit extends React.Component {
   }
 
   onSubmit() {
-    const { onSubmit, name, desc, url, img, category } = this.props
+    const { onSubmit, name, desc, url, img, category, sntValue } = this.props
     const dapp = {
       name,
       url,
@@ -159,7 +159,7 @@ class Submit extends React.Component {
       desc,
     }
 
-    onSubmit(dapp)
+    onSubmit(dapp, parseInt(sntValue, 10))
   }
 
   handleSNTChange(e) {
@@ -169,12 +169,12 @@ class Submit extends React.Component {
     const intValue = value === '' ? 0 : parseInt(value, 10)
     if (intValue > 1571296) return
 
-    const { dapp, onInputSntValue, fetchVoteRating } = this.props
+    const { onInputSntValue } = this.props
     onInputSntValue(value)
   }
 
   title() {
-    const { visible_submit, visible_rating, imgControl } = this.props
+    const { visible_submit, imgControl } = this.props
     if (visible_submit)
       return imgControl ? 'Position and size your image' : 'Submit a Ðapp'
     return 'Ðapp rating'

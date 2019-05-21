@@ -9,8 +9,6 @@ import icon from '../../common/assets/images/icon.svg'
 import Modal from '../../common/components/Modal'
 import { DappModel } from '../../common/utils/models'
 
-const DOWNVOTE_COST = 3425
-
 const getCategoryName = category =>
   Categories.find(x => x.key === category).value
 
@@ -34,7 +32,7 @@ class Vote extends Component {
   onClickDownvote() {
     const { dapp, onClickDownvote, fetchVoteRating } = this.props
     onClickDownvote()
-    fetchVoteRating(dapp, false, DOWNVOTE_COST)
+    fetchVoteRating(dapp, false)
   }
 
   handleChange(e) {
@@ -52,7 +50,7 @@ class Vote extends Component {
   onClickVote() {
     const { dapp, sntValue, isUpvote, upVote, downVote } = this.props
     if (isUpvote) upVote(dapp, parseInt(sntValue, 10))
-    else downVote(dapp, DOWNVOTE_COST)
+    else downVote(dapp, sntValue)
   }
 
   render() {
@@ -73,14 +71,13 @@ class Vote extends Component {
     //const catPosition = dapp.categoryPosition
     // const upvoteSNTcost = currentSNTamount + parseInt(sntValue, 10)
     const currentSNTamount = dapp.sntValue
-    const downvoteSNTcost = DOWNVOTE_COST
     const dappsByCategory = dapps.filter(
       dapp_ => dapp_.category === dapp.category,
     )
 
     let catPosition = dappsByCategory.length
     for (let i = 0; i < dappsByCategory.length; ++i) {
-      if (dapp === dappsByCategory[i]) {
+      if (dapp.id === dappsByCategory[i].id) {
         catPosition = i + 1
         break
       }
@@ -90,8 +87,8 @@ class Vote extends Component {
     if (afterVoteRating !== null) {
       afterVoteCategoryPosition = 1
       for (let i = 0; i < dappsByCategory.length; ++i) {
-        if (dappsByCategory[i] === dapp) continue
-        if (dappsByCategory[i].sntValue < afterVoteRating) break
+        if (dappsByCategory[i].id === dapp.id) continue
+        if (dappsByCategory[i].sntValue < dapp.sntValue + afterVoteRating) break
         afterVoteCategoryPosition++
       }
     }
@@ -138,12 +135,12 @@ class Vote extends Component {
             </span>
             {isUpvote && afterVoteRating !== null && (
               <span className={styles.greenBadge}>
-                {`${afterVoteRating.toLocaleString()} ↑`}
+                {`${(dapp.sntValue + afterVoteRating).toLocaleString()} ↑`}
               </span>
             )}
             {!isUpvote && afterVoteRating !== null && (
               <span className={styles.redBadge}>
-                {`${afterVoteRating.toLocaleString()} ↓`}
+                {`${(dapp.sntValue + afterVoteRating).toLocaleString()} ↓`}
               </span>
             )}
           </div>
@@ -174,8 +171,11 @@ class Vote extends Component {
           </div>
         </div>
         {!isUpvote && (
-          <div className={styles.inputArea} style={{ opacity: 0 }}>
-            <span>{downvoteSNTcost}</span>
+          <div
+            className={styles.inputArea}
+            style={{ opacity: sntValue !== '0' ? 1 : 0 }}
+          >
+            <span>{sntValue}</span>
           </div>
         )}
         {isUpvote && (

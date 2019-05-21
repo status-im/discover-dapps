@@ -7,40 +7,13 @@ import {
 } from './TransactionStatus.utilities'
 import { onUpdateDappDataAction } from '../Dapps/Dapps.reducer'
 import { showAlertAction } from '../Alert/Alert.reducer'
-// import BlockchainTool from '../../common/blockchain'
+import BlockchainSDK from '../../common/blockchain'
 
 const HIDE = 'TXS_HIDE'
 const ON_START_PROGRESS = 'TXS_ON_START_PROGRESS'
 const ON_RECEIVE_TRANSACTION_TX = 'TXS_ON_RECEIVE_TRANSACTION_TX'
 const ON_CHANGE_TRANSACTION_STATUS_DATA =
   'TXS_ON_CHANGE_TRANSACTION_STATUS_DATA'
-
-//const BlockchainSDK = BlockchainTool.init()
-const BlockchainSDK = { DiscoverService: {}, utils: {} }
-BlockchainSDK.utils.getTxStatus = async tx => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(1)
-    }, 5000)
-  })
-}
-BlockchainSDK.DiscoverService.getDAppDataById = async id => {
-  return new Promise((resolve, reject) => {
-    resolve({
-      id: 'something unique',
-      metadata: {
-        name: 'Newly added',
-        url: 'https://www.astroledger.org/#/onSale',
-        description: 'Funding space grants with blockchain star naming',
-        image: '/images/dapps/astroledger.svg',
-        category: 'EXCHANGES',
-        dateAdded: '2019-10-10',
-        categoryPosition: 2,
-      },
-      rate: 10002345,
-    })
-  })
-}
 
 export const hideAction = () => ({
   type: HIDE,
@@ -83,12 +56,13 @@ export const checkTransactionStatusAction = tx => {
       case 1:
         transacationStatus.setPublished(true)
         try {
-          dapp = await BlockchainSDK.DiscoverService.getDAppDataById(
+          const blockchain = await BlockchainSDK.getInstance()
+          dapp = await blockchain.DiscoverService.getDAppDataById(
             transacationStatus.dappId,
           )
           dapp = Object.assign(dapp.metadata, {
             id: dapp.id,
-            sntValue: parseInt(dapp.rate, 10),
+            sntValue: parseInt(dapp.effectiveBalance, 10),
           })
           dispatch(onUpdateDappDataAction(dapp))
         } catch (e) {

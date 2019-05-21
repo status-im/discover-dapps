@@ -41,7 +41,6 @@ class TransactionStatus {
   }
 
   setPublished(published) {
-    this.dappTx = ''
     this.progress = false
     this.published = published
     this.failed = false
@@ -49,7 +48,6 @@ class TransactionStatus {
   }
 
   setFailed(failed) {
-    this.dappTx = ''
     this.progress = false
     this.published = false
     this.failed = failed

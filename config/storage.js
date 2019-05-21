@@ -2,27 +2,27 @@ module.exports = {
   // default applies to all environments
   default: {
     enabled: true,
-    ipfs_bin: "ipfs",
-    available_providers: ["ipfs"],
+    ipfs_bin: 'ipfs',
+    provider: 'ipfs',
+    available_providers: ['ipfs'],
     upload: {
-      provider: "ipfs",
-      host: "localhost",
-      port: 5001
+      host: 'localhost',
+      port: 5001,
     },
     dappConnection: [
       {
-        provider: "ipfs",
-        host: "localhost",
+        provider: 'ipfs',
+        host: 'localhost',
         port: 5001,
-        getUrl: "http://localhost:8080/ipfs/"
-      }
-    ]
+        getUrl: 'http://localhost:8080/ipfs/',
+      },
+    ],
     // Configuration to start Swarm in the same terminal as `embark run`
-    /*,account: {
+    /* ,account: {
       address: "YOUR_ACCOUNT_ADDRESS", // Address of account accessing Swarm
       password: "PATH/TO/PASSWORD/FILE" // File containing the password of the account
     },
-    swarmPath: "PATH/TO/SWARM/EXECUTABLE" // Path to swarm executable (default: swarm)*/
+    swarmPath: "PATH/TO/SWARM/EXECUTABLE" // Path to swarm executable (default: swarm) */
   },
 
   // default environment, merges with the settings in default
@@ -30,30 +30,45 @@ module.exports = {
   development: {
     enabled: true,
     upload: {
-      provider: "ipfs",
-      host: "localhost",
+      provider: 'ipfs',
+      host: 'localhost',
       port: 5001,
-      getUrl: "http://localhost:8080/ipfs/"
-    }
+      getUrl: 'http://localhost:8080/ipfs/',
+    },
   },
 
   // merges with the settings in default
   // used with "embark run privatenet"
-  privatenet: {
-  },
+  privatenet: {},
 
   // merges with the settings in default
   // used with "embark run testnet"
   testnet: {
+    enabled: true,
+    ipfs_bin: 'ipfs',
+    provider: 'ipfs',
+    available_providers: ['ipfs'],
+    upload: {
+      host: 'localhost',
+      port: 5001,
+    },
+    dappConnection: [
+      {
+        provider: 'ipfs',
+        protocol: 'https',
+        host: 'ipfs.infura.io',
+        port: 5001,
+        getUrl: 'https://ipfs.infura.io/ipfs/',
+      },
+    ],
   },
 
   // merges with the settings in default
   // used with "embark run livenet"
-  livenet: {
-  },
+  livenet: {},
 
   // you can name an environment with specific settings and then specify with
   // "embark run custom_name"
-  //custom_name: {
-  //}
-};
+  // custom_name: {
+  // }
+}
