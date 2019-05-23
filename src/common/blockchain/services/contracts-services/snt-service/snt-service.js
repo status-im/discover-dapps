@@ -11,19 +11,27 @@ class SNTService extends BlockchainService {
   }
 
   async allowance(from, to) {
-    return SNTToken.methods.allowance(from, to).call()
+    return SNTToken.methods
+      .allowance(from, to)
+      .call({ from: this.sharedContext.account })
   }
 
   async balanceOf(account) {
-    return SNTToken.methods.balanceOf(account).call()
+    return SNTToken.methods
+      .balanceOf(account)
+      .call({ from: this.sharedContext.account })
   }
 
   async controller() {
-    return SNTToken.methods.controller().call()
+    return SNTToken.methods
+      .controller()
+      .call({ from: this.sharedContext.account })
   }
 
   async transferable() {
-    return SNTToken.methods.transfersEnabled().call()
+    return SNTToken.methods
+      .transfersEnabled()
+      .call({ from: this.sharedContext.account })
   }
 
   async approveAndCall(spender, amount, callData) {

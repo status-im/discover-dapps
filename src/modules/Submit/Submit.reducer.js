@@ -6,22 +6,10 @@ import {
   onStartProgressAction,
   hideAction,
 } from '../TransactionStatus/TransactionStatus.recuder'
+import { TYPE_SUBMIT } from '../TransactionStatus/TransactionStatus.utilities'
 import { showAlertAction } from '../Alert/Alert.reducer'
 
-// import BlockchainTool from '../../common/blockchain'
-
-//const BlockchainSDK = BlockchainTool.init()
-const BlockchainSDK = { DiscoverService: {} }
-BlockchainSDK.DiscoverService.createDapp = async (snt, dapp) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        tx: '0x3513rewrsdfsdf',
-        id: 1,
-      })
-    }, 1000)
-  })
-}
+import BlockchainSDK from '../../common/blockchain'
 
 const SHOW_SUBMIT_AFTER_CHECK = 'SUBMIT_SHOW_SUBMIT_AFTER_CHECK'
 const CLOSE_SUBMIT = 'SUBMIT_CLOSE_SUBMIT'
@@ -35,6 +23,9 @@ const ON_IMG_MOVE_CONTROL = 'SUBMIT_ON_IMG_MOVE_CONTROL'
 const ON_IMG_MOVE = 'SUBMIT_ON_IMG_MOVE'
 const ON_IMG_CANCEL = 'SUBMIT_ON_IMG_CANCEL'
 const ON_IMG_DONE = 'SUBMIT_ON_IMG_DONE'
+
+const SWITCH_TO_RATING = 'SUBMIT_SWITCH_TO_RATING'
+const ON_INPUT_SNT_VALUE = 'SUBMIT_ON_INPUT_SNT_VALUE'
 
 export const showSubmitActionAfterCheck = () => {
   window.location.hash = 'submit'
@@ -115,7 +106,7 @@ export const onImgDoneAction = imgBase64 => ({
   payload: imgBase64,
 })
 
-export const submitAction = dapp => {
+export const submitAction = (dapp, sntValue) => {
   return async dispatch => {
     dispatch(closeSubmitAction())
     dispatch(
@@ -123,10 +114,12 @@ export const submitAction = dapp => {
         dapp.name,
         dapp.img,
         'Status is an open source mobile DApp browser and messenger build for #Etherium',
+        TYPE_SUBMIT,
       ),
     )
     try {
-      const { tx, id } = await BlockchainSDK.DiscoverService.createDapp(1, {
+      const blockchain = await BlockchainSDK.getInstance()
+      const { tx, id } = await blockchain.DiscoverService.createDApp(sntValue, {
         name: dapp.name,
         url: dapp.url,
         desc: dapp.desc,
@@ -142,9 +135,20 @@ export const submitAction = dapp => {
   }
 }
 
+export const switchToRatingAction = () => ({
+  type: SWITCH_TO_RATING,
+  paylaod: null,
+})
+
+export const onInputSntValueAction = sntValue => ({
+  type: ON_INPUT_SNT_VALUE,
+  payload: sntValue,
+})
+
 const showSubmitAfterCheck = state => {
   return Object.assign({}, state, {
-    visible: true,
+    visible_submit: true,
+    visible_rating: false,
     id: '',
     name: '',
     desc: '',
@@ -156,6 +160,7 @@ const showSubmitAfterCheck = state => {
     imgControlMove: false,
     imgControlX: 0,
     imgControlY: 0,
+    sntValue: '0',
   })
 }
 
@@ -233,6 +238,19 @@ const onImgDone = (state, imgBase64) => {
   })
 }
 
+const switchToRating = state => {
+  return Object.assign({}, state, {
+    visible_submit: false,
+    visible_rating: true,
+  })
+}
+
+const onInputSntValue = (state, sntValue) => {
+  return Object.assign({}, state, {
+    sntValue,
+  })
+}
+
 const map = {
   [SHOW_SUBMIT_AFTER_CHECK]: showSubmitAfterCheck,
   [CLOSE_SUBMIT]: closeSubmit,
@@ -246,6 +264,8 @@ const map = {
   [ON_IMG_MOVE]: onImgMove,
   [ON_IMG_CANCEL]: onImgCancel,
   [ON_IMG_DONE]: onImgDone,
+  [SWITCH_TO_RATING]: switchToRating,
+  [ON_INPUT_SNT_VALUE]: onInputSntValue,
 }
 
 export default reducerUtil(map, submitInitialState)

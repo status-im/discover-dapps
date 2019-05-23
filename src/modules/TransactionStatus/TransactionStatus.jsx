@@ -11,14 +11,14 @@ class TransactionStatus extends React.Component {
   }
 
   checkTransactionHash() {
-    const { dappTx, checkTransactionStatus } = this.props
-    if (dappTx === '') return
-    checkTransactionStatus(dappTx)
+    const { dappTx, progress, checkTransactionStatus } = this.props
+    if (dappTx !== '' && progress === true) checkTransactionStatus(dappTx)
   }
 
   render() {
     const {
       dappName,
+      dappTx,
       dappImg,
       txDesc,
       published,
@@ -53,8 +53,9 @@ class TransactionStatus extends React.Component {
             </div>
           )}
           {failed && (
-            <div className={`${styles.status} ${styles.red}`}>
-              Transaction failed. Please submit your dapp again.
+            <div className={`${styles.status} ${styles.red} ${styles.column}`}>
+              Transaction failed. Please check EtherScan for tx:{' '}
+              <span>{dappTx}</span>
             </div>
           )}
         </div>

@@ -1,8 +1,8 @@
 import * as helpers from './helpers'
-import EmbarkJSService from '../services/embark-service/embark-service'
+import EmbarkJS from '../../../embarkArtifacts/embarkjs'
 
 const checkIPFSAvailability = async () => {
-  const isAvailable = await EmbarkJSService.Storage.isAvailable()
+  const isAvailable = await EmbarkJS.Storage.isAvailable()
   if (!isAvailable) {
     throw new Error('IPFS Storage is unavailable')
   }
@@ -15,11 +15,11 @@ const uploadImage = async base64Image => {
     },
   ]
 
-  return EmbarkJSService.Storage.uploadFile(imageFile)
+  return EmbarkJS.Storage.uploadFile(imageFile)
 }
 
 const uploadMetadata = async metadata => {
-  const hash = await EmbarkJSService.Storage.saveText(metadata)
+  const hash = await EmbarkJS.Storage.saveText(metadata)
   return helpers.getBytes32FromIpfsHash(hash)
 }
 
@@ -40,11 +40,11 @@ export const uploadDAppMetadata = async metadata => {
 
 const retrieveMetadata = async metadataBytes32 => {
   const metadataHash = helpers.getIpfsHashFromBytes32(metadataBytes32)
-  return EmbarkJSService.Storage.get(metadataHash)
+  return EmbarkJS.Storage.get(metadataHash)
 }
 
 const retrieveImageUrl = async imageHash => {
-  return EmbarkJSService.Storage.getUrl(imageHash)
+  return EmbarkJS.Storage.getUrl(imageHash)
 }
 
 export const retrieveDAppMetadataByHash = async metadataBytes32 => {
