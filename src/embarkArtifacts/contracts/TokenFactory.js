@@ -31,10 +31,10 @@ let TokenFactoryJSONConfig = {
       },
     ],
     filename:
-      'E:/Status/projects/StatusDiscoverDapps/.embark/contracts/token/TokenFactory.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/.embark/contracts/token/TokenFactory.sol',
     originalFilename: 'contracts/token/TokenFactory.sol',
     path:
-      'E:/Status/projects/StatusDiscoverDapps/contracts/token/TokenFactory.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/contracts/token/TokenFactory.sol',
     gas: 'auto',
     type: 'file',
     deploy: false,

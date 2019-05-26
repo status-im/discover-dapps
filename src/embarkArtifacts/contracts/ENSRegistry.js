@@ -180,7 +180,6 @@ let ENSRegistryJSONConfig = {
     _gasLimit: false,
     address: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
     error: false,
-    deploymentAccount: '0x65767f95799109BA028e0397aDD89b0eF637E444',
     realArgs: [],
     deployedAddress: '0x112234455c3a32fd11230c42e7bccd4a84e02010',
   },

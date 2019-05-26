@@ -107,10 +107,10 @@ let ERC20TokenJSONConfig = {
       },
     ],
     filename:
-      'E:/Status/projects/StatusDiscoverDapps/.embark/contracts/token/ERC20Token.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/.embark/contracts/token/ERC20Token.sol',
     originalFilename: 'contracts/token/ERC20Token.sol',
     path:
-      'E:/Status/projects/StatusDiscoverDapps/contracts/token/ERC20Token.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/contracts/token/ERC20Token.sol',
     gas: 'auto',
     type: 'file',
     deploy: false,

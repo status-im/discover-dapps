@@ -40,10 +40,10 @@ let ControlledJSONConfig = {
       },
     ],
     filename:
-      'E:/Status/projects/StatusDiscoverDapps/.embark/contracts/common/Controlled.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/.embark/contracts/common/Controlled.sol',
     originalFilename: 'contracts/common/Controlled.sol',
     path:
-      'E:/Status/projects/StatusDiscoverDapps/contracts/common/Controlled.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/contracts/common/Controlled.sol',
     gas: 'auto',
     type: 'file',
     deploy: false,

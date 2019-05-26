@@ -70,8 +70,10 @@ module.exports = {
 
     contracts: {
       MiniMeToken: { deploy: false },
+      BancorFormula: { deploy: false },
+      MiniMeTokenFactory: { deploy: false },
+      SafeMath: { deploy: false },
       TestBancorFormula: { deploy: false },
-      MiniMeTokenFactory: {},
       SNT: {
         instanceOf: 'MiniMeToken',
         address: '0x2764b5da3696E3613Ef9864E9B4613f9fA478E75',

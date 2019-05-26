@@ -29,10 +29,10 @@ let ApproveAndCallFallBackJSONConfig = {
       },
     ],
     filename:
-      'E:/Status/projects/StatusDiscoverDapps/.embark/contracts/token/ApproveAndCallFallBack.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/.embark/contracts/token/ApproveAndCallFallBack.sol',
     originalFilename: 'contracts/token/ApproveAndCallFallBack.sol',
     path:
-      'E:/Status/projects/StatusDiscoverDapps/contracts/token/ApproveAndCallFallBack.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/contracts/token/ApproveAndCallFallBack.sol',
     gas: 'auto',
     type: 'file',
     deploy: false,

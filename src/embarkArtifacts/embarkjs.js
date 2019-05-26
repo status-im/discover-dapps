@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-const EmbarkJS = require('E:/Status/projects/StatusDiscoverDapps/src/embarkArtifacts/modules/embarkjs')
+const EmbarkJS = require('/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/src/embarkArtifacts/modules/embarkjs')
   .default
 export default EmbarkJS
 global.EmbarkJS = EmbarkJS
 
 const Web3 =
   global.__Web3 ||
-  require('E:/Status/projects/StatusDiscoverDapps/src/embarkArtifacts/modules/web3')
+  require('/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/src/embarkArtifacts/modules/web3')
 global.Web3 = Web3 /*global Web3*/
 const embarkJSConnectorWeb3 = {}
 
@@ -70,7 +70,7 @@ embarkJSConnectorWeb3.getNetworkId = function() {
 EmbarkJS.Blockchain.registerProvider('web3', embarkJSConnectorWeb3)
 EmbarkJS.Blockchain.setProvider('web3', {})
 if (!global.__Web3) {
-  const web3ConnectionConfig = require('E:/Status/projects/StatusDiscoverDapps/src/embarkArtifacts/config/blockchain.json')
+  const web3ConnectionConfig = require('/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/src/embarkArtifacts/config/blockchain.json')
   EmbarkJS.Blockchain.connect(web3ConnectionConfig, err => {
     if (err) {
       console.error(err)
@@ -79,7 +79,7 @@ if (!global.__Web3) {
 }
 const namehash =
   global.namehash ||
-  require('E:/Status/projects/StatusDiscoverDapps/src/embarkArtifacts/modules/eth-ens-namehash')
+  require('/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/src/embarkArtifacts/modules/eth-ens-namehash')
 ;('use strict')
 
 /*global namehash*/
@@ -600,7 +600,7 @@ __embarkENS.isAvailable = function() {
 EmbarkJS.Names.registerProvider('ens', __embarkENS)
 const IpfsApi =
   global.IpfsApi ||
-  require('E:/Status/projects/StatusDiscoverDapps/src/embarkArtifacts/modules/ipfs-api')
+  require('/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/src/embarkArtifacts/modules/ipfs-api')
 ;('use strict')
 
 var _interopRequireDefault = require('@babel/runtime-corejs2/helpers/interopRequireDefault')

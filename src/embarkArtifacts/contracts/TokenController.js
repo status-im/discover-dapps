@@ -52,10 +52,10 @@ let TokenControllerJSONConfig = {
       },
     ],
     filename:
-      'E:/Status/projects/StatusDiscoverDapps/.embark/contracts/token/TokenController.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/.embark/contracts/token/TokenController.sol',
     originalFilename: 'contracts/token/TokenController.sol',
     path:
-      'E:/Status/projects/StatusDiscoverDapps/contracts/token/TokenController.sol',
+      '/Users/lyubo/Desktop/Projects/Status/status-instructions/discover-dapps/contracts/token/TokenController.sol',
     gas: 'auto',
     type: 'file',
     deploy: false,
