@@ -4,7 +4,7 @@ config/development/mnemonic
 config/livenet/password
 config/production/password
 coverage
-#embarkArtifacts
+embarkArtifacts
 node_modules
 package-lock.json
 dist

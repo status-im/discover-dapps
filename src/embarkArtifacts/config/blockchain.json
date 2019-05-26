@@ -1,7 +1,0 @@
-{
-  "dappConnection": [
-    "https://ropsten.infura.io/v3/8675214b97b44e96b70d05326c61fd6a"
-  ],
-  "dappAutoEnable": true,
-  "blockchainClient": "geth"
-}
