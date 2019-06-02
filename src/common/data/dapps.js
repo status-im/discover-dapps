@@ -633,7 +633,7 @@ const Dapps = [
       name: 'CDP Saver',
       url: 'https://cdpsaver.com',
       description:
-        'CDP Saver is the next generation management dashboard for MakerDAO CDPs.',
+        'Next generation management dashboard for MakerDAO CDPs.',
       image: '/images/dapps/cdpsaver.png',
       category: Categories.UTILITIES,
       dateAdded: '2019-06-03',
