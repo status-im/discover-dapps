@@ -345,6 +345,15 @@ const Dapps = [
     dateAdded: '2019-04-05',
   },
   {
+    name: 'BTU Hotel',
+    url: 'https://btu-hotel.com',
+    description:
+      'Two million hotels available for booking at the best prices and with reward in crypto',
+    image: '/images/dapps/btu_hotel.png',
+    category: Categories.OTHER,
+    dateAdded: '2019-06-07',
+  },
+  {
     name: 'CDP Saver',
     url: 'https://cdpsaver.com',
     description: 'Next generation management dashboard for MakerDAO CDPs.',
