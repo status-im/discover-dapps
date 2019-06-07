@@ -61,6 +61,15 @@ const Dapps = [
     dateAdded: '2019-04-05',
   },
   {
+    name: 'Faa.st',
+    url: 'https://faa.st/app/mobile/connect/status',
+    description:
+      'The future of crypto trading is here. Building a strong, diversified crypto portfolio has never been this easy.',
+    image: '/images/dapps/faast.png',
+    category: Categories.EXCHANGES,
+    dateAdded: '2019-05-28',
+  },
+  {
     name: 'Eth2phone',
     url: 'https://eth2.io',
     description: 'Send Ether by phone number',
@@ -110,6 +119,14 @@ const Dapps = [
     image: '/images/dapps/expotrading.png',
     category: Categories.EXCHANGES,
     dateAdded: '2019-04-11',
+  },
+  {
+    name: 'Origin Protocol',
+    url: 'https://dapp.originprotocol.com',
+    description: 'True peer-to-peer commerce',
+    image: '/images/dapps/originprotocol.png',
+    category: Categories.MARKETPLACES,
+    dateAdded: '2019-06-07',
   },
   {
     name: 'Bidali',
@@ -326,6 +343,14 @@ const Dapps = [
     image: '/images/dapps/livepeer.png',
     category: Categories.OTHER,
     dateAdded: '2019-04-05',
+  },
+  {
+    name: 'CDP Saver',
+    url: 'https://cdpsaver.com',
+    description: 'Next generation management dashboard for MakerDAO CDPs.',
+    image: '/images/dapps/cdpsaver.png',
+    category: Categories.UTILITIES,
+    dateAdded: '2019-06-03',
   },
   {
     name: 'Aragon',

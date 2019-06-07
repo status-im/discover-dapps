@@ -11,7 +11,7 @@ const recentDapps = createSelector(
       return (
         moment(dapp.dateAdded).toISOString() >
         moment()
-          .subtract(21, 'days')
+          .subtract(45, 'days')
           .utc()
           .toISOString()
       )
