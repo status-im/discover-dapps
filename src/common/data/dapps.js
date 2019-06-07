@@ -628,6 +628,19 @@ const Dapps = [
     },
     rate: 12345,
   },
+  {
+    metadata: {
+      name: 'BTU Hotel',
+      url: 'https://btu-hotel.com',
+      description:
+        'Two million hotels available for booking at the best prices and with reward in crypto',
+      image: '/images/dapps/btu-hotel.png',
+      category: Categories.MARKETPLACES,
+      dateAdded: '2019-05-07',
+      categoryPosition: 2,
+    },
+    rate: 12345,
+  }
 ]
 
 export default Dapps
