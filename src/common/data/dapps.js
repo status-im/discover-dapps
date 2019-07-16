@@ -630,11 +630,11 @@ const Dapps = [
   },
   {
     metadata: {
-      name: 'CDP Saver',
-      url: 'https://cdpsaver.com',
+      name: 'DeFi Saver',
+      url: 'https://defisaver.com',
       description:
-        'Next generation management dashboard for MakerDAO CDPs.',
-      image: '/images/dapps/cdpsaver.png',
+        'Next generation management dashboard for MakerDAO CDPs and Compound portfolios.',
+      image: '/images/dapps/defisaver.png',
       category: Categories.UTILITIES,
       dateAdded: '2019-06-03',
       categoryPosition: 2,
