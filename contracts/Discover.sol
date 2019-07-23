@@ -4,9 +4,10 @@ import "./token/MiniMeTokenInterface.sol";
 import "./token/ApproveAndCallFallBack.sol";
 import "./utils/SafeMath.sol";
 import "./utils/BancorFormula.sol";
+import "./common/Controlled.sol";
 
 
-contract Discover is ApproveAndCallFallBack, BancorFormula {
+contract Discover is Controlled, ApproveAndCallFallBack, BancorFormula {
     using SafeMath for uint;
 
     // Could be any MiniMe token
@@ -49,6 +50,7 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
     event Downvote(bytes32 indexed id, uint newEffectiveBalance);
     event Withdraw(bytes32 indexed id, uint newEffectiveBalance);
     event MetadataUpdated(bytes32 indexed id);
+    event CeilingUpdated(uint oldCeiling, uint newCeiling);
     
     constructor(MiniMeTokenInterface _SNT) public {
         SNT = _SNT;
@@ -63,7 +65,19 @@ contract Discover is ApproveAndCallFallBack, BancorFormula {
 
         safeMax = uint(77).mul(max).div(100); // Limited by accuracy of BancorFormula
     }
-    
+
+    /**
+     * @dev Update ceiling
+     * @param _newCeiling New ceiling value
+     */
+    function setCeiling(uint _newCeiling) public onlyController {
+        emit CeilingUpdated(ceiling, _newCeiling);
+
+        ceiling = _newCeiling;
+        max = total.mul(ceiling).div(decimals);
+        safeMax = uint(77).mul(max).div(100);
+    }
+
     /**
      * @dev Anyone can create a DApp (i.e an arb piece of data this contract happens to care about).
      * @param _id bytes32 unique identifier.
